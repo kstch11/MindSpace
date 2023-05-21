@@ -12,17 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Reservation extends AbstractEntity{
+public class Reservation extends AbstractEntity {
 
-    @ManyToMany
-    @JoinTable(
-            name = "client_reservation",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "client_id")
-    )
-    private List<Client> members;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
-    private LocalDateTime startTime;
+    @OneToOne(mappedBy = "reservation")
+    private TimeCell timeCell;
 
     @ManyToOne
     @JoinColumn(name="therapist_id")

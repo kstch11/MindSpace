@@ -12,10 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 public class Schedule extends AbstractEntity {
+
     @OneToOne
     @JoinColumn(name = "therapist_id")
-    private Therapist scheduleOwner;
+    private Therapist therapist;
 
     @OneToMany(mappedBy = "schedule")
-    private List<TimeCell> timeCells;
+    private List<TimeCell> availableTimeCells;
 }

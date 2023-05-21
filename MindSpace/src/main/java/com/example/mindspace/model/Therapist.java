@@ -15,10 +15,11 @@ import java.util.List;
 @Getter
 @Setter
 public class Therapist extends User {
-    @OneToMany(mappedBy="therapist")
+
+    @OneToMany(mappedBy = "therapist")
     private List<Reservation> reservations;
 
-    @OneToMany(mappedBy="therapist")
+    @OneToMany(mappedBy = "therapist")
     private List<Client> clients;
 
     @ManyToMany

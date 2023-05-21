@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "admins")
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
-public class Admin extends User{
+public class Admin extends User {
 }

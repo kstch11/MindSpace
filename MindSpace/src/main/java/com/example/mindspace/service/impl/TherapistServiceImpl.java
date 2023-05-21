@@ -30,10 +30,10 @@ public class TherapistServiceImpl implements TherapistService {
 
     @Override
     public List<TimeCell> findAllUnreservedTimeCells(Therapist therapist) {
-        List<TimeCell> timeCells = therapist.getTimeCells().stream()
-                .filter(timeCell -> !timeCell.isReserved())
-                .toList();
-        return timeCells;
+//        List<TimeCell> timeCells = therapist.getTimeCells().stream()
+//                .filter(timeCell -> !timeCell.isReserved())
+//                .toList();
+        return List.of();
     }
 
     @Override

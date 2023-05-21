@@ -15,7 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Client extends User {
-    @ManyToMany(mappedBy="members")
+
+    @OneToMany(mappedBy = "client")
     private List<Reservation> reservations;
 
     @ManyToOne

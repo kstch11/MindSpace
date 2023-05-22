@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService {
+public class AdminServiceImpl {
     private final AdminRepository adminRepository;
     private final TherapistRepository therapistRepository;
 
-    @Override
     public void createAdmin(Admin admin) throws EntityNotFoundException {
         if (admin != null) {
             adminRepository.save(admin);
@@ -24,8 +23,11 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    @Override
-    public void approveTherapist(Therapist therapist) {
+    public void approveTherapist(Integer therapistId) {
+        var therapist = therapistRepository.findById(therapistId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
 
+        therapist.setApproved(true);
+        therapistRepository.save(therapist);
     }
 }

@@ -1,10 +1,12 @@
 package com.example.mindspace.service.impl;
 
+import com.example.mindspace.api.ClientResponse;
+import com.example.mindspace.api.ReservationResponse;
+import com.example.mindspace.api.ScheduleResponse;
 import com.example.mindspace.dao.ThemeRepository;
 import com.example.mindspace.dao.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.*;
-import com.example.mindspace.service.interfaces.TherapistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,31 +14,40 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TherapistServiceImpl implements TherapistService {
-    private final TherapistRepository therapistRepository;
+public class TherapistServiceImpl {
 
+    private final TherapistRepository therapistRepository;
     private final ThemeRepository themeRepository;
 
-    @Override
-    public List<Reservation> findAllReservations(Therapist therapist) {
-        List<Reservation> reservations = therapist.getReservations();
-        return reservations;
+    /**
+     * Find all reservations
+     * @param id id of therapist
+     * @return reservations list
+     */
+    public List<ReservationResponse> findAllReservations(Integer id) {
+        return findById(id).getReservations().stream().map(r -> new ReservationResponse(r.getId())).toList();
     }
 
-    @Override
-    public List<Client> findAllClients(Therapist therapist) {
-        return therapist.getClients();
+    /**
+     * Find all reservations
+     * @param id id of therapist
+     * @return reservations list
+     */
+    public List<ClientResponse> findAllClients(Integer id) {
+        return findById(id).getClients().stream().map(r -> new ClientResponse(r.getId())).toList();
     }
 
-    @Override
-    public List<TimeCell> findAllUnreservedTimeCells(Therapist therapist) {
-//        List<TimeCell> timeCells = therapist.getTimeCells().stream()
-//                .filter(timeCell -> !timeCell.isReserved())
-//                .toList();
-        return List.of();
+    /**
+     * Find all reservations
+     * @param id id of therapist
+     * @return schedule
+     */
+    public ScheduleResponse getSchedule(Integer id) {
+        var schedule = findById(id).getSchedule();
+        return new ScheduleResponse();
     }
 
-    @Override
+
     public Therapist findByName(String name) throws EntityNotFoundException {
         Therapist therapist = therapistRepository.findByName(name);
         if (therapist == null) {
@@ -46,7 +57,6 @@ public class TherapistServiceImpl implements TherapistService {
         }
     }
 
-    @Override
     public Therapist findBySurname(String surname) throws EntityNotFoundException {
         Therapist therapist = therapistRepository.findBySurname(surname);
         if (therapist == null) {
@@ -56,17 +66,14 @@ public class TherapistServiceImpl implements TherapistService {
         }
     }
 
-    @Override
     public List<Theme> findAllThemes(Therapist therapist) {
         return therapist.getThemes();
     }
 
-    @Override
     public void createTherapist(Therapist therapist) {
         therapistRepository.save(therapist);
     }
 
-    @Override
     public void updateTherapist(Therapist therapist) throws EntityNotFoundException {
         if (therapist == null) {
             throw new EntityNotFoundException("nelzya obnovit");
@@ -76,7 +83,6 @@ public class TherapistServiceImpl implements TherapistService {
 
     }
 
-    @Override
     public void deleteTherapist(Therapist therapist) throws EntityNotFoundException {
         if (therapist == null) {
             throw new EntityNotFoundException("ty dolboeb ty zachem nesuschestvuyuschego terapevta udalyaesh?");
@@ -85,18 +91,15 @@ public class TherapistServiceImpl implements TherapistService {
         }
     }
 
-    @Override
-    public Therapist findById(Integer id) throws EntityNotFoundException {
-        Therapist therapist = therapistRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                "Therapist with id " + id + "does not exist"));
-        return therapist;
-    }
-
-    @Override
     public void addNewTheme(Theme theme, Therapist therapist) {
         therapist.getThemes().add(theme);
         theme.getTherapists().add(therapist);
         therapistRepository.save(therapist);
         themeRepository.save(theme);
+    }
+
+    private Therapist findById(Integer id) {
+        return therapistRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Therapist with id " + id + "does not exist"));
     }
 }

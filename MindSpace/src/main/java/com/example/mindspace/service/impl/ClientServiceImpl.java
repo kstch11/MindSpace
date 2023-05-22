@@ -51,6 +51,9 @@ public class ClientServiceImpl {
     }
 
 
+    /**
+     * Find all reservations.
+     */
     public List<ReservationResponse> findAllReservations(Integer clientId) {
         var client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));

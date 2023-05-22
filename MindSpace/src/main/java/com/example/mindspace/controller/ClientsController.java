@@ -27,6 +27,9 @@ public class ClientsController {
         this.clientService = clientService;
     }
 
+    /**
+     * Set ner therapist
+     */
     @PutMapping("/{id}/therapist")
     public ResponseEntity<Void> setTherapist(
             @PathVariable Integer id,
@@ -36,14 +39,25 @@ public class ClientsController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Cancel therapist
+     */
     @DeleteMapping("/{id}/therapist")
     public ResponseEntity<Void> cancelTherapist(@PathVariable Integer id) {
         clientService.cancelTherapist(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Find all reservations.
+     */
     @GetMapping("/{id}/reservations")
     public ResponseEntity<List<ReservationResponse>> getAllReservations(@PathVariable Integer id) {
         return new ResponseEntity<>(clientService.findAllReservations(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateClient(@PathVariable Integer id) {
+        return null;
     }
 }

@@ -33,4 +33,5 @@ public class Therapist extends User {
     @OneToOne(mappedBy = "therapist", cascade = CascadeType.ALL, orphanRemoval = true)
     private Schedule schedule;
 
+    private boolean approved;
 }

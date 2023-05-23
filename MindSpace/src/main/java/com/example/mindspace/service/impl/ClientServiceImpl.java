@@ -1,5 +1,6 @@
 package com.example.mindspace.service.impl;
 
+import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.dao.ClientRepository;
@@ -30,6 +31,23 @@ public class ClientServiceImpl {
 
         client.setTherapist(null);
         clientRepository.save(client);
+    }
+
+    /**
+     * get client id
+     *
+     * @param clientId the ID of the client
+     */
+    public ClientResponse getClientDetails(Integer clientId) {
+        var client = findById(clientId);
+        return new ClientResponse(
+                client.getId(),
+                client.getTherapist() == null ? null : client.getTherapist().getId(),
+                client.getName(),
+                client.getSurname(),
+                client.getPhoneNumber(),
+                client.getEmail()
+        );
     }
 
     /**
@@ -75,7 +93,7 @@ public class ClientServiceImpl {
         }
     }
 
-    public void deleteClient(Client client) throws EntityNotFoundException {
+    public void deleteClient(Client client) {
         if (client == null) {
             throw new EntityNotFoundException("");
         } else {
@@ -83,8 +101,7 @@ public class ClientServiceImpl {
         }
     }
 
-    public Client findById(Integer id) throws EntityNotFoundException {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("net tut takih"));
-        return client;
+    public Client findById(Integer id) {
+        return clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }
 }

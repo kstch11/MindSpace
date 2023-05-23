@@ -1,5 +1,6 @@
 package com.example.mindspace.controller;
 
+import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.service.impl.ClientServiceImpl;
@@ -25,6 +26,14 @@ public class ClientsController {
     @Autowired
     public ClientsController(ClientServiceImpl clientService) {
         this.clientService = clientService;
+    }
+
+    /**
+     * Get client details
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponse> getDetails(@PathVariable Integer id) {
+        return new ResponseEntity<>(clientService.getClientDetails(id), HttpStatus.OK);
     }
 
     /**

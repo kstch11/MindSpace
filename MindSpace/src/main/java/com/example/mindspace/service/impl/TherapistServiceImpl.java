@@ -34,7 +34,14 @@ public class TherapistServiceImpl {
      * @return reservations list
      */
     public List<ClientResponse> findAllClients(Integer id) {
-        return findById(id).getClients().stream().map(r -> new ClientResponse(r.getId())).toList();
+        return findById(id).getClients().stream().map(r -> new ClientResponse(
+                r.getId(),
+                r.getTherapist() == null ? null : r.getTherapist().getId(),
+                r.getName(),
+                r.getSurname(),
+                r.getPhoneNumber(),
+                r.getEmail()
+        )).toList();
     }
 
     /**

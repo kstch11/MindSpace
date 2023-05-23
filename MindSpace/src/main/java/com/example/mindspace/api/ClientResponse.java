@@ -1,5 +1,10 @@
 package com.example.mindspace.api;
 
-// TODO
-public record ClientResponse(Integer id) {
-}
+public record ClientResponse(
+        Integer id,
+        Integer therapistId,
+        String name,
+        String surname,
+        String phone,
+        String email
+) { }

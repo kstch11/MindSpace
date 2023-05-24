@@ -101,14 +101,25 @@ public class ReservationServiceImpl {
         );
     }
 
-    public void delayReservation(Reservation reservation, LocalDateTime dateTime) throws EntityNotFoundException {
-        if (reservation != null && dateTime != null) {
-//            reservation.setStartTime(dateTime);
-            reservationRepository.save(reservation);
-        } else {
-            throw new EntityNotFoundException("nelzya");
+    public void delayReservation(Integer reservationId, Integer timeCellId) {
+        var reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("reservation not found"));
+        var timecCell = timeCellRepository.findById(timeCellId)
+                .orElseThrow(() -> new EntityNotFoundException("time cell not found"));
+
+        if (timecCell.isReserved() || timecCell.isExpired()) {
+            throw new IllegalArgumentException("Requested timeslot is not available");
         }
 
+        TimeCell exTimeCell = reservation.getTimeCell();
+        exTimeCell.setReservation(null);
+        timeCellRepository.save(exTimeCell);
+
+        timecCell.setReservation(reservation);
+        TimeCell save = timeCellRepository.save(timecCell);
+
+        reservation.setTimeCell(save);
+        reservationRepository.save(reservation);
     }
 
 //    public Reservation findById(Integer id) {

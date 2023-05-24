@@ -3,6 +3,7 @@ package com.example.mindspace.controller;
 import com.example.mindspace.api.ReservationRequest;
 import com.example.mindspace.api.CreateReservationResponse;
 import com.example.mindspace.api.ReservationResponse;
+import com.example.mindspace.service.impl.ReservationServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,22 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    // create
+    private final ReservationServiceImpl reservationService;
+
+    public ReservationController(ReservationServiceImpl reservationService) {
+        this.reservationService = reservationService;
+    }
+
     @PostMapping
     public ResponseEntity<CreateReservationResponse> createReservation(@RequestBody ReservationRequest request) {
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(reservationService.createReservation(request), HttpStatus.CREATED);
     }
 
-    // get
     @GetMapping("/{id}")
     public ResponseEntity<ReservationResponse> getReservation(@PathVariable Integer id) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(reservationService.getReservation(id), HttpStatus.OK);
     }
-
-    // delay
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelReservation(@PathVariable Integer id) {
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        reservationService.cancelReservation(id);
+        return ResponseEntity.noContent().build();
     }
 }

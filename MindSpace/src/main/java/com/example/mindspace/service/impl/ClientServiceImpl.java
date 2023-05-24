@@ -76,9 +76,11 @@ public class ClientServiceImpl {
         var client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
-        return client.getReservations().stream()
-                .map(reservation -> new ReservationResponse(reservation.getId()))
-                .toList(); // TODO
+
+        return List.of();
+//        return client.getReservations().stream()
+//                .map(reservation -> new ReservationResponse(reservation.getId()))
+//                .toList(); // TODO
     }
 
     public void createClient(Client client) {

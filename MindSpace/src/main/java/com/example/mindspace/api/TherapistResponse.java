@@ -1,10 +1,10 @@
 package com.example.mindspace.api;
 
-public record   ClientResponse(
+public record TherapistResponse(
         Integer id,
-        Integer therapistId,
         String name,
         String surname,
         String phone,
         String email
-) { }
+) {
+}

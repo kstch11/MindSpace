@@ -1,28 +1,37 @@
 package com.example.mindspace.service.impl;
 
+import com.example.mindspace.api.ClientResponse;
+import com.example.mindspace.api.CreateReservationResponse;
 import com.example.mindspace.api.ReservationRequest;
+import com.example.mindspace.api.ReservationResponse;
+import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.dao.ClientRepository;
 import com.example.mindspace.dao.ReservationRepository;
 import com.example.mindspace.dao.TherapistRepository;
+import com.example.mindspace.dao.TimeCellRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Reservation;
 import com.example.mindspace.model.TimeCell;
-import com.example.mindspace.service.interfaces.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
-public class ReservationServiceImpl implements ReservationService {
+public class ReservationServiceImpl {
     private final ReservationRepository reservationRepository;
     private final TherapistRepository therapistRepository;
     private final ClientRepository clientRepository;
+    private final TimeCellRepository timeCellRepository;
 
-    @Override
-    public void createReservation(ReservationRequest reservationDto) {
+    /**
+     * Create a reservation
+     * @param reservationDto reservation req
+     * @return create response dto
+     */
+    public CreateReservationResponse createReservation(ReservationRequest reservationDto) {
         var therapist = therapistRepository.findById(reservationDto.therapistId())
                 .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
 
@@ -31,31 +40,67 @@ public class ReservationServiceImpl implements ReservationService {
 
         TimeCell requestedTimeslot = schedule.getAvailableTimeCells().stream()
                 // check if schedule contains the requested time cell & if it is available to book.
-                .filter(cell -> cell.getId().equals(timeCellId) && !cell.isReserved() && !cell.isExpired())
+                .filter(cell -> cell.getId().equals(timeCellId) && !(cell.isReserved() || cell.isExpired()))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Requested timeslot is not available"));
 
-        // TODO: fetch clients and add them here
-        var reservation = new Reservation(null, requestedTimeslot, therapist);
-        reservationRepository.save(reservation);
+        var client = clientRepository.findById(reservationDto.clientId())
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        var reservation = new Reservation(client, requestedTimeslot, therapist);
+        requestedTimeslot.setReservation(reservation);
+        Reservation saved = reservationRepository.save(reservation);
+        timeCellRepository.save(requestedTimeslot);
+        return new CreateReservationResponse(saved.getId());
     }
 
-    @Override // TODO: work with ReservationDto
-    public void cancelReservation(Reservation reservation) {
-        if (reservation != null) {
-            reservation.getTherapist().getReservations().remove(reservation);
-            therapistRepository.save(reservation.getTherapist());
-//            reservation.getMembers().stream().forEach(member -> {
-//                member.getReservations().remove(reservation);
-//                clientRepository.save(member);
-//            });
-            reservationRepository.delete(reservation);
-        } else {
-            throw new EntityNotFoundException("nelzya");
-        }
+    /**
+     * Cancels reservation.
+     * @param reservationId the id of reservation
+     */
+    public void cancelReservation(Integer reservationId) {
+        var reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("reservation not found"));
+
+        TimeCell timeCell = reservation.getTimeCell();
+        timeCell.setReservation(null);
+        timeCellRepository.save(timeCell);
+
+        reservationRepository.delete(reservation);
     }
 
-    @Override
+    /**
+     * get reservation
+     * @param reservationId id of reservation
+     * @return reservation dto
+     */
+    public ReservationResponse getReservation(Integer reservationId) {
+        var reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("reservation not found"));
+
+        var client = reservation.getClient();
+        var therapist = reservation.getTherapist();
+
+        return new ReservationResponse(
+                reservationId,
+                reservation.getTimeCell().getStartTime().format(DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy")),
+                new ClientResponse(
+                        client.getId(),
+                        client.getTherapist().getId(),
+                        client.getName(),
+                        client.getSurname(),
+                        client.getPhoneNumber(),
+                        client.getEmail()
+                ),
+                new TherapistResponse(
+                        therapist.getId(),
+                        therapist.getName(),
+                        therapist.getSurname(),
+                        therapist.getPhoneNumber(),
+                        therapist.getEmail()
+                )
+        );
+    }
+
     public void delayReservation(Reservation reservation, LocalDateTime dateTime) throws EntityNotFoundException {
         if (reservation != null && dateTime != null) {
 //            reservation.setStartTime(dateTime);
@@ -66,8 +111,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     }
 
-    @Override
-    public Reservation findById(Integer id) {
-        return reservationRepository.findById(id).get();
-    }
+//    public Reservation findById(Integer id) {
+//        return reservationRepository.findById(id).get();
+//    }
 }

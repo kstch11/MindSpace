@@ -25,7 +25,8 @@ public class TherapistServiceImpl {
      * @return reservations list
      */
     public List<ReservationResponse> findAllReservations(Integer id) {
-        return findById(id).getReservations().stream().map(r -> new ReservationResponse(r.getId())).toList();
+        return List.of();
+//        return findById(id).getReservations().stream().map(r -> new ReservationResponse(r.getId())).toList();
     }
 
     /**

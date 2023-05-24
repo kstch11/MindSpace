@@ -6,8 +6,8 @@ import {HeaderResponsive} from "./parts/Header";
 import {MainPage} from "./mainPage/MainPage";
 import {FeaturesCards} from "./mainPage/SecondSection"
 import {Footer} from "./parts/Footer";
-import {AuthenticationForm} from "./autentication/Autentication";
-import {StepQuestionnaire} from "./client/StepQuestionnaire";
+import {AuthenticationForm} from "./client-components/autentication/Autentication";
+import {StepQuestionnaire} from "./client-components/StepQuestionnaire";
 import App  from "./App"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

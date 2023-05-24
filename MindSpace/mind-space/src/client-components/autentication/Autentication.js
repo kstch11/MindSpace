@@ -39,7 +39,6 @@ export function AuthenticationForm(props: PaperProps) {
         validate: {
             email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
             password: (val) => (val.length < 6 ? 'Password should include at least 6 characters' : null),
-            phoneNumber: (val) => (/^\d{7,16}$/.test(val) ? null : 'Invalid phone number'),
             confirmPassword: (val) => {
                 if (form.values.type === 'register' && val !== form.values.password) {
                     return 'Passwords do not match';
@@ -50,7 +49,7 @@ export function AuthenticationForm(props: PaperProps) {
     });
 
     const authenticationFormStyle = {
-        marginBottom: form.values.type === 'register' ? '80px' : '0',
+        marginBottom: form.values.type === 'register' ? '80px' : '65px',
     };
 
     return (

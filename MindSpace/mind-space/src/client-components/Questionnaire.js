@@ -76,12 +76,11 @@ function Questionnaire({onDataCollected}) {
     const [answers, setAnswers] = useState([]);
     const { classes } = useStyles();
 
-    const handleSubmit = () => {
-        console.log('Submitted answers:', answers);
-    };
+    // const handleSubmit = () => {
+    //     console.log('Submitted answers:', answers);
+    // };
 
     useEffect(() => {
-        // Pass the collected data to the parent component when answers change
         onDataCollected(answers);
     }, [answers, onDataCollected]);
 

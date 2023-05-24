@@ -17,20 +17,23 @@ export function StepQuestionnaire() {
         initialValues: {
             answers: [],
             name: '',
-            email: '',
+            surname: '',
+            phoneNumber: '',
             website: '',
             github: '',
         },
 
         validate: (values) => {
             if (active === 0) {
-                return {}
+                return {
+                    name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
+                    phoneNumber: (val) => (/^\d{7,16}$/.test(val) ? null : 'Invalid phone number'),
+                }
             }
 
             if (active === 1) {
                 return {
-                    name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
-                    email: /^\S+@\S+$/.test(values.email) ? null : 'Invalid email',
+
                 };
             }
 
@@ -38,7 +41,12 @@ export function StepQuestionnaire() {
         },
     });
 
+    const stepQuestionnaireStyle = {
+        marginBottom: active === 0 || active === 2 ? '210px' : '0px',
+    };
+
     const handleDataFromChild = (data) => {
+        form.setFieldValue('answers', data);
         console.log('Data received from child component:', data);
     };
 
@@ -51,30 +59,23 @@ export function StepQuestionnaire() {
     };
 
 
-        // setActive((current) => {
-        //     if (form.validate().hasErrors) {
-        //         return current;
-        //     }
-        //     return current < 3 ? current + 1 : current;
-        // });
-
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
     return (
         <Center>
             <div className={classes.questionnaire}>
-                <Stepper active={active} breakpoint="sm">
-                    <Stepper.Step label="First step" description="Profile settings">
-                        <TextInput label="Name" placeholder="Name" {...form.getInputProps('name')} />
-                        <TextInput mt="md" label="Email" placeholder="Email" {...form.getInputProps('email')} />
+                <Stepper active={active} breakpoint="sm" style={stepQuestionnaireStyle}>
+                    <Stepper.Step label="First step" description="Personal information">
+                        <TextInput required label="Name" placeholder="Name" {...form.getInputProps('name')} />
+                        <TextInput required label="Surname" placeholder="Surname" {...form.getInputProps('surname')} />
+                        <TextInput required label="Phone number" placeholder="Phone number" {...form.getInputProps('phoneNumber')} />
                     </Stepper.Step>
 
-                    <Stepper.Step label="Second step" description="Personal information">
-
+                    <Stepper.Step label="Second step" description="How do you feel?">
                         <Questionnaire onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
 
-                    <Stepper.Step label="Final step" description="Social media">
+                    <Stepper.Step label="Final step" description="Choose a therapist">
                         <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />
                         <TextInput
                             mt="md"

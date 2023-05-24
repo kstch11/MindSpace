@@ -25,7 +25,7 @@ public class AdminServiceImpl {
 
     public void approveTherapist(Integer therapistId) {
         var therapist = therapistRepository.findById(therapistId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new RuntimeException("Therapist not found"));
 
         therapist.setApproved(true);
         therapistRepository.save(therapist);

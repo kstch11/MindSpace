@@ -1,8 +1,7 @@
 package com.example.mindspace.service.impl;
 
-import com.example.mindspace.dao.ScheduleRepository;
-import com.example.mindspace.dao.TimeCellRepository;
-import com.example.mindspace.model.TimeCell;
+import com.example.mindspace.repository.ScheduleRepository;
+import com.example.mindspace.repository.TimeCellRepository;
 import com.example.mindspace.service.interfaces.TimeCellService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

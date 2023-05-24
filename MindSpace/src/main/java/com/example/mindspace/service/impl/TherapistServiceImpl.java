@@ -3,13 +3,16 @@ package com.example.mindspace.service.impl;
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.ScheduleResponse;
-import com.example.mindspace.dao.ThemeRepository;
-import com.example.mindspace.dao.TherapistRepository;
+import com.example.mindspace.api.TherapistResponse;
+import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.repository.ThemeRepository;
+import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -19,14 +22,51 @@ public class TherapistServiceImpl {
     private final TherapistRepository therapistRepository;
     private final ThemeRepository themeRepository;
 
+    public TherapistResponse findTherapist(Integer id) {
+        Therapist therapist = findById(id);
+
+        return new TherapistResponse(
+                therapist.getId(),
+                therapist.getName(),
+                therapist.getSurname(),
+                therapist.getPhoneNumber(),
+                therapist.getEmail()
+        );
+    }
+
     /**
      * Find all reservations
      * @param id id of therapist
      * @return reservations list
      */
     public List<ReservationResponse> findAllReservations(Integer id) {
-        return List.of();
-//        return findById(id).getReservations().stream().map(r -> new ReservationResponse(r.getId())).toList();
+        Therapist therapist = findById(id);
+        return therapist.getReservations().stream()
+                .map(reservation -> {
+                    Client client = reservation.getClient();
+
+                    return new ReservationResponse(
+                            reservation.getId(),
+                            reservation.getTimeCell().getStartTime()
+                                    .format(DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy")),
+                            new ClientResponse(
+                                    client.getId(),
+                                    client.getTherapist().getId(),
+                                    client.getName(),
+                                    client.getSurname(),
+                                    client.getPhoneNumber(),
+                                    client.getEmail()
+                            ),
+                            new TherapistResponse(
+                                    therapist.getId(),
+                                    therapist.getName(),
+                                    therapist.getSurname(),
+                                    therapist.getPhoneNumber(),
+                                    therapist.getEmail()
+                            )
+                    );
+                })
+                .toList();
     }
 
     /**
@@ -55,6 +95,30 @@ public class TherapistServiceImpl {
         return new ScheduleResponse();
     }
 
+    /**
+     * Updates a client
+     *
+     * @param id client id
+     * @param request request id
+     */
+    public void updateTherapist(Integer id, UserRequest request) {
+        var therapist = findById(id);
+
+        if (request.name() != null && request.name().isBlank()) {
+            therapist.setName(request.name());
+        }
+        if (request.surname() != null && request.surname().isBlank()) {
+            therapist.setSurname(request.surname());
+        }
+        if (request.number() != null && request.number().isBlank()) {
+            therapist.setPhoneNumber(request.number());
+        }
+        if (request.email() != null && request.email().isBlank()) {
+            therapist.setEmail(request.email());
+        }
+
+        therapistRepository.save(therapist);
+    }
 
     public Therapist findByName(String name) throws EntityNotFoundException {
         Therapist therapist = therapistRepository.findByName(name);
@@ -80,15 +144,6 @@ public class TherapistServiceImpl {
 
     public void createTherapist(Therapist therapist) {
         therapistRepository.save(therapist);
-    }
-
-    public void updateTherapist(Therapist therapist) throws EntityNotFoundException {
-        if (therapist == null) {
-            throw new EntityNotFoundException("nelzya obnovit");
-        } else {
-            therapistRepository.save(therapist);
-        }
-
     }
 
     public void deleteTherapist(Therapist therapist) throws EntityNotFoundException {

@@ -2,7 +2,8 @@ package com.example.mindspace.controller;
 
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ReservationResponse;
-import com.example.mindspace.api.ScheduleResponse;
+import com.example.mindspace.api.TherapistResponse;
+import com.example.mindspace.api.UserRequest;
 import com.example.mindspace.service.impl.TherapistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,11 @@ public class TherapistController {
     @Autowired
     public TherapistController(TherapistServiceImpl therapistService) {
         this.therapistService = therapistService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TherapistResponse> getTherapist(Integer id) {
+        return new ResponseEntity<>(therapistService.findTherapist(id), HttpStatus.OK);
     }
 
     /**
@@ -47,13 +54,12 @@ public class TherapistController {
     }
 
     /**
-     * Get schedule
-     * @param id id of therapist
-     * @return schedule
+     * Updates client
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ScheduleResponse> updateTherapist(@PathVariable Integer id) {
-        return new ResponseEntity<>(therapistService.getSchedule(id), HttpStatus.OK);
+    public ResponseEntity<Void> updateTherapist(@PathVariable Integer id, @RequestBody UserRequest userRequest) {
+        therapistService.updateTherapist(id, userRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/schedule")

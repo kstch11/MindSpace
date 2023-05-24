@@ -3,6 +3,7 @@ package com.example.mindspace.controller;
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
+import com.example.mindspace.api.UserRequest;
 import com.example.mindspace.service.impl.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,8 +66,12 @@ public class ClientsController {
         return new ResponseEntity<>(clientService.findAllReservations(id), HttpStatus.OK);
     }
 
+    /**
+     * Updates client
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateClient(@PathVariable Integer id) {
-        return null;
+    public ResponseEntity<Void> updateClient(@PathVariable Integer id, @RequestBody UserRequest userRequest) {
+        clientService.updateClient(id, userRequest);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.mindspace.api;
 
-public record   ClientResponse(
+public record ClientResponse(
         Integer id,
         Integer therapistId,
         String name,

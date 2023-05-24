@@ -3,13 +3,16 @@ package com.example.mindspace.service.impl;
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
-import com.example.mindspace.dao.ClientRepository;
-import com.example.mindspace.dao.TherapistRepository;
+import com.example.mindspace.api.TherapistResponse;
+import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.repository.ClientRepository;
+import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Client;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -27,7 +30,7 @@ public class ClientServiceImpl {
      */
     public void cancelTherapist(Integer clientId) {
         var client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
 
         client.setTherapist(null);
         clientRepository.save(client);
@@ -76,23 +79,61 @@ public class ClientServiceImpl {
         var client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
+        return client.getReservations().stream()
+                .map(reservation -> {
+                    var therapist = reservation.getTherapist();
 
-        return List.of();
-//        return client.getReservations().stream()
-//                .map(reservation -> new ReservationResponse(reservation.getId()))
-//                .toList(); // TODO
+                    return new ReservationResponse(
+                            reservation.getId(),
+                            reservation.getTimeCell().getStartTime()
+                                    .format(DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy")),
+                            new ClientResponse(
+                                    client.getId(),
+                                    client.getTherapist().getId(),
+                                    client.getName(),
+                                    client.getSurname(),
+                                    client.getPhoneNumber(),
+                                    client.getEmail()
+                            ),
+                            new TherapistResponse(
+                                    therapist.getId(),
+                                    therapist.getName(),
+                                    therapist.getSurname(),
+                                    therapist.getPhoneNumber(),
+                                    therapist.getEmail()
+                            )
+                    );
+                })
+                .toList();
+    }
+
+    /**
+     * Updates a client
+     *
+     * @param id client id
+     * @param request request id
+     */
+    public void updateClient(Integer id, UserRequest request) {
+        var client = findById(id);
+
+        if (request.name() != null && request.name().isBlank()) {
+            client.setName(request.name());
+        }
+        if (request.surname() != null && request.surname().isBlank()) {
+            client.setSurname(request.surname());
+        }
+        if (request.number() != null && request.number().isBlank()) {
+            client.setPhoneNumber(request.number());
+        }
+        if (request.email() != null && request.email().isBlank()) {
+            client.setEmail(request.email());
+        }
+
+        clientRepository.save(client);
     }
 
     public void createClient(Client client) {
         clientRepository.save(client);
-    }
-
-    public void updateClient(Client client) throws EntityNotFoundException {
-        if (client == null) {
-            throw new EntityNotFoundException("");
-        } else {
-            clientRepository.save(client);
-        }
     }
 
     public void deleteClient(Client client) {

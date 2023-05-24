@@ -1,10 +1,12 @@
 package com.example.mindspace.config;
 
-import com.example.mindspace.dao.ClientRepository;
-import com.example.mindspace.dao.ScheduleRepository;
-import com.example.mindspace.dao.ThemeRepository;
-import com.example.mindspace.dao.TherapistRepository;
-import com.example.mindspace.dao.TimeCellRepository;
+import com.example.mindspace.repository.AdminRepository;
+import com.example.mindspace.repository.ClientRepository;
+import com.example.mindspace.repository.ScheduleRepository;
+import com.example.mindspace.repository.ThemeRepository;
+import com.example.mindspace.repository.TherapistRepository;
+import com.example.mindspace.repository.TimeCellRepository;
+import com.example.mindspace.model.Admin;
 import com.example.mindspace.model.Client;
 import com.example.mindspace.model.Schedule;
 import com.example.mindspace.model.Theme;
@@ -28,19 +30,22 @@ public class InitDataLoader {
     private final TimeCellRepository timeCellRepository;
     private final ScheduleRepository scheduleRepository;
     private final TherapistRepository therapistRepository;
+    private final AdminRepository adminRepository;
 
     public InitDataLoader(
             ClientRepository clientRepository,
             ThemeRepository themeRepository,
             TimeCellRepository timeCellRepository,
             ScheduleRepository scheduleRepository,
-            TherapistRepository therapistRepository
+            TherapistRepository therapistRepository,
+            AdminRepository adminRepository
     ) {
         this.clientRepository = clientRepository;
         this.themeRepository = themeRepository;
         this.timeCellRepository = timeCellRepository;
         this.scheduleRepository = scheduleRepository;
         this.therapistRepository = therapistRepository;
+        this.adminRepository = adminRepository;
     }
 
     @PostConstruct
@@ -54,6 +59,7 @@ public class InitDataLoader {
         var schedules = loadSchedules(therapists, timeCells);
 
         var clients = loadClients(therapists);
+        loadAdmin();
     }
 
     private void deleteData() {
@@ -129,5 +135,11 @@ public class InitDataLoader {
         client2.setPhoneNumber("+420777777777");
 
         return clientRepository.saveAll(Arrays.asList(client1, client2));
+    }
+
+    private Admin loadAdmin() {
+        var admin = new Admin();
+
+        return adminRepository.save(admin);
     }
 }

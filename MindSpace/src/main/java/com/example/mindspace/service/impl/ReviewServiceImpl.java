@@ -1,6 +1,6 @@
 package com.example.mindspace.service.impl;
 
-import com.example.mindspace.dao.ReviewRepository;
+import com.example.mindspace.repository.ReviewRepository;
 import com.example.mindspace.model.Client;
 import com.example.mindspace.model.Review;
 import com.example.mindspace.model.Therapist;

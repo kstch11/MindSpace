@@ -1,4 +1,4 @@
-package com.example.mindspace.dao;
+package com.example.mindspace.repository;
 
 import com.example.mindspace.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;

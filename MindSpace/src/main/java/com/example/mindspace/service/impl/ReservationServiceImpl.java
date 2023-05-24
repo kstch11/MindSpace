@@ -5,17 +5,16 @@ import com.example.mindspace.api.CreateReservationResponse;
 import com.example.mindspace.api.ReservationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.TherapistResponse;
-import com.example.mindspace.dao.ClientRepository;
-import com.example.mindspace.dao.ReservationRepository;
-import com.example.mindspace.dao.TherapistRepository;
-import com.example.mindspace.dao.TimeCellRepository;
+import com.example.mindspace.repository.ClientRepository;
+import com.example.mindspace.repository.ReservationRepository;
+import com.example.mindspace.repository.TherapistRepository;
+import com.example.mindspace.repository.TimeCellRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Reservation;
 import com.example.mindspace.model.TimeCell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service

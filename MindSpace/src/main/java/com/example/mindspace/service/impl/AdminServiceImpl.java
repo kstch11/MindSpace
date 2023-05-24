@@ -1,11 +1,9 @@
 package com.example.mindspace.service.impl;
 
-import com.example.mindspace.dao.AdminRepository;
-import com.example.mindspace.dao.TherapistRepository;
+import com.example.mindspace.repository.AdminRepository;
+import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Admin;
-import com.example.mindspace.model.Therapist;
-import com.example.mindspace.service.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class AdminServiceImpl {
 
     public void approveTherapist(Integer therapistId) {
         var therapist = therapistRepository.findById(therapistId)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
 
         therapist.setApproved(true);
         therapistRepository.save(therapist);

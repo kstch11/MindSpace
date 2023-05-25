@@ -106,6 +106,8 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
+
+
 export function FeaturesCards() {
     const { classes, theme } = useStyles();
     const features = mockdata.map((feature) => (
@@ -120,6 +122,8 @@ export function FeaturesCards() {
             </Text>
         </Card>
     ));
+
+
 
     return (
         <Container size="lg" py="xl">

@@ -9,9 +9,50 @@ import {StepQuestionnaire} from "./client-components/StepQuestionnaire";
 import {ReservationTable} from "./therapist-components/ListOfReservations";
 import {ClientsTable} from "./therapist-components/ListOfClients";
 import {ClientNavbar} from "./client-components/ClientProfile";
-import {ClientData} from "./client-components/ClientData";
+import {Button} from "semantic-ui-react";
+
+// let deferredPrompt;
+//
+// window.addEventListener('preinstallation', (event) => {
+//     event.preventDefault();
+//     deferredPrompt = event;
+//     // Show a custom UI element or button to trigger the installation prompt
+// });
+//
+// function showInstallPrompt() {
+//     if (deferredPrompt) {
+//         deferredPrompt.prompt();
+//         deferredPrompt.userChoice.then((choiceResult) => {
+//             if (choiceResult.outcome === 'accepted') {
+//                 console.log('User accepted the installation prompt');
+//             } else {
+//                 console.log('User dismissed the installation prompt');
+//             }
+//             deferredPrompt = null;
+//         });
+//     }
+// }
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch((error) => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
 
 function App() {
+    // const showInstallPrompt = () => {
+    //     if (window.showInstallPrompt) {
+    //         window.showInstallPrompt();
+    //     }
+    // }
+
     return (
         <React.Fragment>
             <BrowserRouter>
@@ -34,7 +75,6 @@ function App() {
                         {name: "Selina", surname: "Kadyrova", phoneNumber: "111111111", email: "ffffff@fff.ff", id: "2"},
                         {name: "Selina", surname: "Kadyrova", phoneNumber: "111111111", email: "ffffff@fff.ff", id: "3"}
                     ]}/>} />
-                    <Route path="/clientDataProfile" element={<ClientData {...ClientData.id = 3} />} />
                     <Route path="/clientProfile" element={<ClientNavbar/>} />
                 </Routes>
                 <Footer links={[
@@ -44,10 +84,11 @@ function App() {
                     { link: "https://example.com/contact", label: "Contact" },
                 ]} />
             </BrowserRouter>
-
         </React.Fragment>
     )
 }
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);

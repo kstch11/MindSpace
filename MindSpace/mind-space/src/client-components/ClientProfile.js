@@ -86,7 +86,7 @@ const contentProps = [
     {
         label: "Personal data",
         order: 1,
-        component: <ClientData {...ClientData.id = 3} />,
+        component: <ClientData id={3} />,
     },
     {
         label: "Session",

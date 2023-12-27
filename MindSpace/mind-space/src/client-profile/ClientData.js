@@ -4,21 +4,22 @@ import axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
     paper: {
-        padding: theme.spacing.md,
-        width: 1300,
-        margin: '0 auto',
-        [theme.fn.smallerThan('lg')]: {
-            width: 800,
-        },
-        [theme.fn.smallerThan('md')]: {
-            width: 600,
-        },
-        [theme.fn.smallerThan('sm')]: {
-            width: 400,
-        },
-        [theme.fn.smallerThan('xs')]: {
-            width: 300,
-        },
+        maxWidth: rem(900),
+        // padding: theme.spacing.md,
+        // width: 1300,
+        // margin: '0 auto',
+        // [theme.fn.smallerThan('lg')]: {
+        //     width: 800,
+        // },
+        // [theme.fn.smallerThan('md')]: {
+        //     width: 600,
+        // },
+        // [theme.fn.smallerThan('sm')]: {
+        //     width: 400,
+        // },
+        // [theme.fn.smallerThan('xs')]: {
+        //     width: 300,
+        // },
     },
 
     title: {
@@ -110,7 +111,7 @@ export function ClientData({id} : { id : number }) {
     };
 
     return (
-        <Container className={classes.paper}>
+        <div className={classes.paper}>
             <div>
                 <Title order={2} weight={700} className={classes.title}>
                     Personal Information
@@ -179,6 +180,6 @@ export function ClientData({id} : { id : number }) {
                 </form>
             </div>
             <Button className={classes.button}>Save</Button>
-        </Container>
+        </div>
     );
 }

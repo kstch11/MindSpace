@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import {HeaderResponsive} from "./parts/Header";
-import {MainPage} from "./mainPage/MainPage";
-import {FeaturesCards} from "./mainPage/SecondSection"
+import {MainPage} from "./common-pages/main-page/MainPage";
+import {FeaturesCards} from "./common-pages/main-page/SecondSection"
 import {Footer} from "./parts/Footer";
-import {AuthenticationForm} from "./client-components/autentication/Autentication";
-import {StepQuestionnaire} from "./client-components/StepQuestionnaire";
+import {AuthenticationForm} from "./client-profile/autentication/Autentication";
+import {StepQuestionnaire} from "./client-profile/StepQuestionnaire";
 import App  from "./App"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

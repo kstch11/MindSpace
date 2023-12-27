@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {Stepper, Button, Group, TextInput, PasswordInput, Code, createStyles, rem, Center} from '@mantine/core';
-import { useForm } from '@mantine/form';
+import {useForm} from '@mantine/form';
 import Questionnaire from "./Questionnaire";
 
 const useStyles = createStyles((theme) => ({
@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
 
 export function StepQuestionnaire() {
     const [active, setActive] = useState(0);
-    const { classes } = useStyles();
+    const {classes} = useStyles();
 
     const form = useForm({
         initialValues: {
@@ -27,14 +27,12 @@ export function StepQuestionnaire() {
             if (active === 0) {
                 return {
                     name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
-                    phoneNumber: (val) => (/^\d{7,16}$/.test(val) ? null : 'Invalid phone number'),
+                    // phoneNumber: (val) => (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(val) ? null : 'Invalid phone number'),
                 }
             }
 
             if (active === 1) {
-                return {
-
-                };
+                return {};
             }
 
             return {};
@@ -68,11 +66,12 @@ export function StepQuestionnaire() {
                     <Stepper.Step label="First step" description="Personal information">
                         <TextInput required label="Name" placeholder="Name" {...form.getInputProps('name')} />
                         <TextInput required label="Surname" placeholder="Surname" {...form.getInputProps('surname')} />
-                        <TextInput required label="Phone number" placeholder="Phone number" {...form.getInputProps('phoneNumber')} />
+                        <TextInput required label="Phone number"
+                                   placeholder="Phone number" {...form.getInputProps('phoneNumber')} />
                     </Stepper.Step>
 
                     <Stepper.Step label="Second step" description="How do you feel?">
-                        <Questionnaire onDataCollected={handleDataFromChild} />
+                        <Questionnaire onDataCollected={handleDataFromChild}/>
                     </Stepper.Step>
 
                     <Stepper.Step label="Final step" description="Choose a therapist">

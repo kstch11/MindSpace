@@ -8,7 +8,7 @@ import {
   Text,
   rem, MantineProvider, Divider,
 } from '@mantine/core';
-import image from '../assets/main.jpg';
+import image from '../../assets/main.jpg';
 import {FeaturesCards} from "./SecondSection"
 
 const useStyles = createStyles((theme) => ({
@@ -23,7 +23,7 @@ const useStyles = createStyles((theme) => ({
     maxWidth: rem(400),
     marginRight: `calc(${theme.spacing.xl} * 4)`,
 
-    [theme.fn.smallerThan('md')]: {
+    [theme.fn.smallerThan('sm')]: {
       maxWidth: '100%',
       marginRight: 0,
     },
@@ -49,7 +49,7 @@ const useStyles = createStyles((theme) => ({
 
   image: {
     flex: 1,
-    [theme.fn.smallerThan('md')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },

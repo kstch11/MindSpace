@@ -1,65 +1,26 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import React from "react";
-import ReactDOM from "react-dom/client";
 import {HeaderResponsive} from "./parts/Header";
 import {Footer} from "./parts/Footer";
-import {MainPage} from "./mainPage/MainPage";
-import {AuthenticationForm} from "./client-components/autentication/Autentication";
-import {StepQuestionnaire} from "./client-components/StepQuestionnaire";
-import {ReservationTable} from "./therapist-components/ListOfReservations";
-import {ClientsTable} from "./therapist-components/ListOfClients";
-import {ClientNavbar} from "./client-components/ClientProfile";
-import {Button} from "semantic-ui-react";
-
-// let deferredPrompt;
-//
-// window.addEventListener('preinstallation', (event) => {
-//     event.preventDefault();
-//     deferredPrompt = event;
-//     // Show a custom UI element or button to trigger the installation prompt
-// });
-//
-// function showInstallPrompt() {
-//     if (deferredPrompt) {
-//         deferredPrompt.prompt();
-//         deferredPrompt.userChoice.then((choiceResult) => {
-//             if (choiceResult.outcome === 'accepted') {
-//                 console.log('User accepted the installation prompt');
-//             } else {
-//                 console.log('User dismissed the installation prompt');
-//             }
-//             deferredPrompt = null;
-//         });
-//     }
-// }
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then((registration) => {
-                console.log('Service Worker registered:', registration);
-            })
-            .catch((error) => {
-                console.log('Service Worker registration failed:', error);
-            });
-    });
-}
-
+import {MainPage} from "./common-pages/main-page/MainPage";
+import {AuthenticationForm} from "./client-profile/autentication/Autentication";
+import {StepQuestionnaire} from "./client-profile/StepQuestionnaire";
+import {ReservationTable} from "./therapist-profile/ListOfReservations";
+import {ClientsTable} from "./therapist-profile/ListOfClients";
+import {ClientNavbar} from "./client-profile/ClientProfile";
+import {TherapistNavbar} from "./therapist-profile/TherapistProfile";
+import {TherapistMainPage} from "./common-pages/therapist-application/TherapistMainPage";
+import {TherapistsList} from "./common-pages/therapists-list/TherapistsList";
+import {ApplicationStepper} from "./common-pages/therapist-application/ApplicationStepper";
 
 function App() {
-    // const showInstallPrompt = () => {
-    //     if (window.showInstallPrompt) {
-    //         window.showInstallPrompt();
-    //     }
-    // }
-
     return (
         <React.Fragment>
             <BrowserRouter>
                 <HeaderResponsive links={[
                     { link: '', label: 'Home' },
                     { link: '', label: 'Our therapists' },
-                    { link: '', label: 'For therapists' },
+                    { link: '/forTherapists', label: 'For therapists' },
                     { link: '/login', label: 'Log in' },
                     { link: '', label: 'Find a therapist' },
                 ]}></HeaderResponsive>
@@ -76,6 +37,10 @@ function App() {
                         {name: "Selina", surname: "Kadyrova", phoneNumber: "111111111", email: "ffffff@fff.ff", id: "3"}
                     ]}/>} />
                     <Route path="/clientProfile" element={<ClientNavbar/>} />
+                    <Route path="/therapistProfile" element={<TherapistNavbar />} />
+                    <Route path="/forTherapists" element={<TherapistMainPage />} />
+                    <Route path="/therapistsList" element={<TherapistsList />} />
+                    <Route path="/therapistApplication" element={<ApplicationStepper/>} />
                 </Routes>
                 <Footer links={[
                     { link: "https://example.com/home", label: "Home" },
@@ -88,8 +53,4 @@ function App() {
     )
 }
 
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
 export default App;

@@ -1,9 +1,6 @@
-import {createStyles, Box, Text, Group, rem, Container} from '@mantine/core';
-import { IconListSearch } from '@tabler/icons-react';
+import {Box, Center, Group, Text, createStyles, rem} from "@mantine/core";
+import {IconListSearch} from "@tabler/icons-react";
 import { useState} from 'react';
-import {ClientData} from "./ClientData";
-import {ClientSession} from "./ClientSession";
-import {ChangeTherapist} from "./ChangeTherapist";
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -40,67 +37,42 @@ const useStyles = createStyles((theme) => ({
 
     content: {
         display: 'flex',
-        alignItems: 'flex-start',
-        width: '100%',
-        position: 'relative',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         [theme.fn.smallerThan('sm')]: {
+            maxWidth: '100%',
             flexDirection: 'column',
-            alignItems: 'flex-start',
+            marginBottom: rem(30),
         }
     },
 
     navbar: {
-        flex: '1',
-        width: '15%',
-        marginLeft: rem(80),
+        width: '25%',
+        marginRight: rem(80),
         top: 0,
-        [theme.fn.largerThan('xl')]: {
-            marginLeft: rem(150),
-        },
-        [theme.fn.smallerThan('lg')]: {
-            width: '20%',
-        },
+
         [theme.fn.smallerThan('sm')]: {
             width: '100%',
             marginLeft: rem(20),
-            marginBottom: theme.spacing.xs,
+            marginRight: rem(20),
+            marginBottom: theme.spacing.md,
         },
     },
 
     component: {
-        flex: '1',
-        marginLeft: rem(80),
-        maxWidth: '100%',
-        [theme.fn.largerThan('xl')]: {
-            width: '190%',
-        },
-        [theme.fn.smallerThan('lg')]: {
-            marginLeft: rem(20),
-            width: '80%'
-        }
+        // marginLeft: rem(80),
+        // maxWidth: rem(800),
+        // [theme.fn.largerThan('xl')]: {
+        //     width: '190%',
+        // },
+        // [theme.fn.smallerThan('lg')]: {
+        //     marginLeft: rem(20),
+        //     width: '80%'
+        // }
     }
 }));
 
-
-const contentProps = [
-    {
-        label: "Personal data",
-        order: 1,
-        component: <ClientData id={3} />,
-    },
-    {
-        label: "Session",
-        order: 1,
-        component: <ClientSession />,
-    },
-    {
-        label: "Therapist",
-        order: 1,
-        component: <ChangeTherapist />,
-    },
-]
-
-export function ClientNavbar() {
+export function Navbar({contentProps}) {
     const { classes, cx } = useStyles();
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -131,18 +103,20 @@ export function ClientNavbar() {
     };
 
     return (
-        <div className={cx(classes.content)}>
-            <div className={cx(classes.navbar)}>
-                <Group mb="md">
-                    <IconListSearch size="1.1rem" stroke={1.5} />
-                    <Text>Profile</Text>
-                </Group>
-                {renderLabels()}
-            </div>
-            <div>
-                {renderActiveComponent()}
-            </div>
+        <Center>
+            <div className={cx(classes.content)}>
+                <div className={cx(classes.navbar)}>
+                    <Group mb="md">
+                        <IconListSearch size="1.1rem" stroke={1.5} />
+                        <Text>Profile</Text>
+                    </Group>
+                    {renderLabels()}
+                </div>
+                <div className={classes.profile}>
+                    {renderActiveComponent()}
+                </div>
 
-        </div>
+            </div>
+        </Center>
     );
 }

@@ -145,31 +145,31 @@ public class TherapistServiceImpl {
                 .toList();
     }
 
-    public Therapist findByName(String name) throws EntityNotFoundException {
-        Therapist therapist = therapistRepository.findByName(name);
-        if (therapist == null) {
-            throw new EntityNotFoundException("ty loh");
-        } else {
-            return therapist;
-        }
-    }
-
-    public Therapist findBySurname(String surname) throws EntityNotFoundException {
-        Therapist therapist = therapistRepository.findBySurname(surname);
-        if (therapist == null) {
-            throw new EntityNotFoundException("ty loh");
-        } else {
-            return therapist;
-        }
-    }
+//    public Therapist findByName(String name) throws EntityNotFoundException {
+//        Therapist therapist = therapistRepository.findByName(name);
+//        if (therapist == null) {
+//            throw new EntityNotFoundException("ty loh");
+//        } else {
+//            return therapist;
+//        }
+//    }
+//
+//    public Therapist findBySurname(String surname) throws EntityNotFoundException {
+//        Therapist therapist = therapistRepository.findBySurname(surname);
+//        if (therapist == null) {
+//            throw new EntityNotFoundException("ty loh");
+//        } else {
+//            return therapist;
+//        }
+//    }
 
     public List<Theme> findAllThemes(Therapist therapist) {
         return therapist.getThemes();
     }
 
-    public void createTherapist(Therapist therapist) {
-        therapistRepository.save(therapist);
-    }
+//    public void createTherapist(Therapist therapist) {
+//        therapistRepository.save(therapist);
+//    }
 
     public void deleteTherapist(Therapist therapist) throws EntityNotFoundException {
         if (therapist == null) {
@@ -189,5 +189,9 @@ public class TherapistServiceImpl {
     private Therapist findById(Integer id) {
         return therapistRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Therapist with id " + id + "does not exist"));
+    }
+
+    public List<Reservation> getHistory(Therapist therapist) {
+        return null;
     }
 }

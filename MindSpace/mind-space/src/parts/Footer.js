@@ -3,7 +3,7 @@ import logo from "../assets/mental-health.svg"
 
 const useStyles = createStyles((theme) => ({
     footer: {
-        marginTop: rem(60),
+        marginTop: rem(20),
         borderTop: `${rem(1)} solid ${
             theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
         }`,

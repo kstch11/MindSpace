@@ -45,7 +45,18 @@ interface TableSelectionProps {
     data: { name: string; surname: string; phoneNumber: string; email: string; id: string }[];
 }
 
-export function ClientsTable({ data }: TableSelectionProps) {
+const data = [
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 1},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 2},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 3},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 4},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 5},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 6},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 7},
+    {name: "qwerty", surname: "qwerty", phoneNumber: "123456789", email: "fffff@fff.ff", id: 8},
+]
+
+export function ClientsTable() {
     const { classes, theme, cx } = useStyles();
     const [selectedId, setSelectedId] = useState('');
 

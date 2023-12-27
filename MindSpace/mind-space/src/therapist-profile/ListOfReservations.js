@@ -46,7 +46,17 @@ interface TableSelectionProps {
     data: { dateTime: string; client: string; email: string; reservationId: string }[];
 }
 
-export function ReservationTable({ data }: TableSelectionProps) {
+const data = [
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "1"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "2"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "3"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "4"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "5"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "6"},
+    {dateTime: "9 may 9:00", client: "qwerty", email: "fffff@fff.ff", reservationId: "7"},
+]
+
+export function ReservationTable() {
     const { classes, theme } = useStyles();
 
     const [expandedRows, setExpandedRows] = useState([]);

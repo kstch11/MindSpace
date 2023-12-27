@@ -11,12 +11,12 @@ import {
     Button,
     Center,
 } from '@mantine/core';
-import img1 from "../assets/1.jpeg";
-import img2 from "../assets/2.jpg";
-import img3 from "../assets/3.jpg";
-import img4 from "../assets/4.jpg";
-import img5 from "../assets/5.jpg";
-import img6 from "../assets/6.jpeg";
+import img1 from "../../assets/1.jpeg";
+import img2 from "../../assets/2.jpg";
+import img3 from "../../assets/3.jpg";
+import img4 from "../../assets/4.jpg";
+import img5 from "../../assets/5.jpg";
+import img6 from "../../assets/6.jpeg";
 
 const mockdata = [
     {
@@ -137,7 +137,7 @@ export function FeaturesCards() {
                 Regular sessions with a therapist improve the quality of life
             </Title>
 
-            <SimpleGrid cols={3} spacing="xl" mt={50} breakpoints={[{ maxWidth: 'md', cols: 1 }]}>
+            <SimpleGrid cols={3} spacing="xl" mt={50} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
                 {features}
             </SimpleGrid>
             <Center>

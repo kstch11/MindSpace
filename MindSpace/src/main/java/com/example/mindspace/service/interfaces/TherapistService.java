@@ -26,4 +26,6 @@ public interface TherapistService {
     public List<Theme> findAllThemes(Therapist therapist);
 
     public void addNewTheme(Theme theme, Therapist therapist);
+
+    public List<Reservation> getHistory(Integer id);
 }

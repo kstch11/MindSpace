@@ -148,19 +148,21 @@ public class ClientServiceImpl {
         clientRepository.save(client);
     }
 
-    public void createClient(Client client) {
-        clientRepository.save(client);
-    }
+//    public void createClient(Client client) {
+//        clientRepository.save(client);
+//    }
 
-    public void deleteClient(Client client) {
-        if (client == null) {
-            throw new EntityNotFoundException("");
-        } else {
-            clientRepository.delete(client);
-        }
-    }
+//    public void deleteClient(Client client) {
+//        if (client == null) {
+//            throw new EntityNotFoundException("");
+//        } else {
+//            clientRepository.delete(client);
+//        }
+//    }
 
-    public Client findById(Integer id) {
+    private Client findById(Integer id) {
         return clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }
+
+
 }

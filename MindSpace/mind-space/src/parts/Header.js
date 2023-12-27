@@ -75,7 +75,6 @@ const useStyles = createStyles((theme) => ({
         textDecoration: 'none',
         color: theme.colorScheme === 'dark' ? theme.colors.darkBlue : theme.colors.gray[7],
         fontSize: theme.fontSizes.sm,
-        fontFamily: 'BlinkMacSystemFont',
         fontWeight: 500,
 
         '&:hover': {
@@ -127,9 +126,7 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
     ));
 
     return (
-        <MantineProvider theme={{
-            headings:{fontFamily: 'BlinkMacSystemFont'},
-        }}>
+        <MantineProvider>
             <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
                 <Container className={classes.header}>
                     <div className={classes.name}>

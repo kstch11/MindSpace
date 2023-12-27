@@ -1,10 +1,15 @@
 package com.example.mindspace.service.impl;
 
 import com.example.mindspace.api.ClientResponse;
+import com.example.mindspace.api.CreateReviewRequest;
+import com.example.mindspace.api.CreateReviewResponse;
 import com.example.mindspace.api.ReservationResponse;
+import com.example.mindspace.api.ReviewResponse;
 import com.example.mindspace.api.ScheduleResponse;
 import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.repository.ClientRepository;
+import com.example.mindspace.repository.ReviewRepository;
 import com.example.mindspace.repository.ThemeRepository;
 import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
@@ -21,6 +26,8 @@ public class TherapistServiceImpl {
 
     private final TherapistRepository therapistRepository;
     private final ThemeRepository themeRepository;
+    private final ClientRepository clientRepository;
+    private final ReviewRepository reviewRepository;
 
     public TherapistResponse findTherapist(Integer id) {
         Therapist therapist = findById(id);
@@ -118,6 +125,24 @@ public class TherapistServiceImpl {
         }
 
         therapistRepository.save(therapist);
+    }
+
+    public CreateReviewResponse createReview(Integer therapistId, CreateReviewRequest request) {
+        var therapist = findById(therapistId);
+        var client = clientRepository.findById(request.author())
+                .orElseThrow(() -> new EntityNotFoundException("No such client"));
+
+        var review = new Review(request.text(), client, therapist);
+        Review save = reviewRepository.save(review);
+        return new CreateReviewResponse(save.getId());
+    }
+
+    public List<ReviewResponse> getAllReviews(Integer therapistId) {
+        var therapist = findById(therapistId);
+
+        return reviewRepository.findReviewsByRecipient(therapist).stream()
+                .map(review -> new ReviewResponse(review.getAuthor().getId(), therapist.getId(), review.getText()))
+                .toList();
     }
 
     public Therapist findByName(String name) throws EntityNotFoundException {

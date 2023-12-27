@@ -5,10 +5,14 @@ import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.model.Reservation;
+import com.example.mindspace.model.TimeCell;
 import com.example.mindspace.repository.ClientRepository;
+import com.example.mindspace.repository.ReservationRepository;
 import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Client;
+import com.example.mindspace.repository.TimeCellRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class ClientServiceImpl {
 
     private final ClientRepository clientRepository;
     private final TherapistRepository therapistRepository;
+    private final ReservationRepository reservationRepository;
+    private final TimeCellRepository timeCellRepository;
 
     /**
      * Cancels the therapist for a client.
@@ -33,6 +39,16 @@ public class ClientServiceImpl {
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
 
         client.setTherapist(null);
+        client.getReservations().forEach(reservation -> {
+            reservation.setClient(null);
+            reservation.setTherapist(null);
+            TimeCell timeCell = reservation.getTimeCell();
+            timeCell.setReservation(null);
+            timeCellRepository.save(timeCell);
+            reservation.setTimeCell(null);
+            reservationRepository.save(reservation);
+        });
+        client.setReservations(null);
         clientRepository.save(client);
     }
 

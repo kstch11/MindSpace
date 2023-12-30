@@ -4,22 +4,15 @@ import axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
     paper: {
-        maxWidth: rem(900),
-        // padding: theme.spacing.md,
-        // width: 1300,
-        // margin: '0 auto',
-        // [theme.fn.smallerThan('lg')]: {
-        //     width: 800,
-        // },
-        // [theme.fn.smallerThan('md')]: {
-        //     width: 600,
-        // },
-        // [theme.fn.smallerThan('sm')]: {
-        //     width: 400,
-        // },
-        // [theme.fn.smallerThan('xs')]: {
-        //     width: 300,
-        // },
+        width: 720,
+        marginBottom: '15%',
+        [theme.fn.smallerThan('md')]: {
+            width: 600,
+        },
+        [theme.fn.smallerThan('sm')]: {
+            width: '100%',
+            marginBottom: 0,
+        },
     },
 
     title: {
@@ -42,7 +35,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     textInput: {
-      marginRight: '5%',
+        marginRight: '5%',
     },
 
     divider: {
@@ -57,7 +50,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function ClientData({id} : { id : number }) {
-    const theme = useMantineTheme();
     const { classes } = useStyles();
     const [formData, setFormData] = useState({});
     const [therapistData, setTherapistData] = useState({});
@@ -111,7 +103,7 @@ export function ClientData({id} : { id : number }) {
     };
 
     return (
-        <div className={classes.paper}>
+        <Container className={classes.paper}>
             <div>
                 <Title order={2} weight={700} className={classes.title}>
                     Personal Information
@@ -180,6 +172,6 @@ export function ClientData({id} : { id : number }) {
                 </form>
             </div>
             <Button className={classes.button}>Save</Button>
-        </div>
+        </Container>
     );
 }

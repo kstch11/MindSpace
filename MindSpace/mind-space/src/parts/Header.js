@@ -19,6 +19,10 @@ const useStyles = createStyles((theme) => ({
     root: {
         position: 'relative',
         zIndex: 1,
+        marginBottom: 60,
+        [theme.fn.smallerThan('sm')]: {
+            marginBottom: 20,
+        }
     },
 
     dropdown: {
@@ -127,7 +131,7 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
 
     return (
         <MantineProvider>
-            <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
+            <Header height={HEADER_HEIGHT} className={classes.root}>
                 <Container className={classes.header}>
                     <div className={classes.name}>
                         <Image src={logo} alt={"logo"} className={classes.img} />

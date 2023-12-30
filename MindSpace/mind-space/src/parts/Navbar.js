@@ -1,4 +1,4 @@
-import {Box, Center, Group, Text, createStyles, rem} from "@mantine/core";
+import {Box, Center, Group, Text, createStyles, rem, Tabs} from "@mantine/core";
 import {IconListSearch} from "@tabler/icons-react";
 import { useState} from 'react';
 
@@ -57,18 +57,17 @@ const useStyles = createStyles((theme) => ({
             marginRight: rem(20),
             marginBottom: theme.spacing.md,
         },
+        [theme.fn.smallerThan('sm')]: {
+            display: 'none',
+        },
     },
 
-    component: {
-        // marginLeft: rem(80),
-        // maxWidth: rem(800),
-        // [theme.fn.largerThan('xl')]: {
-        //     width: '190%',
-        // },
-        // [theme.fn.smallerThan('lg')]: {
-        //     marginLeft: rem(20),
-        //     width: '80%'
-        // }
+    tabs: {
+        top: 0,
+        marginBottom: rem(30),
+        [theme.fn.largerThan('sm')]: {
+            display: 'none',
+        },
     }
 }));
 
@@ -102,6 +101,8 @@ export function Navbar({contentProps}) {
         ));
     };
 
+
+
     return (
         <Center>
             <div className={cx(classes.content)}>
@@ -112,10 +113,29 @@ export function Navbar({contentProps}) {
                     </Group>
                     {renderLabels()}
                 </div>
+
+                <div className={classes.tabs}>
+                    <Tabs variant="outline" radius="md" defaultValue="personalData">
+                        <Tabs.List>
+                            {contentProps.map(tab => (
+                                <Tabs.Tab key={tab.value} value={tab.value} icon={tab.icon}>
+                                    {tab.label}
+                                </Tabs.Tab>
+                            ))}
+                        </Tabs.List>
+
+                        {contentProps.map(tab => (
+                            <Tabs.Panel key={tab.value} value={tab.value} pt="xs">
+                                {tab.content}
+                            </Tabs.Panel>
+                        ))}
+                    </Tabs>
+
+                </div>
+
                 <div className={classes.profile}>
                     {renderActiveComponent()}
                 </div>
-
             </div>
         </Center>
     );

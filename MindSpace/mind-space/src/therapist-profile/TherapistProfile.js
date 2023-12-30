@@ -2,7 +2,7 @@ import {TherapistData} from "./TherapistData";
 import {ClientsTable} from "./ListOfClients";
 import {ReservationTable} from "./ListOfReservations";
 import {Schedule} from "./Schedule";
-import {Navbar} from "../common-parts/Navbar";
+import {Navbar} from "../parts/Navbar";
 
 const contentProps = [
     {

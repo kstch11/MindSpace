@@ -14,8 +14,15 @@ import {
 
 const useStyles = createStyles((theme) => ({
     container: {
-        maxWidth: 1500,
-        marginRight: '15%'
+        width: 720,
+        marginRight: '15%',
+        [theme.fn.smallerThan('md')]: {
+            width: 600,
+        },
+        [theme.fn.smallerThan('sm')]: {
+            width: '100%',
+            marginBottom: 0,
+        },
     },
     profileContainer: {
         display: 'flex',

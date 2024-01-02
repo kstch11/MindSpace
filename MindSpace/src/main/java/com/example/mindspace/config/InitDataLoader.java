@@ -115,8 +115,35 @@ public class InitDataLoader {
 
     private List<Therapist> loadTherapists(List<Theme> themes) {
         var therapist1 = new Therapist(
-                List.of(), List.of(), List.of(themes.get(0), themes.get(1)), null, true);
-        var therapist2 = new Therapist(List.of(), List.of(), List.of(themes.get(2)), null, true);
+                List.of(),
+                List.of(),
+                List.of(themes.get(0), themes.get(1)),
+                null,
+                null,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                List.of(),
+                true
+        );
+        var therapist2 = new Therapist(
+                List.of(),
+                List.of(),
+                List.of(themes.get(0), themes.get(1)),
+                null,
+                null,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                List.of(),
+                true
+        );
 
         return therapistRepository.saveAll(Arrays.asList(therapist1, therapist2));
     }

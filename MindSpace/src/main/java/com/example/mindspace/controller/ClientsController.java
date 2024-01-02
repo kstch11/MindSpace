@@ -4,10 +4,13 @@ import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.security.CurrentUser;
+import com.example.mindspace.security.UserPrincipal;
 import com.example.mindspace.service.impl.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +38,14 @@ public class ClientsController {
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponse> getDetails(@PathVariable Integer id) {
         return new ResponseEntity<>(clientService.getClientDetails(id), HttpStatus.OK);
+    }
+
+    /**
+     * Gets current client
+     */
+    @GetMapping("/profile")
+    public ResponseEntity<ClientResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(clientService.getClientDetails(userPrincipal.getId()), HttpStatus.OK);
     }
 
     /**

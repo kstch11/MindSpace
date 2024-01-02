@@ -10,9 +10,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "admins")
-@NoArgsConstructor
-//@AllArgsConstructor
 @Getter
 @Setter
 public class Admin extends User {
+
+    public Admin() {
+        setUserType(UserType.ADMIN);
+    }
+
 }

@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {createStyles, Container, Text, useMantineTheme, Title, Divider, rem, Button, TextInput} from '@mantine/core';
 import axios from 'axios';
+import {useSelector} from "react-redux";
+import {useQuery} from "@tanstack/react-query";
+import {fetchClientProfile} from "../api/client-api";
 
 const useStyles = createStyles((theme) => ({
     paper: {
@@ -49,32 +52,33 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function ClientData({id} : { id : number }) {
-    const { classes } = useStyles();
-    const [formData, setFormData] = useState({});
+export function ClientData({id}: { id : number }) {
+    const {classes} = useStyles();
+    const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: ''});
     const [therapistData, setTherapistData] = useState({});
+    const accessToken = useSelector(state => state.currentUser.accessToken);
 
-
-    const getClientData = async () => {
-        try {
-            const response = await axios.get(`https://localhost:8090/clients/${id}`);
-            return response.data;
-        } catch (err) {
-            console.error(err);
-            return null;
+    const {
+        isPending,
+        isError,
+        data,
+        isFetched,
+        error
+    } = useQuery({
+            queryKey: ['clientProfile'], queryFn: () => fetchClientProfile(id, accessToken)
         }
-    };
+    )
 
     useEffect(() => {
-        const fetchClientData = async () => {
-            const fetchedClient = await getClientData();
-
-            if (fetchedClient) {
-                setFormData(fetchedClient);
-            }
+        if (isFetched) {
+            setFormData({
+                name: data.name,
+                surname: data.surname,
+                phoneNumber: data.phone,
+                email: data.email
+            })
         }
-        fetchClientData();
-    }, [id]);
+    }, [data, isFetched]);
 
     const getTherapist = async () => {
         try {
@@ -97,10 +101,18 @@ export function ClientData({id} : { id : number }) {
     }, [])
 
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
+
+    // add spinner and error
+    if (isPending) {
+        return <div>Loading</div>
+    }
+
+    if (isError) {
+        return <div>Error!</div>
+    }
 
     return (
         <Container className={classes.paper}>

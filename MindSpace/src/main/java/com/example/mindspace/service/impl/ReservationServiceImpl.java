@@ -88,14 +88,25 @@ public class ReservationServiceImpl {
                         client.getName(),
                         client.getSurname(),
                         client.getPhoneNumber(),
-                        client.getEmail()
+                        client.getEmail(),
+                        client.isRegistrationFinished(),
+                        false
                 ),
                 new TherapistResponse(
                         therapist.getId(),
                         therapist.getName(),
                         therapist.getSurname(),
                         therapist.getPhoneNumber(),
-                        therapist.getEmail()
+                        therapist.getEmail(),
+                        therapist.isRegistrationFinished(),
+                        therapist.getDescription(),
+                        therapist.getEducation(),
+                        therapist.getLanguages(),
+                        therapist.getPersonalTherapy(),
+                        therapist.getPhoto(),
+                        therapist.getTherapeuticCommunity(),
+                        therapist.isApproved(),
+                        true
                 )
         );
     }

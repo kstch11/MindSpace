@@ -11,11 +11,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "clients")
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Client extends User {
+
+    public Client() {
+        setUserType(UserType.CLIENT);
+    }
 
     @OneToMany(mappedBy = "client")
     private List<Reservation> reservations;

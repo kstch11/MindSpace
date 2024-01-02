@@ -65,7 +65,9 @@ public class ClientServiceImpl {
                 client.getName(),
                 client.getSurname(),
                 client.getPhoneNumber(),
-                client.getEmail()
+                client.getEmail(),
+                client.isRegistrationFinished(),
+                false
         );
     }
 
@@ -73,7 +75,7 @@ public class ClientServiceImpl {
      * Sets a new therapist for a client.
      *
      * @param clientId the ID of the client
-     * @param request the ClientTherapistRelationRequest object containing the therapist ID
+     * @param request  the ClientTherapistRelationRequest object containing the therapist ID
      * @throws RuntimeException if the client or therapist is not found
      */
     public void setNewTherapist(Integer clientId, ClientTherapistRelationRequest request) {
@@ -109,14 +111,25 @@ public class ClientServiceImpl {
                                     client.getName(),
                                     client.getSurname(),
                                     client.getPhoneNumber(),
-                                    client.getEmail()
+                                    client.getEmail(),
+                                    client.isRegistrationFinished(),
+                                    false
                             ),
                             new TherapistResponse(
                                     therapist.getId(),
                                     therapist.getName(),
                                     therapist.getSurname(),
                                     therapist.getPhoneNumber(),
-                                    therapist.getEmail()
+                                    therapist.getEmail(),
+                                    therapist.isRegistrationFinished(),
+                                    therapist.getDescription(),
+                                    therapist.getEducation(),
+                                    therapist.getLanguages(),
+                                    therapist.getPersonalTherapy(),
+                                    therapist.getPhoto(),
+                                    therapist.getTherapeuticCommunity(),
+                                    therapist.isApproved(),
+                                    true
                             )
                     );
                 })
@@ -126,7 +139,7 @@ public class ClientServiceImpl {
     /**
      * Updates a client
      *
-     * @param id client id
+     * @param id      client id
      * @param request request id
      */
     public void updateClient(Integer id, UserRequest request) {

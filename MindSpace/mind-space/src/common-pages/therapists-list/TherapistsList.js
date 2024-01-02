@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) =>({
     }
 }));
 
-export function TherapistsList({type}) {
+export function TherapistsList() {
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
     const [type, toggle] = useToggle(['all', 'client'])

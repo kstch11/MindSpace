@@ -27,6 +27,10 @@ export function AuthenticationForm(props: PaperProps) {
     const [type, toggle] = useToggle(['client', 'therapist']);
     const {classes} = useStyles();
 
+    const handleGoogleLogin = async () => {
+        window.location.href = 'http://localhost:8090/oauth2/authorize/google?role=THERAPIST&redirect_uri=http://localhost:3000/oauth2/redirect';
+    }
+
     return (
         <Center>
             <Paper className={classes.logform} radius="md" p="xl"  withBorder {...props}>
@@ -35,7 +39,7 @@ export function AuthenticationForm(props: PaperProps) {
                 </Text>
 
                 <Group grow mb="md" mt="md">
-                    <GoogleButton radius="xl">Google</GoogleButton>
+                    <GoogleButton onLoginClick={async () => await handleGoogleLogin()}>Google</GoogleButton>
                 </Group>
 
                 <Divider labelPosition="center" my="lg" />

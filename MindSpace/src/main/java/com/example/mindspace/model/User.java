@@ -29,5 +29,5 @@ public abstract class User extends AbstractEntity {
         CLIENT, THERAPIST, ADMIN;
     }
 
-
+    private boolean registrationFinished;
 }

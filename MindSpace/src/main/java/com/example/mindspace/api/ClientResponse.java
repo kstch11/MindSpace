@@ -6,5 +6,7 @@ public record ClientResponse(
         String name,
         String surname,
         String phone,
-        String email
-) { }
+        String email,
+        boolean finishedRegistration,
+        boolean isTherapist
+) implements UserResponse { }

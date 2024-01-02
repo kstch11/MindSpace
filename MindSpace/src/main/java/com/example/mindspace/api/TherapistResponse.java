@@ -5,6 +5,14 @@ public record TherapistResponse(
         String name,
         String surname,
         String phone,
-        String email
-) {
-}
+        String email,
+        boolean finishedRegistration,
+        String description,
+        String education,
+        String languages,
+        String personalTherapy,
+        String photo,
+        String therapeuticCommunity,
+        boolean approved,
+        boolean isTherapist
+) implements UserResponse { }

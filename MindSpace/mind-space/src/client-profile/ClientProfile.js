@@ -8,7 +8,7 @@ const contentProps = [
         label: "Personal data",
         order: 1,
         value: 'personalData',
-        component: <ClientData id={3} />,
+        component: <ClientData id={6} />,
     },
     {
         label: "Session",

@@ -1,5 +1,5 @@
 import React, {useState, useImperativeHandle, forwardRef} from 'react';
-import {Container, Text, Checkbox, createStyles, rem, SimpleGrid} from '@mantine/core';
+import {Container, Text, Checkbox, createStyles, rem, SimpleGrid, Radio} from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
     questionnaire: {
@@ -123,49 +123,82 @@ const Questionnaire = forwardRef(({ onDataCollected }, ref) => {
         getAnswers: () => Object.values(answers),
     }));
 
-    // useEffect(() => {
-    //     onDataCollected(Object.values(answers));
-    // }, [answers, onDataCollected]);
-
     return (
         <Container
             size="sm"
             className={classes.questionnaire}
         >
-            {questionnaireData.map((questionItem, index) => (
-                <div
-                    key={index}
-                    className={classes.question}
-                >
-                    <Text
-                        weight={500}
-                        className={classes.text}
+            {questionnaireData.map((questionItem, index) => {
+                if (index === 4 || index === 5) {
+                    return (<div
+                        key={index}
+                        className={classes.question}
                     >
-                        {questionItem.question}
-                    </Text>
-                    <Checkbox.Group
-                        value={answers[index]?.option || []}
-                        onChange={(value) => handleCheckboxChange(index, value)}
-                    >
-                        <SimpleGrid
-                            cols={2}
-                            spacing='xs'
-                            breakpoints={[
-                                {maxWidth: 'sm', cols: '1', spacing: 'xs'},
-                            ]}
+                        <Text
+                            weight={500}
+                            className={classes.text}
                         >
-                            {questionItem.options.map((option, optionIndex) => (
-                                <Checkbox
-                                    key={optionIndex}
-                                    value={option.value}
-                                    label={option.text}
-                                    className={classes.checkbox}
-                                />
-                            ))}
-                        </SimpleGrid>
-                    </Checkbox.Group>
-                </div>
-            ))}
+                            {questionItem.question}
+                        </Text>
+                        <Radio.Group
+                            value={answers[index]?.option || []}
+                            onChange={(value) => handleCheckboxChange(index, value)}
+                        >
+                            <SimpleGrid
+                                cols={2}
+                                spacing='xs'
+                                breakpoints={[
+                                    {maxWidth: 'sm', cols: '1', spacing: 'xs'},
+                                ]}
+                            >
+                                {questionItem.options.map((option, optionIndex) => (
+                                    <Radio
+                                        key={optionIndex}
+                                        value={option.value}
+                                        label={option.text}
+                                        className={classes.checkbox}
+                                    />
+                                ))}
+                            </SimpleGrid>
+                        </Radio.Group>
+                    </div>)
+                } else {
+                    return (
+                        <div
+                            key={index}
+                            className={classes.question}
+                        >
+                            <Text
+                                weight={500}
+                                className={classes.text}
+                            >
+                                {questionItem.question}
+                            </Text>
+                            <Checkbox.Group
+                                value={answers[index]?.option || []}
+                                onChange={(value) => handleCheckboxChange(index, value)}
+                            >
+                                <SimpleGrid
+                                    cols={2}
+                                    spacing='xs'
+                                    breakpoints={[
+                                        {maxWidth: 'sm', cols: '1', spacing: 'xs'},
+                                    ]}
+                                >
+                                    {questionItem.options.map((option, optionIndex) => (
+                                        <Checkbox
+                                            key={optionIndex}
+                                            value={option.value}
+                                            label={option.text}
+                                            className={classes.checkbox}
+                                        />
+                                    ))}
+                                </SimpleGrid>
+                            </Checkbox.Group>
+                        </div>
+                    )
+                }
+            })}
         </Container>
     );
 });

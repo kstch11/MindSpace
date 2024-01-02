@@ -3,6 +3,7 @@ import {TherapistCard} from "./TherapistCard";
 import {useState} from "react";
 import { IconSearch, IconVideo, IconUsers } from '@tabler/icons-react';
 import {InformationCard} from "./InformationCard";
+import {useToggle} from "@mantine/hooks";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -33,10 +34,10 @@ const useStyles = createStyles((theme) =>({
     }
 }));
 
-export function TherapistsList() {
+export function TherapistsList({type}) {
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
-
+    const [type, toggle] = useToggle(['all', 'client'])
     const users = [
         {
             avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
@@ -102,6 +103,7 @@ export function TherapistsList() {
         activePage * itemsPerPage
     );
 
+    const totalPages = Math.ceil(users.length / itemsPerPage);
 
     return(
         <div className={classes.inner}>
@@ -136,16 +138,18 @@ export function TherapistsList() {
                 </SimpleGrid>
 
                 <Center>
-                    <Pagination
-                        total={Math.ceil(users.length / itemsPerPage)}
-                        page={activePage}
-                        onChange={setActivePage}
-                        className={classes.pagination}
-                        color="blue"
-                        size="md"
-                        radius="md"
-                        withEdges
-                    />
+                    {totalPages > 1 && (
+                        <Pagination
+                            total={totalPages}
+                            page={activePage}
+                            onChange={setActivePage}
+                            className={classes.pagination}
+                            color="blue"
+                            size="md"
+                            radius="md"
+                            withEdges
+                        />
+                    )}
                 </Center>
             </div>
         </div>

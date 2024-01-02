@@ -69,6 +69,10 @@ export function TherapistCard({userData}) {
                 <Text  fz="sm">
                     {truncateText(userData.description, 297)}
                 </Text>
+                <Divider my="sm" />
+                <Text  fz="lg" fw={700}>
+                    50€/appointment
+                </Text>
 
                 <Button fullWidth mt="md">
                     More about therapist

@@ -2,6 +2,7 @@ import {useRef, useState} from 'react';
 import {Stepper, Button, Group, TextInput, Code, createStyles,  Center} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import Questionnaire from "./Questionnaire";
+import {TherapistsList} from "../therapists-list/TherapistsList";
 
 const useStyles = createStyles((theme) => ({
     questionnaire: {
@@ -81,20 +82,17 @@ export function StepQuestionnaire() {
                         <Questionnaire ref={questionnaireRef} onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
 
-                    <Stepper.Step label="Final step" description="Choose a therapist">
-                        <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />
-                        <TextInput
-                            mt="md"
-                            label="GitHub"
-                            placeholder="GitHub"
-                            {...form.getInputProps('github')}
-                        />
-                    </Stepper.Step>
+                    {/*<Stepper.Step label="Final step" description="Choose a therapist">*/}
+                    {/*    <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />*/}
+                    {/*    <TextInput*/}
+                    {/*        mt="md"*/}
+                    {/*        label="GitHub"*/}
+                    {/*        placeholder="GitHub"*/}
+                    {/*        {...form.getInputProps('github')}*/}
+                    {/*    />*/}
+                    {/*</Stepper.Step>*/}
                     <Stepper.Completed>
-                        Completed! Form values:
-                        <Code block mt="xl">
-                            {JSON.stringify(form.values, null, 2)}
-                        </Code>
+                        <TherapistsList toggleValue='client' />
                     </Stepper.Completed>
                 </Stepper>
 

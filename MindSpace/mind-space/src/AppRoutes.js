@@ -17,6 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import {useSelector} from "react-redux";
 import LogOut from "./common-pages/autentication/LogOut";
 import AuthWrapper from "./common-pages/autentication/AuthWrapper";
+import {Schedule} from "./therapist-profile/Schedule";
 
 export default function AppRoutes() {
     const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
@@ -31,10 +32,9 @@ export default function AppRoutes() {
                 <AuthWrapper>
                     <HeaderResponsive links={!isLoggedIn ? [
                         {link: '', label: 'Home'},
-                        {link: '', label: 'Our therapists'},
+                        {link: '/therapistsList', label: 'Our therapists'},
                         {link: '/forTherapists', label: 'For therapists'},
                         {link: '/login', label: 'Log in'},
-                        {link: '', label: 'Find a therapist'},
                     ] : [
                         {link: '/logout', label: 'Log out'},
                         {link: '/clientProfile', label: 'Profile'}
@@ -78,7 +78,8 @@ export default function AppRoutes() {
                         </Route>
                         <Route path="/therapistProfile" element={<TherapistNavbar/>}/>
                         <Route path="/forTherapists" element={<TherapistMainPage/>}/>
-                        <Route path="/therapistsList" element={<TherapistsList/>}/>
+                        <Route path="/therapistsList" element={<TherapistsList toggleValue='all' />}/>
+                        <Route path="/schedule" element={<Schedule/>}/>
                         <Route path="/therapistApplication" element={<ApplicationStepper/>}/>
                         <Route path="/logout" element={<LogOut/>}/>
                     </Routes>

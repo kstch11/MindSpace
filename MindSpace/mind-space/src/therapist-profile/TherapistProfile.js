@@ -1,4 +1,4 @@
-import {TherapistData} from "./TherapistData";
+import {TherapistData} from "../common-pages/therapists-list/TherapistData";
 import {ClientsTable} from "./ListOfClients";
 import {ReservationTable} from "./ListOfReservations";
 import {Schedule} from "./Schedule";
@@ -18,7 +18,7 @@ const contentProps = [
     {
         label: "Schedule",
         order: 1,
-        component: <ReservationTable />,
+        component: <Schedule />,
     },
 ]
 

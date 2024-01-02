@@ -9,7 +9,7 @@ import {
     Button,
     TextInput,
     Textarea,
-    useMantineTheme, Dialog, Divider, rem,
+    useMantineTheme, Divider,
 } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({

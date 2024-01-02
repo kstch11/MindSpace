@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) =>({
     }
 }));
 
-export function TherapistsList() {
+export function TherapistsList({toggleValue}) {
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
     const [type, toggle] = useToggle(['all', 'client'])
@@ -108,7 +108,35 @@ export function TherapistsList() {
     return(
         <div className={classes.inner}>
             <div className={classes.content}>
-                <Title className={classes.title}>Our therapists</Title>
+                {type === 'all' && (
+                    <div>
+                        <Title className={classes.title}>Our therapists</Title>
+                        <SimpleGrid
+                            cols={3}
+                            spacing="lg"
+                            breakpoints={[
+                                {maxWidth: 'sm', cols: '2', spacing: 'sm'},
+                                {maxWidth: 'xs', cols: '1', spacing: 'sm'}
+                            ]}
+                        >
+                            <InformationCard
+                                title="There's something for everyone"
+                                text="Here you can make an appointment for a consultation with a psychologist who works specifically with your problem: stress, anxiety, difficulties in relationships, low self-esteem, phobias, depression. The topics are listed in the specialist's questionnaire."
+                                Icon={IconSearch}
+                            />
+                            <InformationCard
+                                title="The appointment is online"
+                                text="Reception is held online - this means that you can get quality help from a psychologist not only in Prague, but also from anywhere in the world. The price of the service is 45 euros for a personal consultation."
+                                Icon={IconVideo}
+                            />
+                            <InformationCard
+                                title="A large number of psychologists"
+                                text="A large number of psychologists, all with diverse specialties and extensive experience, are here to provide you with the personalized support you need on our online psychotherapy platform. Whether you're seeking help for anxiety, depression, or any other mental health concern, our team is dedicated to helping you thrive."
+                                Icon={IconUsers}
+                            />
+                        </SimpleGrid>
+                    </div>
+                )}
                 <SimpleGrid
                     cols={3}
                     spacing="lg"
@@ -117,21 +145,6 @@ export function TherapistsList() {
                         {maxWidth: 'xs', cols: '1', spacing: 'sm'}
                     ]}
                 >
-                    <InformationCard
-                        title="There's something for everyone"
-                        text="Here you can make an appointment for a consultation with a psychologist who works specifically with your problem: stress, anxiety, difficulties in relationships, low self-esteem, phobias, depression. The topics are listed in the specialist's questionnaire."
-                        Icon={IconSearch}
-                    />
-                    <InformationCard
-                        title="The appointment is online"
-                        text="Reception is held online - this means that you can get quality help from a psychologist not only in Prague, but also from anywhere in the world. The price of the service is 45 euros for a personal consultation."
-                        Icon={IconVideo}
-                    />
-                    <InformationCard
-                        title="A large number of psychologists"
-                        text="A large number of psychologists, all with diverse specialties and extensive experience, are here to provide you with the personalized support you need on our online psychotherapy platform. Whether you're seeking help for anxiety, depression, or any other mental health concern, our team is dedicated to helping you thrive."
-                        Icon={IconUsers}
-                    />
                     {paginatedUsers.map((user, index) => (
                         <TherapistCard key={index} userData={user} />
                     ))}

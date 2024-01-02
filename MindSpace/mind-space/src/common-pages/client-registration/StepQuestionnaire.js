@@ -1,16 +1,17 @@
-import {useState} from 'react';
-import {Stepper, Button, Group, TextInput, PasswordInput, Code, createStyles, rem, Center} from '@mantine/core';
+import {useRef, useState} from 'react';
+import {Stepper, Button, Group, TextInput, Code, createStyles,  Center} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import Questionnaire from "./Questionnaire";
 
 const useStyles = createStyles((theme) => ({
     questionnaire: {
-        width: '80%',
+        width: 900,
     }
 }));
 
 export function StepQuestionnaire() {
     const [active, setActive] = useState(0);
+    const [temporaryAnswers, setTemporaryAnswers] = useState([]);
     const {classes} = useStyles();
 
     const form = useForm({
@@ -27,7 +28,8 @@ export function StepQuestionnaire() {
             if (active === 0) {
                 return {
                     name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
-                    // phoneNumber: (val) => (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(val) ? null : 'Invalid phone number'),
+                    surname: values.surname.trim().length < 2 ? 'Surname must include at least 2 characters' : null,
+                    phoneNumber: ((val) => (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(val) ? null : 'Invalid phone number'))(values.phoneNumber),
                 }
             }
 
@@ -43,15 +45,20 @@ export function StepQuestionnaire() {
         marginBottom: active === 0 || active === 2 ? '210px' : '0px',
     };
 
+    const questionnaireRef = useRef();
+
     const handleDataFromChild = (data) => {
-        form.setFieldValue('answers', data);
-        console.log('Data received from child component:', data);
+        setTemporaryAnswers(data);
     };
 
     const nextStep = async () => {
         const validation = await form.validate();
 
         if (!validation.hasErrors) {
+            if (active === 1) {
+                form.setFieldValue('answers', questionnaireRef.current.getAnswers());
+            }
+
             setActive((current) => (current < 3 ? current + 1 : current));
         }
     };
@@ -71,7 +78,7 @@ export function StepQuestionnaire() {
                     </Stepper.Step>
 
                     <Stepper.Step label="Second step" description="How do you feel?">
-                        <Questionnaire onDataCollected={handleDataFromChild}/>
+                        <Questionnaire ref={questionnaireRef} onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
 
                     <Stepper.Step label="Final step" description="Choose a therapist">
@@ -98,6 +105,7 @@ export function StepQuestionnaire() {
                         </Button>
                     )}
                     {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
+                    {active === 3 && <Button>Finish</Button>}
                 </Group>
             </div>
         </Center>

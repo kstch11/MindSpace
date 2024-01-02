@@ -141,6 +141,17 @@ export function ApplicationStepper() {
                             {...form.getInputProps('dateOfBirth')}
                             required
                         />
+                        <Select
+                            required
+                            label="Your gender:"
+                            placeholder="Pick one"
+                            data={[
+                                { label: 'Male', value: 'male' },
+                                { label: 'Female', value: 'female' },
+                                { label: 'Female', value: 'female' },
+                            ]}
+                            {...form.getInputProps('personalTherapy')}
+                        />
                         <Textarea
                             label="Self-description"
                             placeholder="Self-description"
@@ -156,7 +167,8 @@ export function ApplicationStepper() {
                                 'Depression', 'Anxiety', 'Stress', 'Interpersonal relationships', 'Emotion management',
                                 'Self-esteem', 'Self-acceptance', 'Trauma and loss', 'Addictions and habits',
                                 'Personal development', 'Professional issues', 'Sexual issues', 'Family issues',
-                                'Relationship issues'
+                                'Relationship issues', 'Loneliness', 'Eating disorder', 'Concentration issues',
+                                'Panic attacks', 'Insomnia', 'Emotional dependence', 'Concentration issues'
                             ]}
                             label="Choose the topics you work with:"
                             placeholder="Select specializations"

@@ -18,29 +18,8 @@ const useStyles = createStyles((theme) =>({
 
 }));
 
-// async function fetchUserData(userId) {
-//     try {
-//         const response = await fetch(`https://your-backend-api.com/users/${userId}`);
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return await response.json();
-//     } catch (error) {
-//         console.error('There was a problem fetching user data:', error);
-//         return null;
-//     }
-// }
-
 export function TherapistCard({userData}) {
     const {classes} = useStyles()
-    // const [userData, setUserData] = useState(null);
-    //
-    // useEffect(() => {
-    //     fetchUserData(userId)
-    //         .then(data => setUserData(data))
-    //         .catch(error => console.error(error));
-    // }, [userId]);
-    //
     if (!userData) {
         return <div>Loading...</div>;
     }

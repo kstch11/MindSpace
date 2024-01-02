@@ -1,4 +1,10 @@
-export const DEFAULT_BACKEND_PATH = "http://localhost:8090"
+export const LOCAL_BACKEND_PATH = "http://localhost:8090"
+
+export const AUTH_URL = "/oauth2/authorize/google"
+
+export const LOCAL_REDIRECT_LINK = "http://localhost:3000/oauth2/redirect"
+
+export const AUTH_LOCAL_LINK = LOCAL_BACKEND_PATH + AUTH_URL + "?redirect_uri=" + LOCAL_REDIRECT_LINK
 
 export const USERS_DEFAULT_URL = "/users"
 

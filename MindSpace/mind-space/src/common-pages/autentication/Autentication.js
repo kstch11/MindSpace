@@ -9,6 +9,7 @@ import {
     Anchor, createStyles, rem, Center
 } from '@mantine/core';
 import { GoogleButton } from "./GoogleButton";
+import {AUTH_LOCAL_LINK} from "../../api/defaults";
 
 const useStyles = createStyles((theme) => ({
     logform: {
@@ -27,8 +28,12 @@ export function AuthenticationForm(props: PaperProps) {
     const [type, toggle] = useToggle(['client', 'therapist']);
     const {classes} = useStyles();
 
-    const handleGoogleLogin = async () => {
-        window.location.href = 'http://localhost:8090/oauth2/authorize/google?role=THERAPIST&redirect_uri=http://localhost:3000/oauth2/redirect';
+    const handleGoogleLogin = async (therapistLogin = false) => {
+        if (therapistLogin) {
+            window.location.href = AUTH_LOCAL_LINK + "&role=THERAPIST";
+        } else {
+            window.location.href = AUTH_LOCAL_LINK;
+        }
     }
 
     return (
@@ -39,7 +44,7 @@ export function AuthenticationForm(props: PaperProps) {
                 </Text>
 
                 <Group grow mb="md" mt="md">
-                    <GoogleButton onLoginClick={async () => await handleGoogleLogin()}>Google</GoogleButton>
+                    <GoogleButton onLoginClick={async () => await handleGoogleLogin(type === 'therapist')}>Google</GoogleButton>
                 </Group>
 
                 <Divider labelPosition="center" my="lg" />

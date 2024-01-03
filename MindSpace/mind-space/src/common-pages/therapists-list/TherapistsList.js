@@ -1,6 +1,6 @@
 import {createStyles, SimpleGrid, Pagination, rem, Title, Center, Transition} from "@mantine/core";
 import {TherapistCard} from "./TherapistCard";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { IconSearch, IconVideo, IconUsers } from '@tabler/icons-react';
 import {InformationCard} from "./InformationCard";
 import {useToggle} from "@mantine/hooks";
@@ -97,6 +97,12 @@ export function TherapistsList({toggleValue}) {
         },
     ]
 
+    useEffect(() => {
+        if (['all', 'client'].includes(toggleValue)) {
+            toggle(toggleValue);
+        }
+    }, [toggleValue, toggle]);
+
     const itemsPerPage = 12;
     const paginatedUsers = users.slice(
         (activePage - 1) * itemsPerPage,
@@ -136,6 +142,11 @@ export function TherapistsList({toggleValue}) {
                             />
                         </SimpleGrid>
                     </div>
+                )}
+                {type === 'client' && (
+                    <Center>
+                        <Title order={2} className={classes.title}>Choose a therapist</Title>
+                    </Center>
                 )}
                 <SimpleGrid
                     cols={3}

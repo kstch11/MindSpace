@@ -81,16 +81,6 @@ export function StepQuestionnaire() {
                     <Stepper.Step label="Second step" description="How do you feel?">
                         <Questionnaire ref={questionnaireRef} onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
-
-                    {/*<Stepper.Step label="Final step" description="Choose a therapist">*/}
-                    {/*    <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />*/}
-                    {/*    <TextInput*/}
-                    {/*        mt="md"*/}
-                    {/*        label="GitHub"*/}
-                    {/*        placeholder="GitHub"*/}
-                    {/*        {...form.getInputProps('github')}*/}
-                    {/*    />*/}
-                    {/*</Stepper.Step>*/}
                     <Stepper.Completed>
                         <TherapistsList toggleValue='client' />
                     </Stepper.Completed>

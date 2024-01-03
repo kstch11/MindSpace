@@ -36,7 +36,7 @@ const questionnaireData = [
             { value: 'Depression', text: 'Depressed' },
             { value: 'Anxiety', text: 'Anxious' },
             { value: 'Stress', text: 'Stressed' },
-            { value: 'Fair', text: 'Fair' },
+            { value: 'no selection', text: 'Fair' },
             { value: 'Loneliness', text: 'Lonely' },
             { value: 'Emotion management', text: 'Overwhelmed' },
         ],
@@ -65,6 +65,13 @@ const questionnaireData = [
         ],
     },
     {
+        question: 'Has a traumatic event happened to you recently?',
+        options: [
+            { value: 'Trauma and loss', text: 'Yes' },
+            { value: 'no selection', text: 'No' },
+        ],
+    },
+    {
         question: 'Are you experiencing issues with your professional life?',
         options: [
             { value: 'Lack of motivation', text: 'Lack of motivation' },
@@ -73,18 +80,13 @@ const questionnaireData = [
             { value: 'Work-loss', text: 'Work-loss' },
             { value: 'Lack of purpose', text: 'Lack of purpose' },
             { value: 'Loss of direction', text: 'Loss of direction' },
-            { value: 'None of the above', text: 'None of the above' },
         ],
     },
     {
-        question: 'Rate your current self-esteem:',
+        question: 'Are you experiencing self-esteem issues?',
         options: [
-            { value: 'Very low', text: 'Very low' },
-            { value: 'Low', text: 'Low' },
-            { value: 'Moderate', text: 'Moderate' },
-            { value: 'High', text: 'High' },
-            { value: 'Very high', text: 'Very high' },
-            { value: 'I am not sure', text: 'I am not sure' },
+            { value: 'Self-esteem', text: 'Yes' },
+            { value: 'no selection', text: 'No' },
         ],
     },
     {
@@ -129,7 +131,7 @@ const Questionnaire = forwardRef(({ onDataCollected }, ref) => {
             className={classes.questionnaire}
         >
             {questionnaireData.map((questionItem, index) => {
-                if (index === 4 || index === 5) {
+                if (index === 3 || index === 5 || index === 6) {
                     return (<div
                         key={index}
                         className={classes.question}

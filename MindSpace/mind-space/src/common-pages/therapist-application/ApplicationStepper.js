@@ -26,7 +26,7 @@ const useStyles = createStyles((theme) =>({
     },
 
     content: {
-        maxWidth: rem(1500),
+        width: 900,
         marginRight: `0 auto`,
 
         [theme.fn.smallerThan('sm')]: {
@@ -59,7 +59,7 @@ export function ApplicationStepper() {
             specialization: [],
             certificates: [],
             therapeuticCommunity: '',
-            languages: '',
+            languages: [],
             personalTherapy: '',
             photo: null,
             phoneNumber: '',
@@ -93,11 +93,11 @@ export function ApplicationStepper() {
 
             if (active === 1) {
                 return {
-                    specialization: ((val) => (val.length < 3 ? 'You should choose at least 3 topics' : null))(values.specialization),
+                    specialization: ((val) => (val.length < 3 ? 'You must choose at least 3 topics' : null))(values.specialization),
                     education: values.education.trim().length < 5 ? 'Education must include at least 5 characters' : null,
                     certificates: ((val) => (val.length === 0 ? 'You must upload your diploma' : null))(values.certificates),
                     therapeuticCommunity: values.therapeuticCommunity.trim().length < 2 ? 'You should answer at least something' : null,
-                    languages: values.languages.trim().length < 2 ? 'Languages must include at least 2 characters' : null,
+                    languages: ((val) => (val.length === 0 ? 'You must choose at least 1 language' : null))(values.languages),
                 }
             }
 
@@ -148,7 +148,8 @@ export function ApplicationStepper() {
                             data={[
                                 { label: 'Male', value: 'male' },
                                 { label: 'Female', value: 'female' },
-                                { label: 'Female', value: 'female' },
+                                { label: 'Other', value: 'other' },
+                                { label: 'Prefer not to say', value: 'noSelection'}
                             ]}
                             {...form.getInputProps('personalTherapy')}
                         />
@@ -165,7 +166,7 @@ export function ApplicationStepper() {
                             required
                             data={[
                                 'Depression', 'Anxiety', 'Stress', 'Interpersonal relationships', 'Emotion management',
-                                'Self-esteem', 'Self-acceptance', 'Trauma and loss', 'Addictions and habits',
+                                'Self-esteem', 'Self-acceptance', 'Trauma or loss', 'Addictions and habits',
                                 'Personal development', 'Professional issues', 'Sexual issues', 'Family issues',
                                 'Relationship issues', 'Loneliness', 'Eating disorder', 'Concentration issues',
                                 'Panic attacks', 'Insomnia', 'Emotional dependence', 'Concentration issues'
@@ -193,8 +194,11 @@ export function ApplicationStepper() {
                             placeholder="Enter text here"
                             {...form.getInputProps('therapeuticCommunity')}
                         />
-                        <TextInput
+                        <MultiSelect
                             required
+                            data={[
+                                'English', 'Czech', 'Ukrainian', 'German', 'Russian'
+                            ]}
                             label="In which languages you can lead sessions?"
                             placeholder="Languages"
                             {...form.getInputProps('languages')}

@@ -1,4 +1,6 @@
-import {Avatar, createStyles, Textarea, TextInput, Text, Button, Spoiler, Group, rem} from '@mantine/core';
+import {Avatar, createStyles, Textarea, TextInput, Text, Button, Spoiler, Group, rem, Center, Badge} from '@mantine/core';
+import {useToggle} from "@mantine/hooks";
+import {useEffect} from "react";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -18,19 +20,32 @@ const useStyles = createStyles((theme) => ({
         [theme.fn.smallerThan('md')]: {
             width: '100%'
         },
+    },
+
+    name: {
+        top: 0,
+        marginBottom: rem(20),
     }
 }));
 
-export function TherapistData() {
+export function TherapistData({toggleValue}) {
     const {classes} = useStyles();
+    const [type, toggle] = useToggle(['all', 'client', 'therapist', 'admin']);
+
+    useEffect(() => {
+        if (['all', 'client', 'therapist', 'admin'].includes(toggleValue)) {
+            toggle(toggleValue);
+        }
+    }, [toggleValue, toggle]);
 
     return(
-        <div className={classes.inner}>
-            <div>
+        <Center>
+            <div className={classes.inner}>
                 <div>
                     <Group className={classes.group}>
                         <Avatar radius="xl" size="xl" className={classes.avatar} />
-                        <div className={classes.floatText}>
+                        {type === 'therapist' && (
+                            <div className={classes.floatText}>
                             <TextInput
                                 label="Your name:"
                                 value={"Olivia Anderson"}
@@ -39,7 +54,19 @@ export function TherapistData() {
                                 label="Your age:"
                                 value={"31"}
                             />
-                        </div>
+                        </div>)}
+                        {type === 'client' && (
+                            <div className={classes.floatText}>
+                                <Badge>5 years experience</Badge>
+                                <Button>Change therapist</Button>
+                            </div>
+                        )}
+                        {type === 'all' && (
+                            <div className={classes.floatText}>
+                                <Text fz="lg" weight={700} className={classes.name}>Olivia Anderson</Text>
+                                <Badge>5 years experience</Badge>
+                            </div>
+                        )}
                     </Group>
                     <TextInput
                         label="Your phone number:"
@@ -120,6 +147,6 @@ export function TherapistData() {
                     </Spoiler>
                 </div>
             </div>
-        </div>
+        </Center>
     )
 }

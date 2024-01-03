@@ -18,6 +18,7 @@ import {useSelector} from "react-redux";
 import LogOut from "./common-pages/autentication/LogOut";
 import AuthWrapper from "./common-pages/autentication/AuthWrapper";
 import {Schedule} from "./therapist-profile/Schedule";
+import {TherapistData} from "./common-pages/therapists-list/TherapistData";
 
 export default function AppRoutes() {
     const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
@@ -80,8 +81,10 @@ export default function AppRoutes() {
                         <Route path="/forTherapists" element={<TherapistMainPage/>}/>
                         <Route path="/therapistsList" element={<TherapistsList toggleValue='all' />}/>
                         <Route path="/schedule" element={<Schedule/>}/>
+                        <Route path="/therapist" element={<TherapistData toggleValue='all'/>}/>
                         <Route path="/therapistApplication" element={<ApplicationStepper/>}/>
                         <Route path="/logout" element={<LogOut/>}/>
+
                     </Routes>
                     <Footer links={[
                         {link: "https://example.com/home", label: "Home"},

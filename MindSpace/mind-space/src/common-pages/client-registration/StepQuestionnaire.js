@@ -82,7 +82,7 @@ export function StepQuestionnaire() {
                         <Questionnaire ref={questionnaireRef} onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
                     <Stepper.Completed>
-                        <TherapistsList toggleValue='client' />
+                        <TherapistsList toggleValue='client' questionnaire={form.values} />
                     </Stepper.Completed>
                 </Stepper>
 

@@ -1,9 +1,12 @@
-import {createStyles, SimpleGrid, Pagination, rem, Title, Center, Transition} from "@mantine/core";
+import {createStyles, SimpleGrid, Pagination, rem, Title, Center, Transition, Loader} from "@mantine/core";
 import {TherapistCard} from "./TherapistCard";
 import {useEffect, useState} from "react";
 import { IconSearch, IconVideo, IconUsers } from '@tabler/icons-react';
 import {InformationCard} from "./InformationCard";
 import {useToggle} from "@mantine/hooks";
+import {useMutation} from "@tanstack/react-query";
+import {postQuestionnaire} from "../../api/client-api";
+import {useSelector} from "react-redux";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -34,10 +37,39 @@ const useStyles = createStyles((theme) =>({
     }
 }));
 
-export function TherapistsList({toggleValue}) {
+export function TherapistsList({toggleValue, questionnaire}) {
+    const accessToken = useSelector(state => state.currentUser.accessToken);
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
     const [type, toggle] = useToggle(['all', 'client'])
+    const [therapists, setTherapists] = useState([])
+
+
+    const {data, isPending, isSuccess, isError, mutate, error} = useMutation({
+        mutationFn: (questionnaire) => {
+            console.log(accessToken)
+            console.log(questionnaire)
+            return postQuestionnaire(accessToken, questionnaire)
+        },
+    })
+
+    useEffect(() => {
+        if (isSuccess) {
+            const mappedData = data.map(fetched => ({
+                avatarUrl: "https://thispersondoesnotexist.com/",
+                name: fetched.name,
+                experience: '5 years',
+                description: fetched.description
+            }))
+            setTherapists(mappedData)
+        }
+
+    }, [isSuccess])
+
+    useEffect(() => {
+        mutate()
+    }, [])
+
     const users = [
         {
             avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
@@ -104,12 +136,16 @@ export function TherapistsList({toggleValue}) {
     }, [toggleValue, toggle]);
 
     const itemsPerPage = 12;
-    const paginatedUsers = users.slice(
+    const paginatedUsers = therapists.slice(
         (activePage - 1) * itemsPerPage,
         activePage * itemsPerPage
     );
 
-    const totalPages = Math.ceil(users.length / itemsPerPage);
+    const totalPages = Math.ceil(therapists.length / itemsPerPage);
+
+    if (isPending) {
+        return <Loader/>
+    }
 
     return(
         <div className={classes.inner}>

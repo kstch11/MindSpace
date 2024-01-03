@@ -1,5 +1,7 @@
 package com.example.mindspace.api;
 
+import java.util.List;
+
 public record TherapistResponse(
         Integer id,
         String name,
@@ -9,10 +11,11 @@ public record TherapistResponse(
         boolean finishedRegistration,
         String description,
         String education,
-        String languages,
+        List<LanguageResponse> languages,
         String personalTherapy,
         String photo,
         String therapeuticCommunity,
         boolean approved,
-        boolean isTherapist
+        boolean isTherapist,
+        List<TopicResponse> topics
 ) implements UserResponse { }

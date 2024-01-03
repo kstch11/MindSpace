@@ -2,9 +2,11 @@ package com.example.mindspace.service.impl;
 
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.CreateReservationResponse;
+import com.example.mindspace.api.LanguageResponse;
 import com.example.mindspace.api.ReservationRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.TherapistResponse;
+import com.example.mindspace.api.TopicResponse;
 import com.example.mindspace.repository.ClientRepository;
 import com.example.mindspace.repository.ReservationRepository;
 import com.example.mindspace.repository.TherapistRepository;
@@ -101,12 +103,13 @@ public class ReservationServiceImpl {
                         therapist.isRegistrationFinished(),
                         therapist.getDescription(),
                         therapist.getEducation(),
-                        therapist.getLanguages(),
+                        therapist.getLanguages().stream().map(lang -> new LanguageResponse(lang.getId(), lang.getName())).toList(),
                         therapist.getPersonalTherapy(),
                         therapist.getPhoto(),
                         therapist.getTherapeuticCommunity(),
                         therapist.isApproved(),
-                        true
+                        true,
+                        therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
                 )
         );
     }

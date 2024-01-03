@@ -43,7 +43,8 @@ public class Therapist extends User {
 
     private String education;
 
-    private String languages;
+    @OneToMany(mappedBy = "therapist")
+    private List<SpokenLanguage> languages;
 
     private String personalTherapy;
 

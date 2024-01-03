@@ -2,6 +2,8 @@ import {useRef, useState} from 'react';
 import {Stepper, Button, Group, TextInput, Code, createStyles,  Center} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import Questionnaire from "./Questionnaire";
+import FirstStep from "./FirstStep";
+import ChooseTherapistStep from "./ChooseTherapistStep";
 import {TherapistsList} from "../therapists-list/TherapistsList";
 
 const useStyles = createStyles((theme) => ({
@@ -71,11 +73,9 @@ export function StepQuestionnaire() {
         <Center>
             <div className={classes.questionnaire}>
                 <Stepper active={active} breakpoint="sm" style={stepQuestionnaireStyle}>
+
                     <Stepper.Step label="First step" description="Personal information">
-                        <TextInput required label="Name" placeholder="Name" {...form.getInputProps('name')} />
-                        <TextInput required label="Surname" placeholder="Surname" {...form.getInputProps('surname')} />
-                        <TextInput required label="Phone number"
-                                   placeholder="Phone number" {...form.getInputProps('phoneNumber')} />
+                        <FirstStep form={form}/>
                     </Stepper.Step>
 
                     <Stepper.Step label="Second step" description="How do you feel?">

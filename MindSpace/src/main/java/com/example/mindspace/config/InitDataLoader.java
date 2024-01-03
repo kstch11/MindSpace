@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,13 +72,24 @@ public class InitDataLoader {
     }
 
     private List<Theme> loadThemes() {
-        var theme1 = new Theme();
-        theme1.setName("Anxiety");
-        var theme2 = new Theme();
-        theme2.setName("Family Therapy");
-        var theme3 = new Theme();
-        theme3.setName("Trauma");
-        return themeRepository.saveAll(Arrays.asList(theme1, theme2, theme3));
+        List<String> themeNames = Arrays.asList(
+                "Relationships", "Coping skills", "Career", "Couples challenges",
+                "Emotional", "Major life transitions", "Patterns and behaviors",
+                "Sexual abuse", "Childhood", "Sexuality", "Children and divorce",
+                "Discomforts with therapy", "Establishing and maintaining relationships",
+                "Managing parenting struggles", "PTSD", "Traumatic or stressful events",
+                "Anxiety", "'S M A R T goals", "Communication patterns",
+                "Domestic violence", "Grief", "Our therapists", "Self-esteem"
+        );
+
+        List<Theme> themes = new ArrayList<>();
+        for (String name : themeNames) {
+            Theme theme = new Theme();
+            theme.setName(name);
+            themes.add(theme);
+        }
+
+        return themeRepository.saveAll(themes);
     }
 
     private List<TimeCell> loadTimeCells() {

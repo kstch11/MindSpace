@@ -29,7 +29,7 @@ export async function makeGetRequest(url, accessToken) {
 export async function makePostRequest(url, accessToken, body) {
     const response = await fetch(url, {
         method: "POST",
-        body: JSON.parse(body),
+        body: JSON.stringify(body),
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }

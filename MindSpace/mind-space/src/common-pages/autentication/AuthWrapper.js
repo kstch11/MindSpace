@@ -8,6 +8,10 @@ export default function AuthWrapper(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log("huj")
+    }, [])
+
+    useEffect(() => {
         const accessToken = localStorage.getItem('ACCESS_TOKEN')
         if (accessToken != null) {
             dispatch(setAccessToken(accessToken))

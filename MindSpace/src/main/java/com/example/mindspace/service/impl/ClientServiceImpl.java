@@ -2,10 +2,12 @@ package com.example.mindspace.service.impl;
 
 import com.example.mindspace.api.ClientResponse;
 import com.example.mindspace.api.ClientTherapistRelationRequest;
+import com.example.mindspace.api.QuestionnaireRequest;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.api.UserRequest;
 import com.example.mindspace.model.Reservation;
+import com.example.mindspace.model.Therapist;
 import com.example.mindspace.model.TimeCell;
 import com.example.mindspace.repository.ClientRepository;
 import com.example.mindspace.repository.ReservationRepository;
@@ -13,6 +15,7 @@ import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Client;
 import com.example.mindspace.repository.TimeCellRepository;
+import com.example.mindspace.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +72,29 @@ public class ClientServiceImpl {
                 client.isRegistrationFinished(),
                 false
         );
+    }
+
+    public List<TherapistResponse> saveQuestionnaire(UserPrincipal userPrincipal, QuestionnaireRequest questionnaireRequest) {
+        Client client = findById(userPrincipal.getId());
+        // todo
+        return therapistRepository.findAll()
+                .stream()
+                .map(therapist -> new TherapistResponse(
+                        therapist.getId(),
+                        therapist.getName(),
+                        therapist.getSurname(),
+                        therapist.getPhoneNumber(),
+                        therapist.getEmail(),
+                        therapist.isRegistrationFinished(),
+                        therapist.getDescription(),
+                        therapist.getEducation(),
+                        therapist.getLanguages(),
+                        therapist.getPersonalTherapy(),
+                        therapist.getPhoto(),
+                        therapist.getTherapeuticCommunity(),
+                        therapist.isApproved(),
+                        true
+                )).toList();
     }
 
     /**
@@ -145,16 +171,16 @@ public class ClientServiceImpl {
     public void updateClient(Integer id, UserRequest request) {
         var client = findById(id);
 
-        if (request.name() != null && request.name().isBlank()) {
+        if (request.name() != null && !request.name().isBlank()) {
             client.setName(request.name());
         }
-        if (request.surname() != null && request.surname().isBlank()) {
+        if (request.surname() != null && !request.surname().isBlank()) {
             client.setSurname(request.surname());
         }
-        if (request.number() != null && request.number().isBlank()) {
+        if (request.number() != null && !request.number().isBlank()) {
             client.setPhoneNumber(request.number());
         }
-        if (request.email() != null && request.email().isBlank()) {
+        if (request.email() != null && !request.email().isBlank()) {
             client.setEmail(request.email());
         }
 

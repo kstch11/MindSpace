@@ -81,7 +81,7 @@ export default function AppRoutes() {
                         <Route path="/forTherapists" element={<TherapistMainPage/>}/>
                         <Route path="/therapistsList" element={<TherapistsList toggleValue='all' />}/>
                         <Route path="/schedule" element={<Schedule/>}/>
-                        <Route path="/therapist" element={<TherapistData toggleValue='all'/>}/>
+                        <Route path="/therapist" element={<TherapistData toggleValue='clientRegistration'/>}/>
                         <Route path="/therapistApplication" element={<ApplicationStepper/>}/>
                         <Route path="/logout" element={<LogOut/>}/>
 

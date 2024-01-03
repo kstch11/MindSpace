@@ -93,7 +93,6 @@ const therapistData = {
 };
 
 export function ChangeTherapist() {
-    const theme = useMantineTheme();
     const { classes } = useStyles();
     const [reviewAuthor, setReviewAuthor] = useState('');
     const [reviewText, setReviewText] = useState('');

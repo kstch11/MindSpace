@@ -39,6 +39,7 @@ public class Therapist extends User {
 
     private LocalDateTime birthDate;
 
+    @Column(length = 1024)
     private String description;
 
     private String education;

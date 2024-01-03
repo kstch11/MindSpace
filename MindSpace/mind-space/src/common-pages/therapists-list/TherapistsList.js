@@ -56,10 +56,11 @@ export function TherapistsList({toggleValue, questionnaire}) {
     useEffect(() => {
         if (isSuccess) {
             const mappedData = data.map(fetched => ({
-                avatarUrl: "https://thispersondoesnotexist.com/",
+                avatarUrl: fetched.photo,
                 name: fetched.name,
                 experience: '5 years',
-                description: fetched.description
+                description: fetched.description,
+                specialization: fetched.topics && fetched.topics.map(topic => topic.name)
             }))
             setTherapists(mappedData)
         }

@@ -30,4 +30,11 @@ public abstract class User extends AbstractEntity {
     }
 
     private boolean registrationFinished;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    public enum Gender {
+        MALE, FEMALE, NOT_STATED
+    }
 }

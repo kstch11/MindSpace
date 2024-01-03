@@ -1,5 +1,6 @@
 package com.example.mindspace.config;
 
+import com.example.mindspace.model.User;
 import com.example.mindspace.repository.AdminRepository;
 import com.example.mindspace.repository.ClientRepository;
 import com.example.mindspace.repository.ScheduleRepository;
@@ -136,11 +137,15 @@ public class InitDataLoader {
                 "",
                 List.of(),
                 "",
-                "",
+                "https://thumbs.dreamstime.com/b/handsome-old-man-looking-camera-outdoor-fall-male-portrait-attractive-confident-middle-aged-man-city-park-handsome-man-174761151.jpg",
                 "",
                 List.of(),
                 true
         );
+        therapist1.setName("Alex");
+        therapist1.setSurname("Smith");
+        therapist1.setGender(User.Gender.MALE);
+        therapist1.setDescription("\"Welcome! I'm Dr. Alex, a licensed therapist with over 10 years of experience. My approach is empathetic and non-judgmental, offering a safe space for you to explore your thoughts and feelings. I specialize in CBT, MBSR, and SFBT, tailoring my methods to your unique needs. I offer online sessions for convenience and accessibility, helping you tackle challenges like anxiety, depression, or relationship issues. Let's work together towards a more balanced and fulfilling life.\"");
         var therapist2 = new Therapist(
                 List.of(),
                 List.of(),
@@ -151,11 +156,16 @@ public class InitDataLoader {
                 "",
                 List.of(),
                 "",
-                "",
+                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww",
                 "",
                 List.of(),
                 true
         );
+        therapist2.setName("Jane");
+        therapist2.setSurname("Wolf");
+        therapist2.setGender(User.Gender.FEMALE);
+        therapist2.setDescription(
+                "Hello, I'm Jane Wolf, a compassionate and experienced online therapist dedicated to supporting you through life's challenges. With a background in clinical psychology and over a decade of helping clients, I blend empathy with expertise to create a welcoming and understanding environment. My practice focuses on evidence-based approaches like CBT and mindfulness, customized to your individual journey. Whether you're facing anxiety, stress, or personal hurdles, I'm here to guide and empower you. Embrace the convenience of online therapy with me and take a step towards positive change and well-being.");
 
         return therapistRepository.saveAll(Arrays.asList(therapist1, therapist2));
     }

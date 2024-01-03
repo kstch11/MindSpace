@@ -2,6 +2,8 @@ import {ClientData} from "./ClientData";
 import {ClientSession} from "./ClientSession";
 import {ChangeTherapist} from "./ChangeTherapist";
 import {Navbar} from "../parts/Navbar";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 
 const contentProps = [
     {
@@ -25,6 +27,10 @@ const contentProps = [
 ]
 
 export function ClientNavbar() {
+    const isTherapist = useSelector(state => state.currentUser.profile.isTherapist);
+    if (isTherapist) {
+        return <Navigate to={"/therapistProfile"} />
+    }
     return(
         <Navbar contentProps={contentProps} />
     )

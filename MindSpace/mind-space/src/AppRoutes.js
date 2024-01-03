@@ -38,6 +38,7 @@ export default function AppRoutes() {
                         {link: '/forTherapists', label: 'For therapists'},
                         {link: '/login', label: 'Log in'},
                     ] : [
+                        {link: '', label: 'Home'},
                         {link: '/logout', label: 'Log out'},
                         {link: '/clientProfile', label: 'Profile'}
                     ]}/>

@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchCurrentUser, putTherapist, setRegistrationComplete} from "../api/client-api";
 import {useEffect} from "react";
+import {Navigate} from "react-router-dom";
 
 export default function ClientSuccessRegistration() {
     const accessToken = useSelector(state => state.currentUser.accessToken);

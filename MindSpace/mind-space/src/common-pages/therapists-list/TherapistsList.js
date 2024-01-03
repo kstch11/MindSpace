@@ -11,14 +11,15 @@ import {
     ScrollArea
 } from "@mantine/core";
 import {TherapistCard} from "./TherapistCard";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { IconSearch, IconVideo, IconUsers } from '@tabler/icons-react';
 import {InformationCard} from "./InformationCard";
 import {useToggle} from "@mantine/hooks";
 import {useMutation} from "@tanstack/react-query";
-import {postQuestionnaire} from "../../api/client-api";
+import {postQuestionnaire, putTherapist} from "../../api/client-api";
 import {useSelector} from "react-redux";
 import {TherapistData} from "./TherapistData";
+import {Navigate} from "react-router-dom";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -55,29 +56,46 @@ const useStyles = createStyles((theme) =>({
 
 export function TherapistsList({toggleValue, questionnaire}) {
     const accessToken = useSelector(state => state.currentUser.accessToken);
+
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
     const [type, toggle] = useToggle(['all', 'client', 'clientRegistration', 'therapist', 'admin'])
     const [therapists, setTherapists] = useState([])
-    const [selectedTherapist, setSelectedTherapist] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [openedTherapist, setOpenedTherapist] = useState(undefined);
 
-    const handleTherapistClick = () => {
+    const handleTherapistClick = (therapist) => {
         setIsModalOpen(true);
+        setOpenedTherapist(therapist)
     };
 
+    const handleCloseTherapistInfo = () => {
+        setIsModalOpen(false);
+        setOpenedTherapist(undefined)
+    }
 
     const {data, isPending, isSuccess, isError, mutate, error} = useMutation({
         mutationFn: (questionnaire) => {
-            console.log(accessToken)
-            console.log(questionnaire)
             return postQuestionnaire(accessToken, questionnaire)
+        },
+    })
+
+    const {
+        isPending: updateTherapistPending,
+        isSuccess: updateTherapistSuccess,
+        isError: updateTherapistError,
+        mutate: setTherapist,
+        reset
+    } = useMutation({
+        mutationFn: (putTherapistBody) => {
+            return putTherapist(accessToken, putTherapistBody)
         },
     })
 
     useEffect(() => {
         if (isSuccess) {
             const mappedData = data.map(fetched => ({
+                id: fetched.id,
                 avatarUrl: fetched.photo,
                 name: fetched.name,
                 experience: '5 years',
@@ -93,64 +111,10 @@ export function TherapistsList({toggleValue, questionnaire}) {
         mutate()
     }, [])
 
-    const users = [
-        {
-            avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
-            name: 'Olivia Anderson',
-            experience: '5 years',
-            specialization: [
-                'Depression',
-                'Burnout',
-                'Procrastination',
-                'Anxiety',
-                'Lack of motivation',
-                'Panic attacks',
-            ],
-            description:'I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you.',
-        },
-        {
-            avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
-            name: 'Olivia Anderson',
-            experience: '5 years',
-            specialization: [
-                'Depression',
-                'Burnout',
-                'Procrastination',
-                'Anxiety',
-                'Lack of motivation',
-                'Panic attacks',
-            ],
-            description:'I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you.',
-        },
-        {
-            avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
-            name: 'Olivia Anderson',
-            experience: '5 years',
-            specialization: [
-                'Depression',
-                'Burnout',
-                'Procrastination',
-                'Anxiety',
-                'Lack of motivation',
-                'Panic attacks',
-            ],
-            description:'I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you.',
-        },
-        {
-            avatarUrl:'https://www.perfocal.com/blog/content/images/size/w960/2021/01/Perfocal_17-11-2019_TYWFAQ_100_standard-3.jpg',
-            name: 'Olivia Anderson',
-            experience: '5 years',
-            specialization: [
-                'Depression',
-                'Burnout',
-                'Procrastination',
-                'Anxiety',
-                'Lack of motivation',
-                'Panic attacks',
-            ],
-            description:'I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you.',
-        },
-    ]
+    useEffect(() => {
+        console.log(updateTherapistSuccess)
+        console.log("her")
+    }, [updateTherapistSuccess])
 
     useEffect(() => {
         if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
@@ -168,6 +132,19 @@ export function TherapistsList({toggleValue, questionnaire}) {
 
     if (isPending) {
         return <Loader/>
+    }
+
+    const onClickChooseTherapist = () => {
+        setTherapist({ therapistId: openedTherapist.id});
+    }
+
+    if (updateTherapistPending) {
+        return <Loader/>
+    }
+
+    if (updateTherapistSuccess) {
+        console.log("HERE")
+        return <Navigate to={"/clientDoneRegistration"} />
     }
 
     return(
@@ -219,24 +196,23 @@ export function TherapistsList({toggleValue, questionnaire}) {
                         <TherapistCard
                             key={index}
                             userData={user}
-                            onMoreInfo={() => handleTherapistClick()} />
+                            onMoreInfo={() => handleTherapistClick(user)}
+
+                        />
                     ))}
                 </SimpleGrid>
 
 
                     <Modal
                         opened={isModalOpen}
-                        onClose={() => setIsModalOpen(false)}
+                        onClose={handleCloseTherapistInfo}
                         title="Therapist details"
                         className={classes.modal}
                     >
                         <ScrollArea h={600}>
-                            <TherapistData toggleValue={toggleValue} />
+                            <TherapistData toggleValue={toggleValue} therapistData={openedTherapist} onClickChooseTherapist={onClickChooseTherapist}/>
                         </ScrollArea>
                     </Modal>
-
-
-
 
                 <Center>
                     {totalPages > 1 && (

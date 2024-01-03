@@ -1,9 +1,20 @@
 import {useEffect, useState} from 'react';
-import {createStyles, Container, Text, useMantineTheme, Title, Divider, rem, Button, TextInput} from '@mantine/core';
+import {
+    createStyles,
+    Container,
+    Text,
+    useMantineTheme,
+    Title,
+    Divider,
+    rem,
+    Button,
+    TextInput,
+    Loader
+} from '@mantine/core';
 import axios from 'axios';
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";
-import {fetchClientProfile} from "../api/client-api";
+import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
 
 const useStyles = createStyles((theme) => ({
     paper: {
@@ -65,7 +76,7 @@ export function ClientData({id}: { id : number }) {
         isFetched,
         error
     } = useQuery({
-            queryKey: ['clientProfile'], queryFn: () => fetchClientProfile(id, accessToken)
+            queryKey: ['clientProfile'], queryFn: () => fetchCurrentUser(accessToken)
         }
     )
 
@@ -105,9 +116,12 @@ export function ClientData({id}: { id : number }) {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    // add spinner and error
     if (isPending) {
-        return <div>Loading</div>
+        return (
+            <Container className={classes.paper}>
+                <Loader/>
+            </Container>
+        )
     }
 
     if (isError) {

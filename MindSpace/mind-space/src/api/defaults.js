@@ -29,7 +29,7 @@ export async function makeGetRequest(url, accessToken) {
 export async function makePostRequest(url, accessToken, body) {
     const response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : null,
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }
@@ -40,4 +40,24 @@ export async function makePostRequest(url, accessToken, body) {
     }
 
     return response.json();
+}
+
+export async function makePutRequest(url, accessToken, body) {
+    const response = await fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(body),
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error(`Error while making POST request to ${url}. Body: ${body}`)
+    }
+
+    if (await response.text() === "") {
+        return Promise.resolve()
+    }
+    return await response.json()
 }

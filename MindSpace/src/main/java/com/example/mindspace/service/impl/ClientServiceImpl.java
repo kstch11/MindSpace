@@ -57,6 +57,12 @@ public class ClientServiceImpl {
         clientRepository.save(client);
     }
 
+    public void setRegistrationComplete(UserPrincipal userPrincipal) {
+        Client client = findById(userPrincipal.getId());
+        client.setRegistrationFinished(true);
+        clientRepository.save(client);
+    }
+
     /**
      * get client id
      *

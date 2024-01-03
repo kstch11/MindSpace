@@ -9,11 +9,15 @@ import {
     Group,
     rem,
     Center,
-    Badge,
+    Badge, Loader,
 } from '@mantine/core';
 import {useToggle} from "@mantine/hooks";
 import {useEffect} from "react";
 import React from "react";
+import {useMutation} from "@tanstack/react-query";
+import {postQuestionnaire, putTherapist} from "../../api/client-api";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -58,7 +62,8 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function TherapistData({toggleValue}) {
+export function TherapistData({toggleValue, therapistData, onClickChooseTherapist}) {
+    const accessToken = useSelector(state => state.currentUser.accessToken);
     const {classes} = useStyles();
     const [type, toggle] = useToggle(['all', 'client', 'clientRegistration', 'therapist', 'admin']);
 
@@ -123,7 +128,7 @@ export function TherapistData({toggleValue}) {
                                     <Badge mr="xs">5 years experience</Badge>
                                     <Badge mr="xs">50€/appointment</Badge>
                                 </div>
-                                <Button>Choose a therapist</Button>
+                                <Button onClick={onClickChooseTherapist}>Choose a therapist</Button>
                             </div>
                         )}
                     </Group>

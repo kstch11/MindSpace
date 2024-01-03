@@ -52,6 +52,15 @@ public class ClientsController {
     }
 
     /**
+     * Gets current client
+     */
+    @PutMapping("/profile/regDone")
+    public ResponseEntity<Void> setRegistrationComplete(@CurrentUser UserPrincipal userPrincipal) {
+        clientService.setRegistrationComplete(userPrincipal);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Posts a questionnaire and recommends therapists based on the answers.
      */
     @PostMapping("/questionnaire")
@@ -64,12 +73,12 @@ public class ClientsController {
     /**
      * Set ner therapist
      */
-    @PutMapping("/{id}/therapist")
+    @PutMapping("/therapist")
     public ResponseEntity<Void> setTherapist(
-            @PathVariable Integer id,
+            @CurrentUser UserPrincipal userPrincipal,
             @RequestBody ClientTherapistRelationRequest request
     ) {
-        clientService.setNewTherapist(id, request);
+        clientService.setNewTherapist(userPrincipal.getId(), request);
         return ResponseEntity.ok().build();
     }
 

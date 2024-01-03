@@ -19,6 +19,7 @@ import LogOut from "./common-pages/autentication/LogOut";
 import AuthWrapper from "./common-pages/autentication/AuthWrapper";
 import {Schedule} from "./therapist-profile/Schedule";
 import {TherapistData} from "./common-pages/therapists-list/TherapistData";
+import ClientSuccessRegistration from "./client-profile/ClientSuccessRegistration";
 
 export default function AppRoutes() {
     const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
@@ -77,6 +78,10 @@ export default function AppRoutes() {
                         <Route path="/therapistProfile" element={<PrivateRoute/>}>
                             <Route path="/therapistProfile" element={<TherapistNavbar/>}/>
                         </Route>
+                        <Route path="/clientDoneRegistration" element={<PrivateRoute/>}>
+                            <Route path="/clientDoneRegistration" element={<ClientSuccessRegistration/>}/>
+                        </Route>
+
                         <Route path="/therapistProfile" element={<TherapistNavbar/>}/>
                         <Route path="/forTherapists" element={<TherapistMainPage/>}/>
                         <Route path="/therapistsList" element={<TherapistsList toggleValue='all' />}/>

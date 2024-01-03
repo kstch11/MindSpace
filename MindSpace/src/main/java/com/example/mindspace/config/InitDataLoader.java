@@ -74,13 +74,11 @@ public class InitDataLoader {
 
     private List<Theme> loadThemes() {
         List<String> themeNames = Arrays.asList(
-                "Relationships", "Coping skills", "Career", "Couples challenges",
-                "Emotional", "Major life transitions", "Patterns and behaviors",
-                "Sexual abuse", "Childhood", "Sexuality", "Children and divorce",
-                "Discomforts with therapy", "Establishing and maintaining relationships",
-                "Managing parenting struggles", "PTSD", "Traumatic or stressful events",
-                "Anxiety", "'S M A R T goals", "Communication patterns",
-                "Domestic violence", "Grief", "Our therapists", "Self-esteem"
+                "Depression", "Anxiety", "Stress", "Interpersonal relationships", "Emotion management",
+                "Self-esteem", "Self-acceptance", "Trauma or loss", "Addictions and habits",
+                "Personal development", "Professional issues", "Sexual issues", "Family issues",
+                "Relationship issues", "Loneliness", "Eating disorder", "Concentration issues",
+                "Panic attacks", "Insomnia", "Emotional dependence"
         );
 
         List<Theme> themes = new ArrayList<>();

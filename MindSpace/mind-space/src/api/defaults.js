@@ -10,6 +10,10 @@ export const USERS_DEFAULT_URL = "/users"
 
 export const CLIENT_DEFAULT_URL = "/clients"
 
+export const SPECIFICATION_DEFAULT_URL ="/themes"
+
+export const THERAPIST_DEFAULT_URL = "/therapists"
+
 
 export async function makeGetRequest(url, accessToken) {
     const response = await fetch(url, {

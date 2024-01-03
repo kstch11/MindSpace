@@ -14,6 +14,9 @@ import { useState, useEffect } from 'react';
 import {useForm} from "@mantine/form";
 import {DatePicker, DatePickerInput} from "@mantine/dates";
 import {useDisclosure} from "@mantine/hooks";
+import {useSelector} from "react-redux";
+import {useQuery} from "@tanstack/react-query";
+import {fetchAllSpecifications} from "../../api/specification-api";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -40,6 +43,8 @@ export function ApplicationStepper() {
     const {classes} = useStyles();
     const [active, setActive] = useState(0);
     const [visible, { toggle }] = useDisclosure(false);
+    const [formData, setFormData] = useState({specializations: []})
+    const accessToken = useSelector(state => state.currentUser.accessToken);
     const nextStep = async () => {
         const validation = await form.validate();
 
@@ -48,6 +53,25 @@ export function ApplicationStepper() {
         }
     };
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+    const {
+        isPending,
+        isError,
+        data,
+        isFetched,
+        error
+    } = useQuery({
+        queryKey: ['getAllSpecializations'], queryFn: () => fetchAllSpecifications(accessToken)
+    });
+
+    useEffect(() => {
+        if (isFetched) {
+            const specializationArray = data.map(s => s.name);
+            setFormData({
+                specializations: specializationArray
+            });
+        }
+    }, [data, isFetched])
 
     const form = useForm({
         initialValues: {
@@ -164,13 +188,7 @@ export function ApplicationStepper() {
                     <Stepper.Step label="Second step" description="Education">
                         <MultiSelect
                             required
-                            data={[
-                                'Depression', 'Anxiety', 'Stress', 'Interpersonal relationships', 'Emotion management',
-                                'Self-esteem', 'Self-acceptance', 'Trauma or loss', 'Addictions and habits',
-                                'Personal development', 'Professional issues', 'Sexual issues', 'Family issues',
-                                'Relationship issues', 'Loneliness', 'Eating disorder', 'Concentration issues',
-                                'Panic attacks', 'Insomnia', 'Emotional dependence', 'Concentration issues'
-                            ]}
+                            data={formData.specializations}
                             label="Choose the topics you work with:"
                             placeholder="Select specializations"
                             {...form.getInputProps('specialization')}

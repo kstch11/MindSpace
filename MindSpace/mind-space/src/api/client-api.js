@@ -10,13 +10,13 @@ import {
 export async function fetchClientProfile(clientId, accessToken) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + `/${clientId}`;
 
-    return makeGetRequest(url, accessToken)
+    return makeGetRequest(url, accessToken);
 }
 
 export async function fetchCurrentUser(accessToken) {
     const url = LOCAL_BACKEND_PATH + USERS_DEFAULT_URL + "/profile";
 
-    return makeGetRequest(url, accessToken)
+    return makeGetRequest(url, accessToken);
 }
 
 export async function setRegistrationComplete(accessToken) {
@@ -29,7 +29,7 @@ export async function postQuestionnaire(accessToken, questionnaireBody) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + "/questionnaire"
     console.log(url)
 
-    return makePostRequest(url, accessToken, questionnaireBody)
+    return makePostRequest(url, accessToken, questionnaireBody);
 }
 
 export async function putTherapist(accessToken, putTherapistBody) {

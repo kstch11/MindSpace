@@ -1,4 +1,15 @@
-import {createStyles, SimpleGrid, Pagination, rem, Title, Center, Transition, Loader} from "@mantine/core";
+import {
+    createStyles,
+    SimpleGrid,
+    Pagination,
+    rem,
+    Title,
+    Center,
+    Transition,
+    Loader,
+    Modal,
+    ScrollArea
+} from "@mantine/core";
 import {TherapistCard} from "./TherapistCard";
 import {useEffect, useState} from "react";
 import { IconSearch, IconVideo, IconUsers } from '@tabler/icons-react';
@@ -7,6 +18,7 @@ import {useToggle} from "@mantine/hooks";
 import {useMutation} from "@tanstack/react-query";
 import {postQuestionnaire} from "../../api/client-api";
 import {useSelector} from "react-redux";
+import {TherapistData} from "./TherapistData";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -32,6 +44,10 @@ const useStyles = createStyles((theme) =>({
       marginBottom: theme.spacing.sm,
     },
 
+    modal: {
+        width: 800,
+    },
+
     pagination: {
         marginTop: 40,
     }
@@ -41,8 +57,14 @@ export function TherapistsList({toggleValue, questionnaire}) {
     const accessToken = useSelector(state => state.currentUser.accessToken);
     const {classes} = useStyles();
     const [activePage, setActivePage] = useState(1);
-    const [type, toggle] = useToggle(['all', 'client'])
+    const [type, toggle] = useToggle(['all', 'client', 'clientRegistration', 'therapist', 'admin'])
     const [therapists, setTherapists] = useState([])
+    const [selectedTherapist, setSelectedTherapist] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleTherapistClick = () => {
+        setIsModalOpen(true);
+    };
 
 
     const {data, isPending, isSuccess, isError, mutate, error} = useMutation({
@@ -131,7 +153,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
     ]
 
     useEffect(() => {
-        if (['all', 'client'].includes(toggleValue)) {
+        if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
             toggle(toggleValue);
         }
     }, [toggleValue, toggle]);
@@ -180,7 +202,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
                         </SimpleGrid>
                     </div>
                 )}
-                {type === 'client' && (
+                {type !== 'all' && (
                     <Center>
                         <Title order={2} className={classes.title}>Choose a therapist</Title>
                     </Center>
@@ -194,9 +216,27 @@ export function TherapistsList({toggleValue, questionnaire}) {
                     ]}
                 >
                     {paginatedUsers.map((user, index) => (
-                        <TherapistCard key={index} userData={user} />
+                        <TherapistCard
+                            key={index}
+                            userData={user}
+                            onMoreInfo={() => handleTherapistClick()} />
                     ))}
                 </SimpleGrid>
+
+
+                    <Modal
+                        opened={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        title="Therapist details"
+                        className={classes.modal}
+                    >
+                        <ScrollArea h={600}>
+                            <TherapistData toggleValue={toggleValue} />
+                        </ScrollArea>
+                    </Modal>
+
+
+
 
                 <Center>
                     {totalPages > 1 && (

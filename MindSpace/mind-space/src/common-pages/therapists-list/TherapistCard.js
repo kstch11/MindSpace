@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) =>({
 
 }));
 
-export function TherapistCard({userData}) {
+export function TherapistCard({userData, onMoreInfo}) {
     const {classes} = useStyles()
     if (!userData) {
         return <div>Loading...</div>;
@@ -74,7 +74,7 @@ export function TherapistCard({userData}) {
                     50€/appointment
                 </Text>
 
-                <Button fullWidth mt="md">
+                <Button fullWidth mt="md" onClick={onMoreInfo}>
                     More about therapist
                 </Button>
             </Paper>

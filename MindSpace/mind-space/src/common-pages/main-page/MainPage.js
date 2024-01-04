@@ -10,6 +10,7 @@ import {
 } from '@mantine/core';
 import image from '../../assets/main.jpg';
 import {FeaturesCards} from "./SecondSection"
+import {useSelector} from "react-redux";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -64,6 +65,8 @@ const useStyles = createStyles((theme) => ({
 
 export function MainPage() {
   const { classes } = useStyles();
+  const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
+
   return (
       <MantineProvider
           theme={{

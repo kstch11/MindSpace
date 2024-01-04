@@ -2,6 +2,8 @@ import {TherapistData} from "../common-pages/therapists-list/TherapistData";
 import {ClientsTable} from "./ListOfClients";
 import {Schedule} from "./Schedule";
 import {Navbar} from "../parts/Navbar";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 
 const contentProps = [
     {
@@ -22,6 +24,11 @@ const contentProps = [
 ]
 
 export function TherapistNavbar() {
+    const isTherapist = useSelector(state => state.currentUser.profile.isTherapist);
+    if (!isTherapist) {
+        return <Navigate to={"/clientProfile"} />
+    }
+
     return(
         <Navbar contentProps={contentProps} />
     )

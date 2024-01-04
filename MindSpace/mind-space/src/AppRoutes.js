@@ -23,11 +23,6 @@ import ClientSuccessRegistration from "./client-profile/ClientSuccessRegistratio
 
 export default function AppRoutes() {
     const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
-
-    useEffect(() => {
-        console.log(isLoggedIn)
-    })
-
     return (
         <React.Fragment>
             <BrowserRouter>
@@ -38,6 +33,7 @@ export default function AppRoutes() {
                         {link: '/forTherapists', label: 'For therapists'},
                         {link: '/login', label: 'Log in'},
                     ] : [
+                        {link: '', label: 'Home'},
                         {link: '/logout', label: 'Log out'},
                         {link: '/clientProfile', label: 'Profile'}
                     ]}/>

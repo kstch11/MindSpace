@@ -1,12 +1,7 @@
 package com.example.mindspace.controller;
 
-import com.example.mindspace.api.ClientResponse;
-import com.example.mindspace.api.CreateReviewRequest;
-import com.example.mindspace.api.CreateReviewResponse;
-import com.example.mindspace.api.ReservationResponse;
-import com.example.mindspace.api.ReviewResponse;
-import com.example.mindspace.api.TherapistResponse;
-import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.api.*;
+import com.example.mindspace.service.impl.ScheduleServiceImpl;
 import com.example.mindspace.service.impl.TherapistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +21,8 @@ import java.util.List;
 public class TherapistController {
 
     private final TherapistServiceImpl therapistService;
+
+
 
     @Autowired
     public TherapistController(TherapistServiceImpl therapistService) {
@@ -64,6 +61,11 @@ public class TherapistController {
     public ResponseEntity<Void> updateTherapist(@PathVariable Integer id, @RequestBody UserRequest userRequest) {
         therapistService.updateTherapist(id, userRequest);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/allTherapists")
+    public ResponseEntity<List<TherapistResponse>> getAllTherapists() {
+        return new ResponseEntity<>(therapistService.getAllTherapists(), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/reviews")

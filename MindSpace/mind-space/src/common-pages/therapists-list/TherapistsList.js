@@ -143,8 +143,8 @@ export function TherapistsList({toggleValue, questionnaire}) {
     }
 
     if (updateTherapistSuccess) {
-        console.log("HERE")
-        return <Navigate to={"/clientDoneRegistration"} />
+        console.log("HERE");
+        // return <Navigate to={"/clientDoneRegistration"} />
     }
 
     return(
@@ -179,11 +179,6 @@ export function TherapistsList({toggleValue, questionnaire}) {
                         </SimpleGrid>
                     </div>
                 )}
-                {type !== 'all' && (
-                    <Center>
-                        <Title order={2} className={classes.title}>Choose a therapist</Title>
-                    </Center>
-                )}
                 <SimpleGrid
                     cols={3}
                     spacing="lg"
@@ -197,7 +192,6 @@ export function TherapistsList({toggleValue, questionnaire}) {
                             key={index}
                             userData={user}
                             onMoreInfo={() => handleTherapistClick(user)}
-
                         />
                     ))}
                 </SimpleGrid>
@@ -207,7 +201,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
                         opened={isModalOpen}
                         onClose={handleCloseTherapistInfo}
                         title="Therapist details"
-                        className={classes.modal}
+                        size="70%"
                     >
                         <ScrollArea h={600}>
                             <TherapistData toggleValue={toggleValue} therapistData={openedTherapist} onClickChooseTherapist={onClickChooseTherapist}/>

@@ -5,3 +5,4 @@ export async function fetchAllSpecifications(accessToken) {
 
     return makeGetRequest(url, accessToken);
 }
+

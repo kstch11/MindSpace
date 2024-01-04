@@ -80,36 +80,46 @@ export function ClientData({id}: { id : number }) {
         }
     )
 
+    function splitStringAtFirstSpace(str) {
+        const splitIndex = str.indexOf(' ');
+        if (splitIndex === -1) return [str];
+
+        const firstPart = str.substring(0, splitIndex);
+        const secondPart = str.substring(splitIndex + 1);
+        return [firstPart, secondPart];
+    }
+
     useEffect(() => {
         if (isFetched) {
+            const nameSplit = splitStringAtFirstSpace(data.name)
             setFormData({
-                name: data.name,
-                surname: data.surname,
+                name: nameSplit[0],
+                surname: nameSplit[1],
                 phoneNumber: data.phone,
                 email: data.email
             })
         }
     }, [data, isFetched]);
 
-    const getTherapist = async () => {
-        try {
-            const response = await axios.get(`https://localhost:8090/clients/${id}/therapist`);
-            return response.data;
-        } catch (err) {
-            console.error(err);
-            return null;
-        }
-    };
-
-    useEffect(() => {
-        const fetchTherapistData = async () => {
-            const fetchedTherapist = await getTherapist();
-            if (fetchedTherapist) {
-                setTherapistData(fetchedTherapist)
-            }
-        }
-        fetchTherapistData();
-    }, [])
+    // const getTherapist = async () => {
+    //     try {
+    //         const response = await axios.get(`https://localhost:8090/clients/${id}/therapist`);
+    //         return response.data;
+    //     } catch (err) {
+    //         console.error(err);
+    //         return null;
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     const fetchTherapistData = async () => {
+    //         const fetchedTherapist = await getTherapist();
+    //         if (fetchedTherapist) {
+    //             setTherapistData(fetchedTherapist)
+    //         }
+    //     }
+    //     fetchTherapistData();
+    // }, [])
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

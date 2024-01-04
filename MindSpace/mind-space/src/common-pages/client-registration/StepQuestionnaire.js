@@ -1,10 +1,10 @@
 import {useRef, useState} from 'react';
-import {Stepper, Button, Group, TextInput, Code, createStyles,  Center} from '@mantine/core';
+import {Stepper, Button, Group, Text, createStyles,  Center} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import Questionnaire from "./Questionnaire";
 import FirstStep from "./FirstStep";
-import ChooseTherapistStep from "./ChooseTherapistStep";
 import {TherapistsList} from "../therapists-list/TherapistsList";
+import { Navigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     questionnaire: {
@@ -54,6 +54,8 @@ export function StepQuestionnaire() {
         setTemporaryAnswers(data);
     };
 
+
+
     const nextStep = async () => {
         const validation = await form.validate();
 
@@ -81,8 +83,14 @@ export function StepQuestionnaire() {
                     <Stepper.Step label="Second step" description="How do you feel?">
                         <Questionnaire ref={questionnaireRef} onDataCollected={handleDataFromChild} />
                     </Stepper.Step>
+                    <Stepper.Step label="Third step" description="Choose a therapist">
+                        <TherapistsList
+                            toggleValue='clientRegistration'
+                            questionnaire={form.values}
+                        />
+                    </Stepper.Step>
                     <Stepper.Completed>
-                        <TherapistsList toggleValue='clientRegistration' questionnaire={form.values} />
+                        <Text>Congratulations! You've successfully registered at MindSpace, your trusted online platform for psychotherapy. We're delighted to welcome you to our community, and we're here to support you on your journey towards improved mental well-being. Your decision to seek help is a significant step, and we are committed to helping you find the solutions you need as quickly as possible. Our team of experienced professionals is here to guide and assist you every step of the way. Thank you for choosing MindSpace, and we look forward to working with you to achieve your goals and enhance your mental health.</Text>
                     </Stepper.Completed>
                 </Stepper>
 
@@ -92,8 +100,8 @@ export function StepQuestionnaire() {
                             Back
                         </Button>
                     )}
-                    {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-                    {active === 3 && <Button>Finish</Button>}
+                    {active !== 2 && <Button onClick={nextStep}>Next step</Button>}
+                    {active === 2 && <Button>Finish</Button>}
                 </Group>
             </div>
         </Center>

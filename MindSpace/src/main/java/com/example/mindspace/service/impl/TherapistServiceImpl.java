@@ -123,10 +123,10 @@ public class TherapistServiceImpl {
      * @param id id of therapist
      * @return schedule
      */
-    public ScheduleResponse getSchedule(Integer id) {
-        var schedule = findById(id).getSchedule();
-        return new ScheduleResponse();
-    }
+//    public ScheduleResponse getSchedule(Integer id) {
+//        var schedule = findById(id).getSchedule();
+//        return new ScheduleResponse();
+//    }
 
     /**
      * Updates a client
@@ -171,24 +171,26 @@ public class TherapistServiceImpl {
                 .toList();
     }
 
-    public List<Theme> findAllThemes(Therapist therapist) {
-        return therapist.getThemes();
+    public List<TherapistResponse> getAllTherapists() {
+        return therapistRepository.findAll().stream().map(t -> new TherapistResponse(
+                t.getId(),
+                t.getName(),
+                t.getSurname(),
+                t.getPhoneNumber(),
+                t.getEmail(),
+                t.isRegistrationFinished(),
+                t.getDescription(),
+                t.getEducation(),
+                t.getLanguages().stream().map(lang -> new LanguageResponse(lang.getId(), lang.getName())).toList(),
+                t.getPersonalTherapy(),
+                t.getPhoto(),
+                t.getTherapeuticCommunity(),
+                t.isApproved(),
+                true,
+                t.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+        )).toList();
     }
 
-    public void deleteTherapist(Therapist therapist) throws EntityNotFoundException {
-        if (therapist == null) {
-            throw new EntityNotFoundException("ty dolboeb ty zachem nesuschestvuyuschego terapevta udalyaesh?");
-        } else {
-            therapistRepository.delete(therapist);
-        }
-    }
-
-    public void addNewTheme(Theme theme, Therapist therapist) {
-        therapist.getThemes().add(theme);
-        theme.getTherapists().add(therapist);
-        therapistRepository.save(therapist);
-        themeRepository.save(theme);
-    }
 
     private Therapist findById(Integer id) {
         return therapistRepository.findById(id)

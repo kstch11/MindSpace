@@ -14,6 +14,8 @@ export const SPECIFICATION_DEFAULT_URL ="/themes"
 
 export const THERAPIST_DEFAULT_URL = "/therapists"
 
+export const SCHEDULE_DEFAULT_URL = "/schedule"
+
 
 export async function makeGetRequest(url, accessToken) {
     const response = await fetch(url, {

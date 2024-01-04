@@ -1,6 +1,5 @@
 import {TherapistData} from "../common-pages/therapists-list/TherapistData";
 import {ClientsTable} from "./ListOfClients";
-import {ReservationTable} from "./ListOfReservations";
 import {Schedule} from "./Schedule";
 import {Navbar} from "../parts/Navbar";
 

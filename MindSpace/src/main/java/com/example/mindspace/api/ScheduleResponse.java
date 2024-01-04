@@ -1,4 +1,8 @@
 package com.example.mindspace.api;
 
-public record ScheduleResponse() {
+import com.example.mindspace.model.TimeCell;
+
+import java.util.List;
+
+public record ScheduleResponse(Integer id, List<TimeCell> timeCells) {
 }

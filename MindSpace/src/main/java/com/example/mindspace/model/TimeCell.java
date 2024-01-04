@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class TimeCell extends AbstractEntity {
 
     private LocalDateTime startTime;
-    private Long duration;
+    private LocalDateTime endTime;
 
     @OneToOne
     private Reservation reservation;

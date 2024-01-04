@@ -96,18 +96,38 @@ public class InitDataLoader {
         var timecell2 = new TimeCell();
         var timecell3 = new TimeCell();
         var timecell4 = new TimeCell();
+        var timecell5 = new TimeCell();
+        var timecell6 = new TimeCell();
+        var timecell7 = new TimeCell();
+        var timecell8 = new TimeCell();
+        var timecell9 = new TimeCell();
 
-        timecell1.setStartTime(LocalDateTime.of(2023, 5, 29, 9, 0));
-        timecell2.setStartTime(LocalDateTime.of(2023, 5, 29, 12, 0));
-        timecell3.setStartTime(LocalDateTime.of(2023, 5, 31, 8, 0));
-        timecell4.setStartTime(LocalDateTime.of(2023, 5, 31, 11, 0));
 
-        return timeCellRepository.saveAll(Arrays.asList(timecell1, timecell2, timecell3, timecell4));
+        timecell1.setStartTime(LocalDateTime.of(2024, 1, 4, 9, 0));
+        timecell2.setStartTime(LocalDateTime.of(2024, 1, 4, 12, 0));
+        timecell3.setStartTime(LocalDateTime.of(2024, 1, 4, 8, 0));
+        timecell4.setStartTime(LocalDateTime.of(2024, 1, 4, 11, 0));
+        timecell5.setStartTime(LocalDateTime.of(2024, 1, 4, 13, 0));
+        timecell6.setStartTime(LocalDateTime.of(2024, 1, 3, 9, 0));
+        timecell7.setStartTime(LocalDateTime.of(2024, 1, 3, 10, 0));
+        timecell8.setStartTime(LocalDateTime.of(2024, 1, 3, 12, 0));
+        timecell9.setStartTime(LocalDateTime.of(2024, 1, 3, 11, 0));
+        timecell1.setEndTime(LocalDateTime.of(2024, 1, 4, 10, 0));
+        timecell2.setEndTime(LocalDateTime.of(2024, 1, 4, 13, 0));
+        timecell3.setEndTime(LocalDateTime.of(2024, 1, 4, 9, 0));
+        timecell4.setEndTime(LocalDateTime.of(2024, 1, 4, 12, 0));
+        timecell5.setEndTime(LocalDateTime.of(2024, 1, 4, 14, 0));
+        timecell6.setEndTime(LocalDateTime.of(2024, 1, 3, 10, 0));
+        timecell7.setEndTime(LocalDateTime.of(2024, 1, 3, 11, 0));
+        timecell8.setEndTime(LocalDateTime.of(2024, 1, 3, 13, 0));
+        timecell9.setEndTime(LocalDateTime.of(2024, 1, 3, 12, 0));
+
+        return timeCellRepository.saveAll(Arrays.asList(timecell1, timecell2, timecell3, timecell4, timecell5, timecell6, timecell7, timecell8, timecell9));
     }
 
     private List<Schedule> loadSchedules(List<Therapist> therapists, List<TimeCell> timeCells) {
-        var schedule1 = new Schedule(therapists.get(0), List.of(timeCells.get(0), timeCells.get(2)));
-        var schedule2 = new Schedule(therapists.get(1), List.of(timeCells.get(1), timeCells.get(3)));
+        var schedule1 = new Schedule(therapists.get(0), List.of(timeCells.get(0), timeCells.get(2), timeCells.get(1), timeCells.get(3), timeCells.get(4)));
+        var schedule2 = new Schedule(therapists.get(1), List.of(timeCells.get(5), timeCells.get(6), timeCells.get(7), timeCells.get(8)));
 
         List<Schedule> schedules = scheduleRepository.saveAll(Arrays.asList(schedule1, schedule2));
 

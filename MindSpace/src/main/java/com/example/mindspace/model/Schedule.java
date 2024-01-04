@@ -17,6 +17,6 @@ public class Schedule extends AbstractEntity {
     @JoinColumn(name = "therapist_id")
     private Therapist therapist;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST)
     private List<TimeCell> availableTimeCells;
 }

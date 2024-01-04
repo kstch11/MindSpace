@@ -13,6 +13,7 @@ import com.example.mindspace.model.Schedule;
 import com.example.mindspace.model.Theme;
 import com.example.mindspace.model.Therapist;
 import com.example.mindspace.model.TimeCell;
+import com.example.mindspace.service.interfaces.TimeCellService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -34,20 +35,23 @@ public class InitDataLoader {
     private final TherapistRepository therapistRepository;
     private final AdminRepository adminRepository;
 
+    private final TimeCellService timeCellService;
+
     public InitDataLoader(
             ClientRepository clientRepository,
             ThemeRepository themeRepository,
             TimeCellRepository timeCellRepository,
             ScheduleRepository scheduleRepository,
             TherapistRepository therapistRepository,
-            AdminRepository adminRepository
-    ) {
+            AdminRepository adminRepository,
+            TimeCellService timeCellService) {
         this.clientRepository = clientRepository;
         this.themeRepository = themeRepository;
         this.timeCellRepository = timeCellRepository;
         this.scheduleRepository = scheduleRepository;
         this.therapistRepository = therapistRepository;
         this.adminRepository = adminRepository;
+        this.timeCellService = timeCellService;
     }
 
     @PostConstruct
@@ -58,7 +62,7 @@ public class InitDataLoader {
         var themes = loadThemes();
         var timeCells = loadTimeCells();
         var therapists = loadTherapists(themes);
-        var schedules = loadSchedules(therapists, timeCells);
+        var schedules = loadSchedules(therapists);
 
         var clients = loadClients(therapists);
         loadAdmin();
@@ -125,21 +129,24 @@ public class InitDataLoader {
         return timeCellRepository.saveAll(Arrays.asList(timecell1, timecell2, timecell3, timecell4, timecell5, timecell6, timecell7, timecell8, timecell9));
     }
 
-    private List<Schedule> loadSchedules(List<Therapist> therapists, List<TimeCell> timeCells) {
-        var schedule1 = new Schedule(therapists.get(0), List.of(timeCells.get(0), timeCells.get(2), timeCells.get(1), timeCells.get(3), timeCells.get(4)));
-        var schedule2 = new Schedule(therapists.get(1), List.of(timeCells.get(5), timeCells.get(6), timeCells.get(7), timeCells.get(8)));
+    private List<Schedule> loadSchedules(List<Therapist> therapists) {
+        var schedule1 = new Schedule(therapists.get(0), List.of());
+        var schedule2 = new Schedule(therapists.get(1), List.of());
 
         List<Schedule> schedules = scheduleRepository.saveAll(Arrays.asList(schedule1, schedule2));
 
+        timeCellService.generateTimeCells(schedule1);
+        timeCellService.generateTimeCells(schedule2);
+
         // Set the owning side of the relationship
-        for (TimeCell timeCell : schedule1.getAvailableTimeCells()) {
-            timeCell.setSchedule(schedule1);
-            timeCellRepository.save(timeCell);
-        }
-        for (TimeCell timeCell : schedule2.getAvailableTimeCells()) {
-            timeCell.setSchedule(schedule2);
-            timeCellRepository.save(timeCell);
-        }
+//        for (TimeCell timeCell : schedule1.getAvailableTimeCells()) {
+//            timeCell.setSchedule(schedule1);
+//            timeCellRepository.save(timeCell);
+//        }
+//        for (TimeCell timeCell : schedule2.getAvailableTimeCells()) {
+//            timeCell.setSchedule(schedule2);
+//            timeCellRepository.save(timeCell);
+//        }
 
         return schedules;
     }

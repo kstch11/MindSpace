@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useState, useEffect } from 'react';
 import {useForm} from "@mantine/form";
-import {DatePicker, DatePickerInput} from "@mantine/dates";
+import {DatePickerInput} from "@mantine/dates";
 import {useDisclosure} from "@mantine/hooks";
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";

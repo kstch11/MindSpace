@@ -1,7 +1,9 @@
 package com.example.mindspace.service.interfaces;
 
-import com.example.mindspace.model.TimeCell;
+import com.example.mindspace.model.Schedule;
 
 public interface TimeCellService {
-    public void generateTimeCells();
+    public void generateTimeCells(Schedule schedule);
+
+    public void deleteExpiredTimeCells();
 }

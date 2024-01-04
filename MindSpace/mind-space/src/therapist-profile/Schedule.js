@@ -7,8 +7,10 @@ import {useEffect, useState} from "react";
 
 
 export function Schedule() {
-    const [scheduleData, setScheduleData] = useState({timeCells: []})
+    // const [scheduleData, setScheduleData] = useState({timeCells: []})
+    const [scheduleData, setScheduleData] = useState([])
     const accessToken = useSelector(state => state.currentUser.accessToken);
+    let timeCellsArray = []
 
     const {
         isPending,
@@ -21,24 +23,33 @@ export function Schedule() {
     })
 
     useEffect(() => {
-        console.log(data)
-    })
+        if (isFetched) {
+            console.log(data[0].timeCells)
+            timeCellsArray = data[0].timeCells.map((item, index) => ({
+                start: item.startTime,
+                end: item.endTime,
+            }))
+            console.log(timeCellsArray)
+            setScheduleData(timeCellsArray)
+            console.log(scheduleData)
+        }
+    }, [data, isFetched])
 
+    useEffect(() => {
+        console.log(scheduleData);
+
+    }, [scheduleData]);
     return(
         <div>
             <Calendar
                 plugins={[ timeGridPlugin ]}
                 initialView="timeGridWeek"
-                weekends={false}
                 headerToolbar={{
                     left: 'prev,next',
                     center: 'title',
                     right: 'timeGridWeek,timeGridDay'
                 }}
-                events={[
-                    { title: 'event 1', start: '2024-01-01T09:00:00Z', end: '2024-01-01T10:00:00Z' },
-                    { title: 'event 2', start: '2024-01-02T09:00:00Z', end: '2024-01-02T11:00:00Z' }
-                ]}
+                events={scheduleData}
             />
         </div>
     )

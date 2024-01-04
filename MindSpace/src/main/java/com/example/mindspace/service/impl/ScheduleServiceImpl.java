@@ -1,6 +1,7 @@
 package com.example.mindspace.service.impl;
 
 import com.example.mindspace.api.ScheduleResponse;
+import com.example.mindspace.api.TimeCellResponse;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Schedule;
 import com.example.mindspace.repository.ScheduleRepository;
@@ -29,6 +30,24 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.findAll().stream().map(s -> new ScheduleResponse(
                 s.getId(),
                 s.getAvailableTimeCells()
+                        .stream()
+                        .map(timeCell -> new TimeCellResponse(
+                                timeCell.getId(),
+                                timeCell.getStartTime(),
+                                timeCell.getEndTime(),
+                                timeCell.isReserved(),
+                                timeCell.isExpired(),
+                                timeCell.getReservation() != null
+                                        ? timeCell.getReservation().getClient() != null
+                                            ? timeCell.getReservation().getClient().getId()
+                                            : null
+                                        : null,
+                                timeCell.getReservation() != null
+                                        ?  timeCell.getReservation().getTherapist() != null
+                                            ? timeCell.getReservation().getTherapist().getId()
+                                            : null
+                                        : null
+                        )).toList()
         )).toList();
     }
 

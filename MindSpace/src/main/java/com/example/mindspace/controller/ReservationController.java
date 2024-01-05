@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
+    private final Logger LOGGER = Logger.getLogger(ReservationController.class.getName());
 
     private final ReservationServiceImpl reservationService;
 
@@ -27,6 +30,7 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<CreateReservationResponse> createReservation(@RequestBody ReservationRequest request) {
+        LOGGER.info("Upcoming request: " + request.clientId() + ", " + request.therapistId() + ", " + request.timeCellId());
         return new ResponseEntity<>(reservationService.createReservation(request), HttpStatus.CREATED);
     }
 

@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TimeCellServiceImpl implements TimeCellService {
     private final TimeCellRepository timeCellRepository;
-    private final ScheduleRepository scheduleRepository;
 
     @Override
     public void generateTimeCells(Schedule schedule) {

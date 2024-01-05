@@ -134,8 +134,5 @@ public class ReservationServiceImpl {
         reservation.setTimeCell(save);
         reservationRepository.save(reservation);
     }
-
-//    public Reservation findById(Integer id) {
-//        return reservationRepository.findById(id).get();
-//    }
+    
 }

@@ -22,9 +22,7 @@ export function StepQuestionnaire() {
             answers: [],
             name: '',
             surname: '',
-            phoneNumber: '',
-            website: '',
-            github: '',
+            phoneNumber: ''
         },
 
         validate: (values) => {

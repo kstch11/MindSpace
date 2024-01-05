@@ -16,6 +16,8 @@ export const THERAPIST_DEFAULT_URL = "/therapists"
 
 export const SCHEDULE_DEFAULT_URL = "/schedule"
 
+export const RESERVATION_DEFAULT_URL = "/reservations"
+
 
 export async function makeGetRequest(url, accessToken) {
     const response = await fetch(url, {
@@ -37,9 +39,12 @@ export async function makePostRequest(url, accessToken, body) {
         method: "POST",
         body: body ? JSON.stringify(body) : null,
         headers: {
-            "Authorization": `Bearer ${accessToken}`
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
         }
     })
+
+    console.log(body);
 
     if (!response.ok) {
         throw new Error(`Error while making POST request to ${url}. Body: ${body}`)

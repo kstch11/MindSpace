@@ -136,6 +136,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
 
     const onClickChooseTherapist = () => {
         setTherapist({ therapistId: openedTherapist.id});
+        console.log(openedTherapist.id)
     }
 
     if (updateTherapistPending) {
@@ -144,7 +145,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
 
     if (updateTherapistSuccess) {
         console.log("HERE");
-        // return <Navigate to={"/clientDoneRegistration"} />
+        return <Navigate to={"/clientDoneRegistration"} />
     }
 
     return(

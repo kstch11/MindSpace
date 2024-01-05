@@ -5,13 +5,13 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchSchedule} from "../api/therapist-api";
 import {useEffect, useState} from "react";
 import {postReservation} from "../api/reservation-api";
-import {fetchCurrentUser} from "../api/client-api";
+import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
 
 
 export function Schedule() {
     const [scheduleData, setScheduleData] = useState([])
     const accessToken = useSelector(state => state.currentUser.accessToken);
-    let timeCellsArray = []
+    let timeCellsArray = [];
 
     const {
         isPending,
@@ -30,11 +30,19 @@ export function Schedule() {
         queryKey: ['user'], queryFn: () => fetchCurrentUser(accessToken)
     })
 
+    const {
+        data: userDetails,
+        isFetched: userDetailsFetched
+    } = useQuery({
+        queryKey: ['userDetails'], queryFn: () => fetchClientProfile(accessToken, userData.id)
+    })
+
     useEffect(() => {
         if (userFetch) {
             console.log(userData)
         }
     })
+
 
     const {
         isPending: creationReservationPending,
@@ -77,11 +85,12 @@ export function Schedule() {
         clickInfo.jsEvent.preventDefault();
 
         const eventId = parseInt(clickInfo.event.id, 10)
-        mutate({therapistId: 1, clientId: 11, timeCellId: eventId + 1})
+
+        mutate({therapistId: userData.therapistId, clientId: userData.id, timeCellId: eventId + 1})
     }
 
     if (isSuccess) {
-        window.location.reload()
+        setTimeout(function () {window.location.reload()}, 5000)
     }
 
     return(
@@ -94,6 +103,11 @@ export function Schedule() {
                     center: 'title',
                     right: 'timeGridWeek,timeGridDay'
                 }}
+                nowIndicator={true}
+                weekends={false}
+                slotMinTime={'09:00:00'}
+                slotMaxTime={'18:30:00'}
+                height={600}
                 events={scheduleData}
                 eventClick={handleEventClick}
             />

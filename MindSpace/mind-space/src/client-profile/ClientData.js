@@ -11,7 +11,6 @@ import {
     TextInput,
     Loader
 } from '@mantine/core';
-import axios from 'axios';
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";
 import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
@@ -63,7 +62,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function ClientData({id}: { id : number }) {
+export function ClientData() {
     const {classes} = useStyles();
     const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: ''});
     const [therapistData, setTherapistData] = useState({});
@@ -88,47 +87,16 @@ export function ClientData({id}: { id : number }) {
         queryKey: ['clientTherapist'], queryFn: () => {}
     })
 
-    function splitStringAtFirstSpace(str) {
-        const splitIndex = str.indexOf(' ');
-        if (splitIndex === -1) return [str];
-
-        const firstPart = str.substring(0, splitIndex);
-        const secondPart = str.substring(splitIndex + 1);
-        return [firstPart, secondPart];
-    }
-
     useEffect(() => {
         if (isFetched) {
-            const nameSplit = splitStringAtFirstSpace(data.name)
             setFormData({
-                name: nameSplit[0],
-                surname: nameSplit[1],
+                name: data.name,
+                surname: data.surname,
                 phoneNumber: data.phone,
                 email: data.email
             })
         }
     }, [data, isFetched]);
-
-    // const getTherapist = async () => {
-    //     try {
-    //         const response = await axios.get(`https://localhost:8090/clients/${id}/therapist`);
-    //         return response.data;
-    //     } catch (err) {
-    //         console.error(err);
-    //         return null;
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     const fetchTherapistData = async () => {
-    //         const fetchedTherapist = await getTherapist();
-    //         if (fetchedTherapist) {
-    //             setTherapistData(fetchedTherapist)
-    //         }
-    //     }
-    //     fetchTherapistData();
-    // }, [])
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});

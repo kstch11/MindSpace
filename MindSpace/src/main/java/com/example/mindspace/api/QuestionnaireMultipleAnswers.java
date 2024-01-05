@@ -6,4 +6,4 @@ public record QuestionnaireMultipleAnswers(
         Integer id,
         String question,
         List<String> option
-) { }
+) implements QuestionnaireAnswer { }

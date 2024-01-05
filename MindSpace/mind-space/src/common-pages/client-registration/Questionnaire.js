@@ -109,7 +109,7 @@ const questionnaireData = [
     },
 ];
 
-const Questionnaire = forwardRef(({ onDataCollected }, ref) => {
+const Questionnaire = forwardRef((props, ref) => {
     const [answers, setAnswers] = useState({});
     const { classes } = useStyles();
 
@@ -119,11 +119,18 @@ const Questionnaire = forwardRef(({ onDataCollected }, ref) => {
             ...prevAnswers,
             [questionIndex]: { id: questionIndex, question: question, option: value },
         }));
+        console.log(answers)
     };
 
-    useImperativeHandle(ref, () => ({
-        getAnswers: () => Object.values(answers),
-    }));
+    // useImperativeHandle(ref, () => ({
+    //     getAnswers: () => Object.values(answers),
+    // }));
+
+    useImperativeHandle(ref, () =>{
+        return {
+            getAnswers: () => answers
+        }
+    });
 
     return (
         <Container

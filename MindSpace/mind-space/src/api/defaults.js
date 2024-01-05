@@ -35,16 +35,15 @@ export async function makeGetRequest(url, accessToken) {
 }
 
 export async function makePostRequest(url, accessToken, body) {
+    console.log(body);
     const response = await fetch(url, {
         method: "POST",
-        body: body ? JSON.stringify(body) : null,
+        body: JSON.stringify(body),
         headers: {
             "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
         }
     })
-
-    console.log(body);
 
     if (!response.ok) {
         throw new Error(`Error while making POST request to ${url}. Body: ${body}`)

@@ -108,7 +108,13 @@ export function TherapistsList({toggleValue, questionnaire}) {
     }, [isSuccess])
 
     useEffect(() => {
-        mutate()
+        console.log(questionnaire)
+        mutate({
+            name: questionnaire.name,
+            surname: questionnaire.surname,
+            phoneNumber: questionnaire.phoneNumber,
+            answers: [],
+        })
     }, [])
 
     useEffect(() => {
@@ -145,7 +151,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
 
     if (updateTherapistSuccess) {
         console.log("HERE");
-        return <Navigate to={"/clientDoneRegistration"} />
+        return <Navigate to={"/clientProfile"} />
     }
 
     return(

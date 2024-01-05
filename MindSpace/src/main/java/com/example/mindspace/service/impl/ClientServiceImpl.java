@@ -84,7 +84,11 @@ public class ClientServiceImpl {
 
     public List<TherapistResponse> saveQuestionnaire(UserPrincipal userPrincipal, QuestionnaireRequest questionnaireRequest) {
         Client client = findById(userPrincipal.getId());
-        // todo
+
+        client.setName(questionnaireRequest.name());
+        client.setSurname(questionnaireRequest.surname());
+        client.setPhoneNumber(questionnaireRequest.phoneNumber());
+        clientRepository.save(client);
         return therapistRepository.findAll()
                 .stream()
                 .map(therapist -> new TherapistResponse(
@@ -197,17 +201,6 @@ public class ClientServiceImpl {
         clientRepository.save(client);
     }
 
-//    public void createClient(Client client) {
-//        clientRepository.save(client);
-//    }
-
-//    public void deleteClient(Client client) {
-//        if (client == null) {
-//            throw new EntityNotFoundException("");
-//        } else {
-//            clientRepository.delete(client);
-//        }
-//    }
 
     private Client findById(Integer id) {
         return clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));

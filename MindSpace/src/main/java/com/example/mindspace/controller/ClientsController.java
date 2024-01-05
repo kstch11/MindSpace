@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientsController {
-
+    private final Logger LOGGER = Logger.getLogger(ClientsController.class.getName());
     private final ClientServiceImpl clientService;
 
     @Autowired
@@ -65,8 +66,9 @@ public class ClientsController {
      */
     @PostMapping("/questionnaire")
     public ResponseEntity<List<TherapistResponse>> postClientQuestionnaire(
-            @CurrentUser UserPrincipal userPrincipal, QuestionnaireRequest questionnaireRequest
+            @CurrentUser UserPrincipal userPrincipal, @RequestBody QuestionnaireRequest questionnaireRequest
     ) {
+        LOGGER.info("Upcoming data: " + questionnaireRequest.name() + ", " + questionnaireRequest.surname() + ", " + questionnaireRequest.phoneNumber());
         return new ResponseEntity<>(clientService.saveQuestionnaire(userPrincipal, questionnaireRequest), HttpStatus.OK);
     }
 

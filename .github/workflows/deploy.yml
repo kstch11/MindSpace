@@ -19,6 +19,8 @@ jobs:
       run: |
         cd MindSpace
         mvn clean install
+        cd target
+        ls
 
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5

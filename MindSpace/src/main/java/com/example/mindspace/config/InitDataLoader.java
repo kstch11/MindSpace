@@ -352,6 +352,7 @@ public class InitDataLoader {
 
     private Admin loadAdmin() {
         var admin = new Admin();
+        admin.setEmail("selinochka1@gmail.com");
 
         return adminRepository.save(admin);
     }

@@ -1,7 +1,6 @@
 package com.example.mindspace.controller;
 
 import com.example.mindspace.api.*;
-import com.example.mindspace.service.impl.ScheduleServiceImpl;
 import com.example.mindspace.service.impl.TherapistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ public class TherapistController {
     private final TherapistServiceImpl therapistService;
 
 
+
     @Autowired
     public TherapistController(TherapistServiceImpl therapistService) {
         this.therapistService = therapistService;
@@ -33,7 +33,7 @@ public class TherapistController {
     @GetMapping("/{id}")
     public ResponseEntity<TherapistResponse> getTherapist(@PathVariable Integer id) {
         LOGGER.info("Request is here");
-        return new ResponseEntity<>(therapistService.findTherapist(id), HttpStatus.OK);
+        return new ResponseEntity<>(therapistService.getTherapistDetails(id), HttpStatus.OK);
     }
 
     /**

@@ -29,8 +29,12 @@ const contentProps = [
 
 export function ClientNavbar() {
     const isTherapist = useSelector(state => state.currentUser.profile.isTherapist);
+    const isAdmin = useSelector(state => state.currentUser.profile.isAdmin);
     if (isTherapist) {
         return <Navigate to={"/therapistProfile"} />
+    }
+    if (isAdmin) {
+        return <Navigate to={"/adminProfile"} />
     }
     return(
         <Navbar contentProps={contentProps} />

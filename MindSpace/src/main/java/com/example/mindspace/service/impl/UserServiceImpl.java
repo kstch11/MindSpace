@@ -26,10 +26,10 @@ public class UserServiceImpl {
                 return clientService.getClientDetails(id);
             }
             case THERAPIST -> {
-                return therapistService.findTherapist(id);
+                return therapistService.getTherapistDetails(id);
             }
             default -> {
-                return new AdminResponse(id, user.getName());
+                return new AdminResponse(id, user.getName(), true, true);
             }
         }
     }

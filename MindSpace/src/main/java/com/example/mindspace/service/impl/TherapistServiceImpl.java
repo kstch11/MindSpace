@@ -6,7 +6,6 @@ import com.example.mindspace.api.CreateReviewResponse;
 import com.example.mindspace.api.LanguageResponse;
 import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.ReviewResponse;
-import com.example.mindspace.api.ScheduleResponse;
 import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.api.TopicResponse;
 import com.example.mindspace.api.UserRequest;
@@ -31,7 +30,7 @@ public class TherapistServiceImpl {
     private final ClientRepository clientRepository;
     private final ReviewRepository reviewRepository;
 
-    public TherapistResponse findTherapist(Integer id) {
+    public TherapistResponse getTherapistDetails(Integer id) {
         Therapist therapist = findById(id);
 
         return new TherapistResponse(

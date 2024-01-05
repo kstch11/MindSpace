@@ -9,7 +9,8 @@ const initialState = {
         email: '',
         phoneNumber: '',
         registrationFinished: false,
-        isTherapist: false
+        isTherapist: false,
+        isAdmin: false,
     },
 }
 

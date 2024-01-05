@@ -80,6 +80,14 @@ export function ClientData({id}: { id : number }) {
         }
     )
 
+    const {
+        isPending: therapistPending,
+        data: fetchedTherapist,
+        isFetched: therapistFetched
+    } = useQuery({
+        queryKey: ['clientTherapist'], queryFn: () => {}
+    })
+
     function splitStringAtFirstSpace(str) {
         const splitIndex = str.indexOf(' ');
         if (splitIndex === -1) return [str];

@@ -50,7 +50,7 @@ export function Schedule() {
     useEffect(() => {
         if (isFetched) {
             console.log(data[0])
-            timeCellsArray = data[0].timeCells.map((item, index) => ({
+            timeCellsArray = data[0].timeCells.filter(item => !item.isReserved).map((item, index) => ({
                 id: index,
                 title: `event ${index + 1}`,
                 start: item.startTime,
@@ -77,7 +77,11 @@ export function Schedule() {
         clickInfo.jsEvent.preventDefault();
 
         const eventId = parseInt(clickInfo.event.id, 10)
-        mutate({therapistId: 1, clientId: 11, timeCellId: eventId})
+        mutate({therapistId: 1, clientId: 11, timeCellId: eventId + 1})
+    }
+
+    if (isSuccess) {
+        window.location.reload()
     }
 
     return(

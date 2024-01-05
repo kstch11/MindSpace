@@ -82,6 +82,15 @@ public class ClientsController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/therapist")
+    public ResponseEntity<Void> getTherapist(
+            @CurrentUser UserPrincipal userPrincipal,
+            @RequestBody ClientTherapistRelationRequest request
+    ) {
+        clientService.setNewTherapist(userPrincipal.getId(), request);
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Cancel therapist
      */

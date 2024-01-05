@@ -11,7 +11,6 @@ import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
 export function Schedule() {
     const [scheduleData, setScheduleData] = useState([])
     const accessToken = useSelector(state => state.currentUser.accessToken);
-    let timeCellsArray = [];
 
     const {
         isPending,
@@ -58,12 +57,13 @@ export function Schedule() {
     useEffect(() => {
         if (isFetched) {
             console.log(data[0])
-            timeCellsArray = data[0].timeCells.filter(item => !item.isReserved).map((item, index) => ({
+            const timeCellsArray = data[0].map((item, index) => ({
                 id: index,
                 title: `event ${index + 1}`,
                 start: item.startTime,
                 end: item.endTime,
-            }))
+                editable: item.isReserved,
+            })).filter(item => !item.editable)
             console.log(timeCellsArray)
             setScheduleData(timeCellsArray)
             console.log(scheduleData)

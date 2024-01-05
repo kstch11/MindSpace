@@ -73,7 +73,7 @@ public class ClientsController {
     }
 
     /**
-     * Set ner therapist
+     * Set new therapist
      */
     @PutMapping("/therapist")
     public ResponseEntity<Void> setTherapist(

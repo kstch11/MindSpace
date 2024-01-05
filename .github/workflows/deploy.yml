@@ -21,13 +21,12 @@ jobs:
         mvn clean install
         cd target
         ls
-    - name: Get to MindSpace folder
-      run: cd MindSpace
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: kimseulseul/mind-space
         tags: latest
+        directory: MindSpace
         registry: docker.io
         dockerfile: MindSpace/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}

@@ -176,8 +176,8 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-
         </plugins>
+        <finalName>mind-space</finalName>
     </build>
 
 </project>

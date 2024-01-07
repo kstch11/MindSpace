@@ -1,6 +1,6 @@
 import {Box, Center, Group, Text, createStyles, rem, Tabs} from "@mantine/core";
 import {IconListSearch} from "@tabler/icons-react";
-import { useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -73,7 +73,13 @@ const useStyles = createStyles((theme) => ({
 
 export function Navbar({contentProps}) {
     const { classes, cx } = useStyles();
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(
+        parseInt(localStorage.getItem('activeNavbarIndex'), 10) || 0
+    );
+
+    useEffect(() => {
+        localStorage.setItem('activeNavbarIndex', activeIndex)
+    }, [activeIndex]);
 
     const renderActiveComponent = () => {
         const activeItem = contentProps[activeIndex];

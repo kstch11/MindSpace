@@ -31,3 +31,9 @@ export async function fetchSchedule(accessToken) {
 
     return makeGetRequest(url, accessToken);
 }
+
+export async function postReview(accessToken, therapistId, reviewBody) {
+    const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + `/${therapistId}/reviews`
+
+    return makePostRequest(url, accessToken, reviewBody)
+}

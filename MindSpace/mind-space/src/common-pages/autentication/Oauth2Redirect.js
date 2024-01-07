@@ -39,5 +39,11 @@ export default function Oauth2Redirect() {
         return <Navigate to={"/questionnaire"}/>
     }
 
-    return <Navigate to={"/"}/>;
+    if (!currentUser.isTherapist) {
+        return <Navigate to={"/clientProfile"}/>;
+    } else {
+        return <Navigate to={"/therapistProfile"}/>;
+    }
+
+
 }

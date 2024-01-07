@@ -17,7 +17,7 @@ import React from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchCurrentUser, postQuestionnaire, putTherapist} from "../../api/client-api";
 import {useSelector} from "react-redux";
-import {fetchTherapistProfile} from "../../api/therapist-api";
+import {fetchTherapistProfile, postReview} from "../../api/therapist-api";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -75,6 +75,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
     const [therapistInfo, setTherapistInfo] = useState({
         name: '', surname: '', education: '', languages: [], photo: '', topics: [], description: ''
     });
+    const [reviewText, setReviewText] = useState({author: null, text: ''});
 
     useEffect(() => {
         if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
@@ -125,6 +126,36 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
             })
         }
     }, [therapist, fetched])
+
+    const {
+        data: review,
+        isPending: reviewPending,
+        isSuccess,
+        mutate,
+    } = useMutation({
+        mutationFn: (review) => {
+            return postReview(accessToken, data.therapistId, review)
+        },
+    })
+
+    const handleCreateReview = () => {
+        setReviewText({
+            author: data.id,
+        })
+        console.log(reviewText.text)
+        console.log(data.id)
+        console.log(reviewText)
+        mutate({author: data.id, text: reviewText.text})
+    }
+
+    if (isSuccess) {
+        console.log("review was created")
+    }
+
+    const handleSubmitReview = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        setReviewText({...reviewText, [e.target.name]: e.target.value})
+    }
 
     const formatArrayToString = (array) => {
         if (!Array.isArray(array)) {
@@ -226,7 +257,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                     <Text>{formattedLanguages}</Text>
                     <Text c="dimmed" fz="lg" my="xs">Reviews</Text>
                     {type === 'client' && (
-                        <form  className={classes.form}>
+                        <form className={classes.form}>
                             <div className={classes.formField}>
                                 <Text>{}</Text>
                             </div>
@@ -234,11 +265,12 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                                 <Textarea
                                     required
                                     placeholder="Write your review"
-                                    // value={reviewText}
-                                    // onChange={(e) => setReviewText(e.target.value)}
+                                    name="text"
+                                    value={reviewText.text}
+                                    onChange={handleSubmitReview}
                                 />
                             </div>
-                            <Button type="submit">Submit Review</Button>
+                            <Button onClick={handleCreateReview} type="button">Submit Review</Button>
                         </form>
                     )}
                     <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">

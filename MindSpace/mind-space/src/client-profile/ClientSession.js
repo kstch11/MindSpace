@@ -147,42 +147,61 @@ export function ClientSession() {
             </Center>
         )
     }
+    console.log(clientReservation)
 
     if (clientReservation !== null) {
         console.log(clientReservation)
-        return (
-            <div className={classes.container}>
-                <Card shadow="xs" padding="lg" className={classes.videoCallContainer}>
-                    <Group position="center" direction="column" spacing="sm" className={classes.videoCallGroup}>
-                        <IconVideoCamera size={128} />
-                        <div  className={classes.sessionDate}>
-                            <Text className={classes.sessionText}>The nearest session:</Text>
-                            <Badge color="blue" className={classes.badge}>date
-                            </Badge>
-                        </div>
-                        <Button className={classes.startButton} size="lg">
-                            Start
-                        </Button>
-                    </Group>
-                </Card>
-                <div className={classes.therapistContainer}>
-                    <Avatar
-                        className={classes.therapistAvatar}
-                        src={therapistInfo.photo}
-                        radius={50}
-                        size={100}
-                    />
-                    <div>
-                        <Text size={"sm"} >Your therapist</Text>
+        if (clientReservation.length !== 0) {
+            const formattedDate = (dateString) => {
+                const [time, date] = dateString.split(' ');
+                const [hours, minutes] = time.split(':');
+                const [day, month, year] = date.split('/');
 
-                        <Text weight={500} size="lg" style={{ marginBottom: theme.spacing.md }}>
-                            {`${therapistInfo.name} ${therapistInfo.surname}`}
-                        </Text>
-                        <Button fullWidth={70}>Chat</Button>
+                const dateObj = new Date(year, month - 1, day, hours, minutes);
+
+                return `${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString()}`;
+            }
+
+            const readableDate = formattedDate(clientReservation[0].date)
+
+            return (
+                <div className={classes.container}>
+                    <Card shadow="xs" padding="lg" className={classes.videoCallContainer}>
+                        <Group position="center" direction="column" spacing="sm" className={classes.videoCallGroup}>
+                            <IconVideoCamera size={128} />
+                            <div  className={classes.sessionDate}>
+                                <Text className={classes.sessionText}>The nearest session:</Text>
+                                <Badge color="blue" className={classes.badge}>{readableDate}
+                                </Badge>
+                            </div>
+                            <Button className={classes.startButton} size="lg">
+                                Start
+                            </Button>
+                        </Group>
+                    </Card>
+                    <div className={classes.therapistContainer}>
+                        <Avatar
+                            className={classes.therapistAvatar}
+                            src={therapistInfo.photo}
+                            radius={50}
+                            size={100}
+                        />
+                        <div>
+                            <Text size={"sm"} >Your therapist</Text>
+
+                            <Text weight={500} size="lg" style={{ marginBottom: theme.spacing.md }}>
+                                {`${therapistInfo.name} ${therapistInfo.surname}`}
+                            </Text>
+                            <Button fullWidth={70}>Chat</Button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <Schedule></Schedule>
+            );
+        }
     } else {
         return (
             <Schedule></Schedule>

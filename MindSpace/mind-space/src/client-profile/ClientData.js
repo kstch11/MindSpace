@@ -3,7 +3,7 @@ import {
     createStyles,
     Container,
     Text,
-    useMantineTheme,
+    Notification,
     Title,
     Divider,
     rem,
@@ -12,8 +12,8 @@ import {
     Loader
 } from '@mantine/core';
 import {useSelector} from "react-redux";
-import {useQuery} from "@tanstack/react-query";
-import {fetchCurrentUser} from "../api/client-api";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {fetchCurrentUser, updateClient} from "../api/client-api";
 import {fetchTherapistProfile} from "../api/therapist-api";
 
 const useStyles = createStyles((theme) => ({
@@ -65,7 +65,7 @@ const useStyles = createStyles((theme) => ({
 
 export function ClientData() {
     const {classes} = useStyles();
-    const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: '', therapistId: null});
+    const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: ''});
     const [therapistData, setTherapistData] = useState({name: '', surname: ''});
     const accessToken = useSelector(state => state.currentUser.accessToken);
 
@@ -83,13 +83,12 @@ export function ClientData() {
 
     useEffect(() => {
         if (isFetched) {
-            console.log(data.therapistId)
+            console.log(data)
             setFormData({
                 name: data.name,
                 surname: data.surname,
                 phoneNumber: data.phone,
                 email: data.email,
-                therapistId: data.therapistId
             })
 
         }
@@ -114,6 +113,26 @@ export function ClientData() {
             })
         }
     },  [fetchedTherapist, therapistFetched])
+
+    const {
+        data: clientUpdate,
+        isPending: newDataPending,
+        isSuccess,
+        isError: newDataError,
+        mutate,
+        error: newError
+    } = useMutation({
+        mutationFn: (formData) => {
+            return updateClient(accessToken, formData, data.id)
+        }
+    })
+
+    const onClickSaveChanges = () => {
+        console.log(formData)
+        mutate(formData);
+    }
+
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -202,7 +221,7 @@ export function ClientData() {
                     </div>
                 </form>
             </div>
-            <Button className={classes.button}>Save</Button>
+            <Button onClick={onClickSaveChanges} className={classes.button}>Save</Button>
         </Container>
     );
 }

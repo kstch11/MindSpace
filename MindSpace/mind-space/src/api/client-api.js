@@ -46,3 +46,9 @@ export async function putTherapist(accessToken, putTherapistBody) {
     return makePutRequest(url, accessToken, putTherapistBody)
 }
 
+export async function updateClient(accessToken, putNewDetails, clientId) {
+    const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + `/${clientId}`
+
+    return makePutRequest(url, accessToken, putNewDetails)
+}
+

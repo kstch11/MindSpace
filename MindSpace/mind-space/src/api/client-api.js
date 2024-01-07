@@ -19,6 +19,13 @@ export async function fetchCurrentUser(accessToken) {
     return makeGetRequest(url, accessToken);
 }
 
+export async function fetchClientReservations(clientId, accessToken) {
+    const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + `/${clientId}/reservations`
+    console.log(url)
+
+    return makeGetRequest(url, accessToken);
+}
+
 export async function setRegistrationComplete(accessToken) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + "/profile/regDone"
 
@@ -38,3 +45,4 @@ export async function putTherapist(accessToken, putTherapistBody) {
 
     return makePutRequest(url, accessToken, putTherapistBody)
 }
+

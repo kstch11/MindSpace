@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/therapists")
 public class TherapistController {
+    private final Logger LOGGER = Logger.getLogger(TherapistController.class.getName());
 
     private final TherapistServiceImpl therapistService;
-
 
 
     @Autowired
@@ -30,7 +31,8 @@ public class TherapistController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TherapistResponse> getTherapist(Integer id) {
+    public ResponseEntity<TherapistResponse> getTherapist(@PathVariable Integer id) {
+        LOGGER.info("Request is here");
         return new ResponseEntity<>(therapistService.findTherapist(id), HttpStatus.OK);
     }
 

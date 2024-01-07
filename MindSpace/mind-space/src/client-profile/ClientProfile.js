@@ -4,6 +4,7 @@ import {ChangeTherapist} from "./ChangeTherapist";
 import {Navbar} from "../parts/Navbar";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
+import {TherapistData} from "../common-pages/therapists-list/TherapistData";
 
 const contentProps = [
     {
@@ -22,7 +23,7 @@ const contentProps = [
         label: "Therapist",
         order: 1,
         value: 'therapist',
-        component: <ChangeTherapist />,
+        component: <TherapistData toggleValue={'client'} />,
     },
 ]
 

@@ -9,6 +9,7 @@ import {
 
 export async function fetchTherapistProfile(therapistId, accessToken) {
     const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + `/${therapistId}`;
+    console.log(url);
 
     return makeGetRequest(url, accessToken);
 }

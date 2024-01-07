@@ -13,7 +13,8 @@ import {
 } from '@mantine/core';
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";
-import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
+import {fetchCurrentUser} from "../api/client-api";
+import {fetchTherapistProfile} from "../api/therapist-api";
 
 const useStyles = createStyles((theme) => ({
     paper: {
@@ -64,8 +65,8 @@ const useStyles = createStyles((theme) => ({
 
 export function ClientData() {
     const {classes} = useStyles();
-    const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: ''});
-    const [therapistData, setTherapistData] = useState({});
+    const [formData, setFormData] = useState({name: '', surname: '', email: '', phoneNumber: '', therapistId: null});
+    const [therapistData, setTherapistData] = useState({name: '', surname: ''});
     const accessToken = useSelector(state => state.currentUser.accessToken);
 
     const {
@@ -79,24 +80,40 @@ export function ClientData() {
         }
     )
 
+
+    useEffect(() => {
+        if (isFetched) {
+            console.log(data.therapistId)
+            setFormData({
+                name: data.name,
+                surname: data.surname,
+                phoneNumber: data.phone,
+                email: data.email,
+                therapistId: data.therapistId
+            })
+
+        }
+    }, [data, isFetched]);
+
     const {
         isPending: therapistPending,
         data: fetchedTherapist,
         isFetched: therapistFetched
     } = useQuery({
-        queryKey: ['clientTherapist'], queryFn: () => {}
+        queryKey: ['clientTherapist'],
+        queryFn: () => data && data.therapistId ? fetchTherapistProfile(data.therapistId, accessToken) : null,
+        enabled: !!data && !!data.therapistId,
     })
 
     useEffect(() => {
-        if (isFetched) {
-            setFormData({
-                name: data.name,
-                surname: data.surname,
-                phoneNumber: data.phone,
-                email: data.email
+        if (therapistFetched) {
+            console.log(fetchedTherapist)
+            setTherapistData({
+                name: fetchedTherapist.name,
+                surname: fetchedTherapist.surname,
             })
         }
-    }, [data, isFetched]);
+    },  [fetchedTherapist, therapistFetched])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -113,6 +130,8 @@ export function ClientData() {
     if (isError) {
         return <div>Error!</div>
     }
+
+    const fullName = `${therapistData.name} ${therapistData.surname}`;
 
     return (
         <Container className={classes.paper}>
@@ -171,7 +190,7 @@ export function ClientData() {
                 <form>
                     <div className={classes.form}>
                         <label>Therapist:</label>
-                        <Text className={classes.text}>{therapistData.name} {therapistData.surname}</Text>
+                        <Text className={classes.text}>{fullName}</Text>
                     </div>
                     <div className={classes.form}>
                         <label>Reservation:</label>

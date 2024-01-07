@@ -107,6 +107,7 @@ public class ClientsController {
      */
     @GetMapping("/{id}/reservations")
     public ResponseEntity<List<ReservationResponse>> getAllReservations(@PathVariable Integer id) {
+        LOGGER.info("Client is getting his reservations");
         return new ResponseEntity<>(clientService.findAllReservations(id), HttpStatus.OK);
     }
 

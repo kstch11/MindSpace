@@ -1,8 +1,8 @@
-export const LOCAL_BACKEND_PATH = "http://localhost:80"
+export const LOCAL_BACKEND_PATH = process.env.REACT_APP_BACKEND
 
 export const AUTH_URL = "/oauth2/authorize/google"
 
-export const LOCAL_REDIRECT_LINK = "http://localhost:3000/oauth2/redirect"
+export const LOCAL_REDIRECT_LINK = process.env.REACT_APP_REDIRECT
 
 export const AUTH_LOCAL_LINK = LOCAL_BACKEND_PATH + AUTH_URL + "?redirect_uri=" + LOCAL_REDIRECT_LINK
 
@@ -26,6 +26,7 @@ export async function makeGetRequest(url, accessToken) {
             "Authorization": `Bearer ${accessToken}`
         }
     })
+    console.log(url)
 
     if (!response.ok) {
         throw new Error(`Error while making GET request to ${url}`)

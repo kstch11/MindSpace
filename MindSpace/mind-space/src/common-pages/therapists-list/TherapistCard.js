@@ -24,6 +24,7 @@ export function TherapistCard({userData, onMoreInfo}) {
         return <div>Loading...</div>;
     }
 
+    console.log(userData)
 
     const renderSkills = (skills) => {
         if (!skills || skills.length === 0) return 'No skills listed';

@@ -2,12 +2,15 @@ package com.example.mindspace.security.oauth2;
 
 import com.example.mindspace.exception.OAuth2AuthenticationProcessingException;
 import com.example.mindspace.model.Client;
+import com.example.mindspace.model.Schedule;
 import com.example.mindspace.model.Therapist;
 import com.example.mindspace.model.User;
 import com.example.mindspace.repository.UserRepository;
 import com.example.mindspace.security.UserPrincipal;
 import com.example.mindspace.security.oauth2.user.OAuth2UserInfo;
 import com.example.mindspace.security.oauth2.user.OAuth2UserInfoFactory;
+import com.example.mindspace.service.impl.ScheduleServiceImpl;
+import com.example.mindspace.service.impl.TimeCellServiceImpl;
 import com.example.mindspace.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -31,6 +34,9 @@ import java.util.Optional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+
+    private final ScheduleServiceImpl scheduleService;
+    private final TimeCellServiceImpl timeCellService;
 
     private final String THERAPIST_ROLE = "THERAPIST";
 
@@ -78,6 +84,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // awww this is bs
         if (user instanceof Therapist therapist) {
             therapist.setPhoto(oAuth2UserInfo.getImageUrl());
+            Schedule schedule = new Schedule();
+            timeCellService.generateTimeCells(schedule);
+            therapist.setSchedule(schedule);
             return userRepository.save(therapist);
         }
 

@@ -13,6 +13,3 @@ export async function postReservation(accessToken, reservationBody) {
     return makePostRequest(url, accessToken, reservationBody)
 }
 
-export async function getReservations(accessToken) {
-
-}

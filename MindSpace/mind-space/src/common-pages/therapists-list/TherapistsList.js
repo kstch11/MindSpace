@@ -8,7 +8,7 @@ import {
     Transition,
     Loader,
     Modal,
-    ScrollArea
+    ScrollArea, Group
 } from "@mantine/core";
 import {TherapistCard} from "./TherapistCard";
 import React, {useEffect, useState} from "react";
@@ -102,6 +102,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
                 description: fetched.description,
                 specialization: fetched.topics && fetched.topics.map(topic => topic.name)
             }))
+            console.log(mappedData)
             setTherapists(mappedData)
         }
 
@@ -141,6 +142,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
     }
 
     const onClickChooseTherapist = () => {
+        console.log(openedTherapist)
         setTherapist({ therapistId: openedTherapist.id});
         console.log(openedTherapist.id)
     }
@@ -151,7 +153,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
 
     if (updateTherapistSuccess) {
         console.log("HERE");
-        return <Navigate to={"/clientProfile"} />
+        return <Navigate to={"/clientDoneRegistration"} />
     }
 
     return(
@@ -203,17 +205,21 @@ export function TherapistsList({toggleValue, questionnaire}) {
                     ))}
                 </SimpleGrid>
 
-
+                <Group position="center">
                     <Modal
                         opened={isModalOpen}
                         onClose={handleCloseTherapistInfo}
-                        title="Therapist details"
+                        overlayProps={{
+                            opacity: 0.7,
+                            blur: 2,
+                        }}
                         size="70%"
                     >
                         <ScrollArea h={600}>
                             <TherapistData toggleValue={toggleValue} therapistData={openedTherapist} onClickChooseTherapist={onClickChooseTherapist}/>
                         </ScrollArea>
                     </Modal>
+                </Group>
 
                 <Center>
                     {totalPages > 1 && (

@@ -42,6 +42,12 @@ export function Schedule() {
         }
     })
 
+    useEffect(() => {
+        if (userDetailsFetched) {
+            console.log(userDetails)
+        }
+    })
+
 
     const {
         isPending: creationReservationPending,
@@ -57,7 +63,7 @@ export function Schedule() {
     useEffect(() => {
         if (isFetched) {
             console.log(data[0])
-            const timeCellsArray = data[0].map((item, index) => ({
+            const timeCellsArray = data[0].timeCells.map((item, index) => ({
                 id: index,
                 title: `event ${index + 1}`,
                 start: item.startTime,

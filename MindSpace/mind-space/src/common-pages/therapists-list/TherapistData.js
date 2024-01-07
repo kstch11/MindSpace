@@ -12,12 +12,12 @@ import {
     Badge, Loader,
 } from '@mantine/core';
 import {useToggle} from "@mantine/hooks";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import React from "react";
-import {useMutation} from "@tanstack/react-query";
-import {postQuestionnaire, putTherapist} from "../../api/client-api";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {fetchCurrentUser, postQuestionnaire, putTherapist} from "../../api/client-api";
 import {useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
+import {fetchTherapistProfile} from "../../api/therapist-api";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -53,6 +53,12 @@ const useStyles = createStyles((theme) => ({
         },
     },
 
+    column: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start', // Align items to the left in a column
+    },
+
     form: {
         marginBottom: theme.spacing.md,
     },
@@ -66,12 +72,59 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
     const accessToken = useSelector(state => state.currentUser.accessToken);
     const {classes} = useStyles();
     const [type, toggle] = useToggle(['all', 'client', 'clientRegistration', 'therapist', 'admin']);
+    const [therapistInfo, setTherapistInfo] = useState({
+        name: '', surname: '', education: '', languages: [], photo: '', topics: [], description: ''
+    });
 
     useEffect(() => {
         if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
             toggle(toggleValue);
         }
     }, [toggleValue, toggle]);
+
+    const {
+        isPending,
+        isError,
+        data,
+        isFetched,
+        error
+    } = useQuery({
+            queryKey: ['clientProfile'], queryFn: () => fetchCurrentUser(accessToken)
+        }
+    )
+
+    useEffect(() => {
+        if (isFetched) {
+            console.log(data)
+        }
+    }, [data, isFetched])
+
+    const {
+        data: therapist,
+        isFetched: fetched,
+        isPending: pending,
+    } = useQuery({
+        queryKey: ['therapistFetching'],
+        queryFn: () => data && data.therapistId ? fetchTherapistProfile(data.therapistId, accessToken) : null,
+        enabled: !!data && !!data.therapistId,
+    })
+
+    useEffect(() => {
+        if (fetched) {
+            console.log(therapist)
+            const therapistLanguages = therapist.languages.map(l => l.name)
+            const therapistTopics = therapist.topics.map(t => t.name);
+            setTherapistInfo({
+                name: therapist.name,
+                surname: therapist.surname,
+                education: therapist.education,
+                languages: therapistLanguages,
+                photo: therapist.photo,
+                topics: therapistTopics,
+                description: therapist.description
+            })
+        }
+    }, [therapist, fetched])
 
     const formatArrayToString = (array) => {
         if (!Array.isArray(array)) {
@@ -86,14 +139,15 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
         return formattedArray.join(', ');
     }
 
-    const formattedSpecs = formatArrayToString(['Depression', 'Anxiety', 'Stress', 'Interpersonal relationships'])
+    const formattedTopics = formatArrayToString(therapistInfo.topics);
+    const formattedLanguages = formatArrayToString(therapistInfo.languages)
 
     return(
         <Center>
             <div className={classes.inner}>
                 <div>
                     <Group className={classes.group}>
-                        <Avatar radius="xl" size="xl" className={classes.avatar} />
+                        <Avatar radius="xl" size="xl" className={classes.avatar} src={therapistInfo.photo}/>
                         {type === 'therapist' && (
                             <div className={classes.floatText}>
                             <TextInput
@@ -107,9 +161,11 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                         </div>)}
                         {type === 'client' && (
                             <div className={classes.floatText}>
-                                <Text fz="lg" weight={700} >Olivia Anderson</Text>
-                                <Badge>5 years experience</Badge>
-                                <Button>Change therapist</Button>
+                                <Text fz="lg" weight={700} >{`${therapistInfo.name} ${therapistInfo.surname}`}</Text>
+                                <div className={classes.column}>
+                                    <Badge mb={7}>5 years experience</Badge>
+                                    <Button>Change therapist</Button>
+                                </div>
                             </div>
                         )}
                         {type === 'all' && (
@@ -123,7 +179,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                         )}
                         {type === 'clientRegistration' && (
                             <div className={classes.floatText}>
-                                <Text fz="lg" mb="xs" weight={700}>Olivia Anderson</Text>
+                                <Text fz="lg" mb="xs" weight={700}>{(therapistData !== undefined) ? `${therapistData.name} ${therapistData.surname}` : ''}</Text>
                                 <div>
                                     <Badge mr="xs">5 years experience</Badge>
                                     <Badge mr="xs">50€/appointment</Badge>
@@ -157,22 +213,17 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                 </div>
                 <div>
                     <Text c="dimmed" fz="lg" my="xs">Specialization</Text>
-                    <Text my="xs">{formattedSpecs}</Text>
+                    <Text my="xs">{formattedTopics}</Text>
                     {type !== 'therapist' && (
                         <div>
                             <Text c="dimmed" fz="lg" my="xs">Self-description</Text>
-                            <Text my="xs">I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you.</Text>
+                            <Text my="xs">{therapistInfo.description}</Text>
                         </div>
                     )}
                     <Text c="dimmed" fz="lg" my="xs">Education</Text>
-                    <Text my="xs">
-                        <p>2017 - Southern Academy of Psychological Studies. Integrative Psychotherapy.</p>
-                        <p>2015 - Eastern Institute of Psychoanalysis and Counseling. Child and Adolescent Psychology.</p>
-                        <p>2013 - Central Institute for Psychotherapeutic Research. Cognitive Behavioral Therapy.</p>
-                        <p>2011 - Global College of Existential Psychology. Existential Psychoanalysis.</p>
-                    </Text>
-                    <Text c="dimmed" fz="lg"my="xs">Therapy type</Text>
-                    <Text>Gestalt therapy, psychoanalysis</Text>
+                    <Text my="xs">{therapistInfo.education}</Text>
+                    <Text c="dimmed" fz="lg"my="xs">Spoken Languages</Text>
+                    <Text>{formattedLanguages}</Text>
                     <Text c="dimmed" fz="lg" my="xs">Reviews</Text>
                     {type === 'client' && (
                         <form  className={classes.form}>

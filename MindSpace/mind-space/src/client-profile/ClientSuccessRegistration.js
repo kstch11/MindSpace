@@ -1,4 +1,4 @@
-import {Button, Loader} from "@mantine/core";
+import {Button, Loader, Center} from "@mantine/core";
 import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchCurrentUser, putTherapist, setRegistrationComplete} from "../api/client-api";
@@ -32,23 +32,26 @@ export default function ClientSuccessRegistration() {
 
     useEffect(() => {
         if (isSuccess) {
-            regDoneMutate()
+            regDoneMutate();
         }
     }, [isSuccess])
 
-    if (isPending || regDoneIsPending) {
-        return <Loader/>
+    if (isSuccess) {
+        return <Navigate to={"/clientProfile"} />
     }
 
-    if (isError || regDoneIsError) {
-        return <div> Error</div>
-    }
+    // if (isPending || regDoneIsPending) {
+    //     return <Loader/>
+    // }
+    //
+    // if (isError || regDoneIsError) {
+    //     return <div> Error</div>
+    // }
 
 
     return (
-        <div>
-            <div>Registration was complete!</div>
-            <Button><a href={"/"}>Home</a></Button>
-        </div>
+        <Center>
+            <Loader/>
+        </Center>
     )
 }

@@ -205,6 +205,4 @@ public class ClientServiceImpl {
     private Client findById(Integer id) {
         return clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }
-
-
 }

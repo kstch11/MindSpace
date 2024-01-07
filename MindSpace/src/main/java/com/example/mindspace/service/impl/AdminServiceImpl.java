@@ -16,6 +16,13 @@ public class AdminServiceImpl {
     private final AdminRepository adminRepository;
     private final TherapistRepository therapistRepository;
 
+    /**
+     * Approves a therapist based on the provided therapist ID.
+     * If the therapist with the specified ID is not found, an EntityNotFoundException is thrown.
+     *
+     * @param therapistId The ID of the therapist to be approved.
+     * @throws EntityNotFoundException if the therapist is not found in the repository.
+     */
     public void approveTherapist(Integer therapistId) {
         var therapist = therapistRepository.findById(therapistId)
                 .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));

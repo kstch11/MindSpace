@@ -23,6 +23,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final TherapistRepository therapistRepository;
 
+    /**
+     * Creates a review from the given ReviewResponse.
+     *
+     * @param reviewDto Review details.
+     * @throws EntityNotFoundException if therapist or client not found.
+     * @throws Exception for other issues during review creation.
+     */
     @Override
     public void createReview(ReviewResponse reviewDto) throws Exception {
         var therapist = therapistRepository.findById(reviewDto.therapistId())
@@ -34,24 +41,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
-    //    @Override
-//    public void createReview(Client author, Therapist recipient, String text) throws Exception {
-//        Review review = new Review();
-//        if (author == null) {
-//            throw new Exception("Review cannot be created without an author");
-//        }
-//        if (recipient == null){
-//            throw new Exception("nu to zhe samoe tolko naoborot");
-//        }
-//        if (text == null) {
-//            throw new Exception("nelzya bez texta");
-//        }
-//        review.setAuthor(author);
-//        review.setRecipient(recipient);
-//        review.setText(text);
-//        reviewRepository.save(review);
-//    }
-
+    /**
+     * Retrieves reviews for a given therapist.
+     *
+     * @param therapist The therapist to find reviews for.
+     * @return List of reviews for the therapist.
+     */
     @Override
     public List<Review> findAllReviewsByRecipient(Therapist therapist) {
         return reviewRepository.findReviewsByRecipient(therapist);

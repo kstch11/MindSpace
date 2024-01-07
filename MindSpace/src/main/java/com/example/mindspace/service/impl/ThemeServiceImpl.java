@@ -13,6 +13,11 @@ import java.util.List;
 public class ThemeServiceImpl {
     private final ThemeRepository themeRepository;
 
+    /**
+     * Retrieves a list of all themes.
+     *
+     * @return List of ThemeResponse objects representing all themes.
+     */
     public List<ThemeResponse> findAllThemes() {
         return themeRepository.findAll().stream().map(t -> new ThemeResponse(
                 t.getId(),

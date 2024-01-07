@@ -30,6 +30,12 @@ public class TherapistServiceImpl {
     private final ClientRepository clientRepository;
     private final ReviewRepository reviewRepository;
 
+    /**
+     * Retrieves detailed information of a therapist by their ID.
+     *
+     * @param id The ID of the therapist.
+     * @return TherapistResponse containing detailed information about the therapist.
+     */
     public TherapistResponse getTherapistDetails(Integer id) {
         Therapist therapist = findById(id);
 
@@ -54,6 +60,7 @@ public class TherapistServiceImpl {
 
     /**
      * Find all reservations
+     *
      * @param id id of therapist
      * @return reservations list
      */
@@ -100,9 +107,10 @@ public class TherapistServiceImpl {
     }
 
     /**
-     * Find all reservations
-     * @param id id of therapist
-     * @return reservations list
+     * Retrieves all clients associated with a specific therapist.
+     *
+     * @param id The ID of the therapist.
+     * @return List of ClientResponse objects for the therapist's clients.
      */
     public List<ClientResponse> findAllClients(Integer id) {
         return findById(id).getClients().stream().map(r -> new ClientResponse(
@@ -128,10 +136,10 @@ public class TherapistServiceImpl {
 //    }
 
     /**
-     * Updates a client
+     * Updates therapist information based on the provided request.
      *
-     * @param id client id
-     * @param request request id
+     * @param id The ID of the therapist to update.
+     * @param request The request containing the updated information.
      */
     public void updateTherapist(Integer id, UserRequest request) {
         var therapist = findById(id);
@@ -152,6 +160,13 @@ public class TherapistServiceImpl {
         therapistRepository.save(therapist);
     }
 
+    /**
+     * Creates a new review for a therapist.
+     *
+     * @param therapistId The ID of the therapist.
+     * @param request The request details for creating the review.
+     * @return CreateReviewResponse containing the ID of the newly created review.
+     */
     public CreateReviewResponse createReview(Integer therapistId, CreateReviewRequest request) {
         var therapist = findById(therapistId);
         var client = clientRepository.findById(request.author())
@@ -162,6 +177,12 @@ public class TherapistServiceImpl {
         return new CreateReviewResponse(save.getId());
     }
 
+    /**
+     * Retrieves all reviews for a specific therapist.
+     *
+     * @param therapistId The ID of the therapist.
+     * @return List of ReviewResponse objects containing the reviews for the therapist.
+     */
     public List<ReviewResponse> getAllReviews(Integer therapistId) {
         var therapist = findById(therapistId);
 
@@ -170,6 +191,11 @@ public class TherapistServiceImpl {
                 .toList();
     }
 
+    /**
+     * Retrieves a list of all therapists.
+     *
+     * @return List of TherapistResponse objects representing all therapists.
+     */
     public List<TherapistResponse> getAllTherapists() {
         return therapistRepository.findAll().stream().map(t -> new TherapistResponse(
                 t.getId(),

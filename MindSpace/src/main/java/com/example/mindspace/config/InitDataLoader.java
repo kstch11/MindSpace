@@ -141,7 +141,8 @@ public class InitDataLoader {
                 "https://thumbs.dreamstime.com/b/handsome-old-man-looking-camera-outdoor-fall-male-portrait-attractive-confident-middle-aged-man-city-park-handsome-man-174761151.jpg",
                 "",
                 List.of(),
-                true
+                true,
+                7
         );
         therapist1.setName("Alex");
         therapist1.setSurname("Smith");
@@ -160,7 +161,8 @@ public class InitDataLoader {
                 "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww",
                 "",
                 List.of(),
-                true
+                true,
+                4
         );
         therapist2.setName("Jane");
         therapist2.setSurname("Wolf");
@@ -181,7 +183,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//ava_800_800_wm/avatar-212826-000227.png",
                 "Bay Area Therapists Network",
                 List.of(),
-                true
+                true,
+                4
         );
         therapist3.setName("Emily");
         therapist3.setSurname("Green");
@@ -201,7 +204,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//ava_800_800_wm/avatar-211746-001266.png",
                 "Chicago Therapists Alliance",
                 List.of(),
-                true
+                true,
+                9
         );
         therapist4.setName("David");
         therapist4.setSurname("Wilson");
@@ -221,7 +225,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//ava_800_800_wm/avatar-448391-055741.png",
                 "New York Psychotherapy Group",
                 List.of(),
-                true
+                true,
+                5
         );
         therapist5.setName("Sarah");
         therapist5.setSurname("Brown");
@@ -241,7 +246,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-212470-004033.png",
                 "National Association of Addiction Treatment Providers",
                 List.of(),
-                true
+                true,
+                3
         );
         therapist6.setName("Michael Lee");
         therapist6.setSurname("Patel");
@@ -261,7 +267,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-213375-002075.png",
                 "American Trauma Society",
                 List.of(),
-                true
+                true,
+                6
         );
         therapist7.setName("Angela");
         therapist7.setSurname("Davis");
@@ -281,7 +288,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-219504-033656.png",
                 "Gerontological Society of America",
                 List.of(),
-                true
+                true,
+                7
         );
         therapist8.setName("Jason");
         therapist8.setSurname("Martinez");
@@ -301,7 +309,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-416450-040272png",
                 "Anxiety and Depression Association of America",
                 List.of(),
-                true
+                true,
+                8
         );
         therapist9.setName("Nicole");
         therapist9.setSurname("Rodriguez");
@@ -321,7 +330,8 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-211741-001254.png",
                 "American Occupational Therapy Association",
                 List.of(),
-                true
+                true,
+                3
         );
         therapist10.setName("Christopher");
         therapist10.setSurname("Gonzalez");

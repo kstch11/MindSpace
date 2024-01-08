@@ -106,7 +106,8 @@ public class ClientServiceImpl {
                         therapist.getTherapeuticCommunity(),
                         therapist.isApproved(),
                         true,
-                        therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+                        therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList(),
+                        therapist.getExperience()
                 )).toList();
     }
 
@@ -169,7 +170,8 @@ public class ClientServiceImpl {
                                     therapist.getTherapeuticCommunity(),
                                     therapist.isApproved(),
                                     true,
-                                    therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+                                    therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList(),
+                                    therapist.getExperience()
                             )
                     );
                 })

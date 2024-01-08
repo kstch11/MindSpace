@@ -1,6 +1,8 @@
 package com.example.mindspace.controller;
 
 import com.example.mindspace.api.*;
+import com.example.mindspace.security.CurrentUser;
+import com.example.mindspace.security.UserPrincipal;
 import com.example.mindspace.service.impl.TherapistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,23 @@ public class TherapistController {
         return new ResponseEntity<>(therapistService.getTherapistDetails(id), HttpStatus.OK);
     }
 
+    @PutMapping("/profile/regDone")
+    public ResponseEntity<Void> setTherapistRegistrationComplete(@CurrentUser UserPrincipal userPrincipal) {
+        LOGGER.info("I am here");
+        therapistService.setTherapistRegistrationComplete(userPrincipal);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/therapistQuestionnaire")
+    public ResponseEntity<Void> postTherapistQuestionnaire(
+            @CurrentUser UserPrincipal userPrincipal,
+            @RequestBody TherapistQuestionnaireRequest questionnaireRequest
+            ) {
+        LOGGER.info("Now I am here");
+        therapistService.saveTherapistQuestionnaire(userPrincipal, questionnaireRequest);
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Get all reservations
      * @param id therapist id
@@ -57,7 +76,7 @@ public class TherapistController {
     }
 
     /**
-     * Updates client
+     * Updates therapist
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTherapist(@PathVariable Integer id, @RequestBody UserRequest userRequest) {

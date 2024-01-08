@@ -57,4 +57,6 @@ public class Therapist extends User {
     private List<TherapistCertificate> certificates;
 
     private boolean approved;
+
+    private Integer experience;
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SpokenLanguageRepository extends JpaRepository<SpokenLanguage, Integer> {
+    SpokenLanguage findByName(String name);
 }

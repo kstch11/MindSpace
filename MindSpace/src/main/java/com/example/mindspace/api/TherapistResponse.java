@@ -17,5 +17,6 @@ public record TherapistResponse(
         String therapeuticCommunity,
         boolean approved,
         boolean isTherapist,
-        List<TopicResponse> topics
+        List<TopicResponse> topics,
+        Integer experience
 ) implements UserResponse { }

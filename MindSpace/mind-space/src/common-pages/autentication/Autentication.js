@@ -40,7 +40,7 @@ export function AuthenticationForm(props: PaperProps) {
         <Center>
             <Paper className={classes.logform} radius="md" p="xl"  withBorder {...props}>
                 <Text size="lg" weight={500}>
-                    {type === 'client' ? 'Welcome to MindSpace, log in with' : 'Login for registered therapists'}
+                    {type === 'client' ? 'Welcome to MindSpace, log in with' : 'Login for therapists'}
                 </Text>
 
                 <Group grow mb="md" mt="md">

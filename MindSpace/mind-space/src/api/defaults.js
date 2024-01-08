@@ -54,6 +54,7 @@ export async function makePostRequest(url, accessToken, body) {
 }
 
 export async function makePutRequest(url, accessToken, body) {
+    console.log(JSON.stringify(body))
     const response = await fetch(url, {
         method: "PUT",
         body: JSON.stringify(body),
@@ -63,8 +64,9 @@ export async function makePutRequest(url, accessToken, body) {
         }
     })
 
+
     if (!response.ok) {
-        throw new Error(`Error while making POST request to ${url}. Body: ${body}`)
+        throw new Error(`Error while making PUT request to ${url}. Body: ${body}`)
     }
 
     if (await response.text() === "") {

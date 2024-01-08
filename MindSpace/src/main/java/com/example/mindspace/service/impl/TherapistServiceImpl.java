@@ -1,25 +1,16 @@
 package com.example.mindspace.service.impl;
 
-import com.example.mindspace.api.ClientResponse;
-import com.example.mindspace.api.CreateReviewRequest;
-import com.example.mindspace.api.CreateReviewResponse;
-import com.example.mindspace.api.LanguageResponse;
-import com.example.mindspace.api.ReservationResponse;
-import com.example.mindspace.api.ReviewResponse;
-import com.example.mindspace.api.TherapistResponse;
-import com.example.mindspace.api.TopicResponse;
-import com.example.mindspace.api.UserRequest;
-import com.example.mindspace.repository.ClientRepository;
-import com.example.mindspace.repository.ReviewRepository;
-import com.example.mindspace.repository.ThemeRepository;
-import com.example.mindspace.repository.TherapistRepository;
+import com.example.mindspace.api.*;
+import com.example.mindspace.repository.*;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.*;
+import com.example.mindspace.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +20,14 @@ public class TherapistServiceImpl {
     private final ThemeRepository themeRepository;
     private final ClientRepository clientRepository;
     private final ReviewRepository reviewRepository;
+    private final SpokenLanguageRepository languageRepository;
+    private final Logger LOGGER = Logger.getLogger(TherapistServiceImpl.class.getName());
+
+    public void setTherapistRegistrationComplete(UserPrincipal userPrincipal) {
+        Therapist therapist = findById(userPrincipal.getId());
+        therapist.setRegistrationFinished(true);
+        therapistRepository.save(therapist);
+    }
 
     public TherapistResponse getTherapistDetails(Integer id) {
         Therapist therapist = findById(id);
@@ -48,8 +47,40 @@ public class TherapistServiceImpl {
                 therapist.getTherapeuticCommunity(),
                 therapist.isApproved(),
                 true,
-                therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+                therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList(),
+                therapist.getExperience()
         );
+    }
+
+    public void saveTherapistQuestionnaire(UserPrincipal userPrincipal, TherapistQuestionnaireRequest questionnaireRequest) {
+        Therapist therapist = findById(userPrincipal.getId());
+
+        therapist.setName(questionnaireRequest.name());
+        therapist.setSurname(questionnaireRequest.surname());
+        therapist.setBirthDate(questionnaireRequest.birthDate());
+        if (questionnaireRequest.gender().equals("Male")) {
+            therapist.setGender(User.Gender.MALE);
+        } else if (questionnaireRequest.gender().equals("Female")) {
+            therapist.setGender(User.Gender.FEMALE);
+        } else {
+            therapist.setGender(User.Gender.NOT_STATED);
+        }
+        therapist.setDescription(questionnaireRequest.description());
+        List<Theme> topics = questionnaireRequest.topics().stream().map(t -> themeRepository.findByName(t)).toList();
+        therapist.setThemes(topics);
+        therapist.setEducation(questionnaireRequest.education());
+        therapist.setTherapeuticCommunity(questionnaireRequest.therapeuticCommunity());
+        List<SpokenLanguage> languages = questionnaireRequest.languages()
+                .stream()
+                .map(l -> languageRepository.findByName(l))
+                .toList();
+        therapist.setLanguages(languages);
+        therapist.setPersonalTherapy(questionnaireRequest.personalPsychotherapy());
+        therapist.setExperience(questionnaireRequest.experience());
+        therapist.setPhoneNumber(questionnaireRequest.phoneNumber());
+        therapist.setApproved(false);
+        LOGGER.info("Therapist is here");
+        therapistRepository.save(therapist);
     }
 
     /**
@@ -92,7 +123,8 @@ public class TherapistServiceImpl {
                                     therapist.getTherapeuticCommunity(),
                                     therapist.isApproved(),
                                     true,
-                                    therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+                                    therapist.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList(),
+                                    therapist.getExperience()
                             )
                     );
                 })
@@ -136,16 +168,16 @@ public class TherapistServiceImpl {
     public void updateTherapist(Integer id, UserRequest request) {
         var therapist = findById(id);
 
-        if (request.name() != null && request.name().isBlank()) {
+        if (request.name() != null && !request.name().isBlank()) {
             therapist.setName(request.name());
         }
-        if (request.surname() != null && request.surname().isBlank()) {
+        if (request.surname() != null && !request.surname().isBlank()) {
             therapist.setSurname(request.surname());
         }
-        if (request.number() != null && request.number().isBlank()) {
+        if (request.number() != null && !request.number().isBlank()) {
             therapist.setPhoneNumber(request.number());
         }
-        if (request.email() != null && request.email().isBlank()) {
+        if (request.email() != null && !request.email().isBlank()) {
             therapist.setEmail(request.email());
         }
 
@@ -186,7 +218,8 @@ public class TherapistServiceImpl {
                 t.getTherapeuticCommunity(),
                 t.isApproved(),
                 true,
-                t.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList()
+                t.getThemes().stream().map(theme -> new TopicResponse(theme.getId(), theme.getName())).toList(),
+                t.getExperience()
         )).toList();
     }
 

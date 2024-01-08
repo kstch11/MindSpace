@@ -3,20 +3,23 @@ import {
     Stepper,
     Group,
     Button,
-    rem,
+    Center,
     TextInput,
     Textarea,
     MultiSelect,
     FileInput,
-    Select, PasswordInput
+    Select,
+    Title,
+    Text
 } from "@mantine/core";
 import { useState, useEffect } from 'react';
 import {useForm} from "@mantine/form";
-import {DatePickerInput} from "@mantine/dates";
+import {DatePickerInput, MonthPickerInput} from "@mantine/dates";
 import {useDisclosure} from "@mantine/hooks";
 import {useSelector} from "react-redux";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchAllSpecifications} from "../../api/specification-api";
+import {postTherapistQuestionnaire, setTherapistApplicationComplete} from "../../api/therapist-api";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -45,11 +48,54 @@ export function ApplicationStepper() {
     const [visible, { toggle }] = useDisclosure(false);
     const [formData, setFormData] = useState({specializations: []})
     const accessToken = useSelector(state => state.currentUser.accessToken);
+
+
+    const {
+        mutate,
+        isPending: questionnairePending,
+        isSuccess,
+        isError: questionnaireError
+    } = useMutation({
+        mutationFn: (questionnaireBody) => {
+            return postTherapistQuestionnaire(accessToken, questionnaireBody);
+        }
+    })
+
+    const handleTherapistRegistration = () => {
+        console.log(form.values)
+        mutate({
+            name: form.values.firstname,
+            surname: form.values.surname,
+            birthDate: form.values.dateOfBirth,
+            gender: form.values.gender,
+            description: form.values.description,
+            topics: form.values.specialization,
+            education: form.values.education,
+            therapeuticCommunity: form.values.therapeuricCommunity,
+            languages: form.values.languages,
+            personalTherapy: form.values.personalTherapy,
+            experience: calculateExperience(form.values.experience),
+            phoneNumber: form.values.phoneNumber
+        })
+    }
+
+    if (isSuccess) {
+        console.log("successfull registration")
+    }
+
     const nextStep = async () => {
         const validation = await form.validate();
 
         if (!validation.hasErrors) {
             setActive((current) => (current < 3 ? current + 1 : current));
+
+            if (active === 1) {
+                console.log(form.values);
+            }
+
+            if (active === 2) {
+                handleTherapistRegistration()
+            }
         }
     };
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -73,11 +119,28 @@ export function ApplicationStepper() {
         }
     }, [data, isFetched])
 
+    const calculateExperience = (startDate) => {
+        const currentDate = new Date();
+        const startYear = startDate.getFullYear();
+        const startMonth = startDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        let years = currentYear - startYear;
+        if (currentMonth < startMonth || (currentMonth === startMonth && currentDate.getDate() < startDate.getDate())) {
+            years--;
+        }
+
+        return years;
+    };
+
+
     const form = useForm({
         initialValues: {
             firstname:'',
             surname:'',
             dateOfBirth: null,
+            gender: '',
             description: '',
             education: '',
             specialization: [],
@@ -85,11 +148,8 @@ export function ApplicationStepper() {
             therapeuticCommunity: '',
             languages: [],
             personalTherapy: '',
-            photo: null,
             phoneNumber: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
+            experience: null,
         },
 
         validate: (values) => {
@@ -118,8 +178,6 @@ export function ApplicationStepper() {
             if (active === 1) {
                 return {
                     specialization: ((val) => (val.length < 3 ? 'You must choose at least 3 topics' : null))(values.specialization),
-                    education: values.education.trim().length < 5 ? 'Education must include at least 5 characters' : null,
-                    certificates: ((val) => (val.length === 0 ? 'You must upload your diploma' : null))(values.certificates),
                     therapeuticCommunity: values.therapeuticCommunity.trim().length < 2 ? 'You should answer at least something' : null,
                     languages: ((val) => (val.length === 0 ? 'You must choose at least 1 language' : null))(values.languages),
                 }
@@ -127,14 +185,8 @@ export function ApplicationStepper() {
 
             if (active === 2) {
                 return {
-                    email: ((val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'))(values.email),
-                    password: ((val) => (val.length < 6 ? 'Password should include at least 6 characters' : null))(values.password),
-                    confirmPassword: ((val) => {
-                        if (val !== form.values.password) {
-                            return 'Passwords do not match';
-                        }
-                        return null;
-                    })(values.confirmPassword),
+                    education: values.education.trim().length < 5 ? 'Education must include at least 5 characters' : null,
+                    certificates: ((val) => (val.length === 0 ? 'You must upload your diploma' : null))(values.certificates),
                 }
             }
 
@@ -170,12 +222,17 @@ export function ApplicationStepper() {
                             label="Your gender:"
                             placeholder="Pick one"
                             data={[
-                                { label: 'Male', value: 'male' },
-                                { label: 'Female', value: 'female' },
-                                { label: 'Other', value: 'other' },
+                                { label: 'Male', value: 'Male' },
+                                { label: 'Female', value: 'Female' },
                                 { label: 'Prefer not to say', value: 'noSelection'}
                             ]}
-                            {...form.getInputProps('personalTherapy')}
+                            {...form.getInputProps('gender')}
+                        />
+                        <TextInput
+                            required
+                            label="Phone number address for contacting"
+                            placeholder="Phone number"
+                            {...form.getInputProps('phoneNumber')}
                         />
                         <Textarea
                             label="Self-description"
@@ -185,7 +242,7 @@ export function ApplicationStepper() {
                             required
                         />
                     </Stepper.Step>
-                    <Stepper.Step label="Second step" description="Education">
+                    <Stepper.Step label="Second step" description="Professional information">
                         <MultiSelect
                             required
                             data={formData.specializations}
@@ -193,6 +250,39 @@ export function ApplicationStepper() {
                             placeholder="Select specializations"
                             {...form.getInputProps('specialization')}
                         />
+                        <MultiSelect
+                            required
+                            data={[
+                                'English', 'Czech', 'Ukrainian', 'German', 'Russian'
+                            ]}
+                            label="In which languages you can lead sessions?"
+                            placeholder="Languages"
+                            {...form.getInputProps('languages')}
+                        />
+                        <Textarea
+                            required
+                            label="Do you belong to any psychotherapeutic community. If yes, which one?"
+                            placeholder="Enter text here"
+                            {...form.getInputProps('therapeuticCommunity')}
+                        />
+                        <MonthPickerInput
+                            valueFormat="YYYY MMM"
+                            label="When did you start counseling? For money, not as part of a training program. Please choose year and month"
+                            placeholder="Date input"
+                            {...form.getInputProps('experience')}
+                        />
+                        <Select
+                            required
+                            label="Are you in personal psychotherapy?"
+                            placeholder="Pick one"
+                            data={[
+                                { label: 'Yes', value: 'yes' },
+                                { label: 'No', value: 'no' },
+                            ]}
+                            {...form.getInputProps('personalTherapy')}
+                        />
+                    </Stepper.Step>
+                    <Stepper.Step label="Final step" description="Education">
                         <TextInput
                             required
                             label="What is your higher education? Write about basic psychological (related) training or retraining: 1. Year of graduation 2. Name of institution of higher education 3. Name of department and specialization 4. Indicate academic degree (bachelor's, master's) or academic degree (if any)."
@@ -206,82 +296,27 @@ export function ApplicationStepper() {
                             multiple
                             required
                         />
-                        <Textarea
-                            required
-                            label="Do you belong to any psychotherapeutic community. If yes, which one?"
-                            placeholder="Enter text here"
-                            {...form.getInputProps('therapeuticCommunity')}
-                        />
-                        <MultiSelect
-                            required
-                            data={[
-                                'English', 'Czech', 'Ukrainian', 'German', 'Russian'
-                            ]}
-                            label="In which languages you can lead sessions?"
-                            placeholder="Languages"
-                            {...form.getInputProps('languages')}
-                        />
-                        <Select
-                            required
-                            label="Are you in personal psychotherapy?"
-                            placeholder="Pick one"
-                            data={[
-                                { label: 'Yes', value: 'yes' },
-                                { label: 'No', value: 'no' },
-                            ]}
-                            {...form.getInputProps('personalTherapy')}
-                        />
-                    </Stepper.Step>
-                    <Stepper.Step label="Final step" description="Contact information">
-                        <FileInput
-                            label="Please attach photos of detailed diplomas and certificates confirming the training. Required documents: (1) diploma of basic psychological (related) training / retraining (2) documents of training in the method. If the training is not completed, please attach a certificate from the training institution."
-                            placeholder="Upload your diplomas and certificates"
-                            {...form.getInputProps('photo')}
-                            multiple
-                            required
-                        />
-                        <TextInput
-                            required
-                            label="Phone number address for contacting"
-                            placeholder="Phone number"
-                            {...form.getInputProps('phoneNumber')}
-                        />
-                        <TextInput
-                            required
-                            label="E-mail address for contacting"
-                            placeholder="E-mail"
-                            {...form.getInputProps('email')}
-                        />
-                        <PasswordInput
-                            required
-                            label="Password"
-                            placeholder="Enter your password"
-                            visible={visible}
-                            onVisibilityChange={toggle}
-                            {...form.getInputProps('password')}
-                        />
-                        <PasswordInput
-                            required
-                            label="Confirm Password"
-                            placeholder="Confirm your password"
-                            error={form.errors.confirmPassword}
-                            visible={visible}
-                            onVisibilityChange={toggle}
-                            {...form.getInputProps('confirmPassword')}
-                        />
                     </Stepper.Step>
                     <Stepper.Completed>
-                        Completed, click back button to get to previous step
+                        <Center>
+                            <Title order={2}>You successfully sent an application!</Title>
+                            <Text c="dimmed">
+                                <p>Thank you for your application to join our team. We appreciate your interest in becoming a therapist with us. We want to let you know that your application is important to us, and our team will carefully review it.</p>
+                                <p>Once your application has been processed, you will be notified via email regarding the outcome. We kindly ask for your patience during this process, and we look forward to being in touch soon.</p>
+                                <p>If you have any urgent questions or concerns, please don't hesitate to contact us. Thank you for your interest in joining our team as a therapist.</p>
+                            </Text>
+                        </Center>
                     </Stepper.Completed>
                 </Stepper>
 
                 <Group position="right" mt="xl">
-                    {active !== 0 && (
+                    {(active !== 0 || active === 3) && (
                         <Button variant="default" onClick={prevStep}>
                             Back
                         </Button>
                     )}
                     {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
+                    {active === 3 && <Button>Finish</Button>}
                 </Group>
             </div>
         </div>

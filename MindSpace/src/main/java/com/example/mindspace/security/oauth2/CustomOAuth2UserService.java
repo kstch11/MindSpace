@@ -84,9 +84,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // awww this is bs
         if (user instanceof Therapist therapist) {
             therapist.setPhoto(oAuth2UserInfo.getImageUrl());
-            Schedule schedule = new Schedule();
-            timeCellService.generateTimeCells(schedule);
-            therapist.setSchedule(schedule);
             return userRepository.save(therapist);
         }
 

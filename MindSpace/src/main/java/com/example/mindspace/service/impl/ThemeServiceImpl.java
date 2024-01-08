@@ -19,4 +19,8 @@ public class ThemeServiceImpl {
                 t.getName()
         )).toList();
     }
+
+    public Theme findByName(String name) {
+        return themeRepository.findByName(name);
+    }
 }

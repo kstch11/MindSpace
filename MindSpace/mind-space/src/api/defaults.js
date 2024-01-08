@@ -26,7 +26,6 @@ export async function makeGetRequest(url, accessToken) {
             "Authorization": `Bearer ${accessToken}`
         }
     })
-    console.log(url)
 
     if (!response.ok) {
         throw new Error(`Error while making GET request to ${url}`)
@@ -36,7 +35,6 @@ export async function makeGetRequest(url, accessToken) {
 }
 
 export async function makePostRequest(url, accessToken, body) {
-    console.log(body);
     const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(body),
@@ -54,7 +52,6 @@ export async function makePostRequest(url, accessToken, body) {
 }
 
 export async function makePutRequest(url, accessToken, body) {
-    console.log(JSON.stringify(body))
     const response = await fetch(url, {
         method: "PUT",
         body: JSON.stringify(body),
@@ -63,7 +60,6 @@ export async function makePutRequest(url, accessToken, body) {
             "Content-Type": "application/json"
         }
     })
-
 
     if (!response.ok) {
         throw new Error(`Error while making PUT request to ${url}. Body: ${body}`)

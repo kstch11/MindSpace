@@ -5,7 +5,6 @@ import {
     rem,
     Title,
     Center,
-    Transition,
     Loader,
     Modal,
     ScrollArea, Group

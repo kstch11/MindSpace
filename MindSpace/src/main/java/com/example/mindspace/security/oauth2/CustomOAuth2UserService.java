@@ -35,9 +35,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
-    private final ScheduleServiceImpl scheduleService;
-    private final TimeCellServiceImpl timeCellService;
-
     private final String THERAPIST_ROLE = "THERAPIST";
 
     @Override

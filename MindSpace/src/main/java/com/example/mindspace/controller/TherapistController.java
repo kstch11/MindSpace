@@ -50,7 +50,6 @@ public class TherapistController {
             @CurrentUser UserPrincipal userPrincipal,
             @RequestBody TherapistQuestionnaireRequest questionnaireRequest
             ) {
-        LOGGER.info("Now I am here");
         therapistService.saveTherapistQuestionnaire(userPrincipal, questionnaireRequest);
         return ResponseEntity.ok().build();
     }

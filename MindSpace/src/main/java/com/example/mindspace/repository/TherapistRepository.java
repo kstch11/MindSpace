@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TherapistRepository extends JpaRepository<Therapist, Integer> {
-    Therapist findByName(String name);
-    Therapist findBySurname(String surname);
 }

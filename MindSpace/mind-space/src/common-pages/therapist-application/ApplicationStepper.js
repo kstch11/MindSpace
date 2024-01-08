@@ -19,7 +19,8 @@ import {useDisclosure} from "@mantine/hooks";
 import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchAllSpecifications} from "../../api/specification-api";
-import {postTherapistQuestionnaire, setTherapistApplicationComplete} from "../../api/therapist-api";
+import {postTherapistQuestionnaire} from "../../api/therapist-api";
+import {Navigate} from "react-router-dom";
 
 const useStyles = createStyles((theme) =>({
     inner: {
@@ -62,7 +63,6 @@ export function ApplicationStepper() {
     })
 
     const handleTherapistRegistration = () => {
-        console.log(form.values)
         mutate({
             name: form.values.firstname,
             surname: form.values.surname,
@@ -71,17 +71,14 @@ export function ApplicationStepper() {
             description: form.values.description,
             topics: form.values.specialization,
             education: form.values.education,
-            therapeuticCommunity: form.values.therapeuricCommunity,
+            therapeuticCommunity: form.values.therapeuticCommunity,
             languages: form.values.languages,
-            personalTherapy: form.values.personalTherapy,
+            personalPsychotherapy: form.values.personalTherapy,
             experience: calculateExperience(form.values.experience),
             phoneNumber: form.values.phoneNumber
         })
     }
 
-    if (isSuccess) {
-        console.log("successfull registration")
-    }
 
     const nextStep = async () => {
         const validation = await form.validate();
@@ -89,16 +86,18 @@ export function ApplicationStepper() {
         if (!validation.hasErrors) {
             setActive((current) => (current < 3 ? current + 1 : current));
 
-            if (active === 1) {
-                console.log(form.values);
-            }
-
             if (active === 2) {
                 handleTherapistRegistration()
             }
         }
     };
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log("successful registration")
+        }
+    }, [isSuccess])
 
     const {
         isPending,
@@ -134,6 +133,10 @@ export function ApplicationStepper() {
         return years;
     };
 
+    const handleFinish = () => {
+        console.log("Therapist registered")
+        return <Navigate to={"/therapistDoneRegistration"} />
+    }
 
     const form = useForm({
         initialValues: {
@@ -310,13 +313,13 @@ export function ApplicationStepper() {
                 </Stepper>
 
                 <Group position="right" mt="xl">
-                    {(active !== 0 || active === 3) && (
+                    {(active !== 0 || active !== 3) && (
                         <Button variant="default" onClick={prevStep}>
                             Back
                         </Button>
                     )}
                     {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
-                    {active === 3 && <Button>Finish</Button>}
+                    {active === 3 && <Button onClick={handleFinish} type="button">Finish</Button>}
                 </Group>
             </div>
         </div>

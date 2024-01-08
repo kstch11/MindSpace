@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,20 +67,18 @@ public class TherapistServiceImpl {
             therapist.setGender(User.Gender.NOT_STATED);
         }
         therapist.setDescription(questionnaireRequest.description());
-        List<Theme> topics = questionnaireRequest.topics().stream().map(t -> themeRepository.findByName(t)).toList();
+        List<Theme> topics = questionnaireRequest.topics().stream().map(t -> themeRepository.findByName(t)).collect(Collectors.toList());
         therapist.setThemes(topics);
         therapist.setEducation(questionnaireRequest.education());
         therapist.setTherapeuticCommunity(questionnaireRequest.therapeuticCommunity());
         List<SpokenLanguage> languages = questionnaireRequest.languages()
                 .stream()
                 .map(l -> languageRepository.findByName(l))
-                .toList();
+                .collect(Collectors.toList());
         therapist.setLanguages(languages);
         therapist.setPersonalTherapy(questionnaireRequest.personalPsychotherapy());
         therapist.setExperience(questionnaireRequest.experience());
         therapist.setPhoneNumber(questionnaireRequest.phoneNumber());
-        therapist.setApproved(false);
-        LOGGER.info("Therapist is here");
         therapistRepository.save(therapist);
     }
 

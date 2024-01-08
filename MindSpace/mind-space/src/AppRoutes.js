@@ -21,6 +21,7 @@ import {Schedule} from "./therapist-profile/Schedule";
 import {TherapistData} from "./common-pages/therapists-list/TherapistData";
 import ClientSuccessRegistration from "./client-profile/ClientSuccessRegistration";
 import AdminProfile from "./admin-profile/AdminProfile";
+import TherapistSuccessRegistration from "./therapist-profile/TherapistSuccessRegistration";
 
 export default function AppRoutes() {
     const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
@@ -77,7 +78,9 @@ export default function AppRoutes() {
                         <Route path="/clientDoneRegistration" element={<PrivateRoute/>}>
                             <Route path="/clientDoneRegistration" element={<ClientSuccessRegistration/>}/>
                         </Route>
-
+                        <Route path="/therapistDoneRegistration" element={<PrivateRoute/>}>
+                            <Route path="/therapistDoneRegistration" element={<TherapistSuccessRegistration/>}/>
+                        </Route>
                         <Route path="/adminProfile" element={<PrivateRoute/>}>
                             <Route path="/adminProfile" element={<AdminProfile/>}/>
                         </Route>

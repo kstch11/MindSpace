@@ -8,8 +8,6 @@ import com.example.mindspace.api.ReservationResponse;
 import com.example.mindspace.api.TherapistResponse;
 import com.example.mindspace.api.TopicResponse;
 import com.example.mindspace.api.UserRequest;
-import com.example.mindspace.model.Reservation;
-import com.example.mindspace.model.Therapist;
 import com.example.mindspace.model.TimeCell;
 import com.example.mindspace.repository.ClientRepository;
 import com.example.mindspace.repository.ReservationRepository;

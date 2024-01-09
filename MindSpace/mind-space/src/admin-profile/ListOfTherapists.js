@@ -78,10 +78,10 @@ export default function ListOfTherapists() {
         return(
             <tr key={index} className={cx({ [classes.rowSelected]: selected })}>
                 <td>{item.id}</td>
-                <td>{item.name}</td>
+                <td>{item.name} {item.surname}</td>
                 <td>{item.surname}</td>
                 <td>{item.phone}</td>
-                <td>{item.email}</td>
+                <td>{item.experience}</td>
                 <td>{item.approved === true
                     ? <Button disabled={true}>Approved</Button>
                     : <Button onClick={() => approveTherapistMutate(item.id)}>Approve</Button>
@@ -104,9 +104,9 @@ export default function ListOfTherapists() {
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
-                                <th>Surname</th>
                                 <th>Phone number</th>
                                 <th>Email</th>
+                                <th>Experience</th>
                                 <th>Approve</th>
                             </tr>
                             </thead>

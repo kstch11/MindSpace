@@ -118,7 +118,7 @@ public class InitDataLoader {
 
         List<Schedule> schedules = scheduleRepository.saveAll(Arrays.asList(
                 schedule1, schedule2, schedule3, schedule4, schedule5,
-                schedule6, schedule7, schedule8, schedule9, schedule10
+                schedule6, schedule7, schedule8
         ));
 
         timeCellService.generateTimeCells(schedule1);
@@ -309,7 +309,7 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-416450-040272png",
                 "Anxiety and Depression Association of America",
                 List.of(),
-                true,
+                false,
                 8
         );
         therapist9.setName("Nicole");
@@ -330,7 +330,7 @@ public class InitDataLoader {
                 "https://meragor.com/files/styles//220_220_bottom_wm/avatar-211741-001254.png",
                 "American Occupational Therapy Association",
                 List.of(),
-                true,
+                false,
                 3
         );
         therapist10.setName("Christopher");
@@ -363,6 +363,7 @@ public class InitDataLoader {
     private Admin loadAdmin() {
         var admin = new Admin();
         admin.setEmail("selinochka1@gmail.com");
+        admin.setUserType(User.UserType.ADMIN);
 
         return adminRepository.save(admin);
     }

@@ -8,6 +8,7 @@ export default function LogOut() {
 
     useEffect(() => {
         localStorage.removeItem("ACCESS_TOKEN")
+        localStorage.removeItem("activeNavbarIndex")
         dispatch(revokedAccessToken())
     }, [])
 

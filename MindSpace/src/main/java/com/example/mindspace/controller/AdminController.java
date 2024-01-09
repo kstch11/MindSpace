@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Logger;
+
 /**
  * Service for admins.
  */
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final Logger LOG = Logger.getLogger(AdminController.class.getName());
     private final AdminServiceImpl adminService;
 
     @Autowired
@@ -28,6 +31,7 @@ public class AdminController {
      */
     @PutMapping("/approve/{id}")
     public ResponseEntity<Void> approveTherapist(@PathVariable Integer id) {
+        LOG.info("Admin is here");
         adminService.approveTherapist(id);
         return ResponseEntity.ok().build();
     }

@@ -3,7 +3,6 @@ import {
     createStyles,
     Container,
     Text,
-    Notification,
     Title,
     Divider,
     rem,

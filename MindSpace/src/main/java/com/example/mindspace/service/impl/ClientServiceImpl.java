@@ -89,6 +89,7 @@ public class ClientServiceImpl {
         clientRepository.save(client);
         return therapistRepository.findAll()
                 .stream()
+                .filter(t -> t.isApproved())
                 .map(therapist -> new TherapistResponse(
                         therapist.getId(),
                         therapist.getName(),

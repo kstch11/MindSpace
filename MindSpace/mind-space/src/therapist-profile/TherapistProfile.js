@@ -1,8 +1,9 @@
-import {Schedule} from "./Schedule";
+import {Schedule} from "../client-profile/Schedule";
 import {Navbar} from "../parts/Navbar";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 import TherapistInfo from "./TherapistInfo";
+import {TherapistSchedule} from "./TherapistSchedule";
 
 const contentProps = [
     {
@@ -15,7 +16,7 @@ const contentProps = [
         label: "Schedule",
         order: 1,
         value: 'schedule',
-        component: <Schedule />,
+        component: <TherapistSchedule />,
     },
 ]
 

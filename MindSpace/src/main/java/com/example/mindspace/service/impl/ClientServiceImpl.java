@@ -55,6 +55,11 @@ public class ClientServiceImpl {
         clientRepository.save(client);
     }
 
+    /**
+     * Sets the registration status of a client as complete.
+     *
+     * @param userPrincipal The user principal of the client.
+     */
     public void setRegistrationComplete(UserPrincipal userPrincipal) {
         Client client = findById(userPrincipal.getId());
         client.setRegistrationFinished(true);
@@ -80,6 +85,13 @@ public class ClientServiceImpl {
         );
     }
 
+    /**
+     * Processes a questionnaire submitted by a client and returns a list of approved therapists.
+     *
+     * @param userPrincipal The user principal of the client.
+     * @param questionnaireRequest The questionnaire request containing client's preferences.
+     * @return List of TherapistResponse objects matching the client's preferences.
+     */
     public List<TherapistResponse> saveQuestionnaire(UserPrincipal userPrincipal, QuestionnaireRequest questionnaireRequest) {
         Client client = findById(userPrincipal.getId());
 
@@ -130,7 +142,11 @@ public class ClientServiceImpl {
 
 
     /**
-     * Find all reservations.
+     * Finds all reservations associated with a specific client.
+     *
+     * @param clientId The ID of the client.
+     * @return List of ReservationResponse objects.
+     * @throws RuntimeException if the client is not found.
      */
     public List<ReservationResponse> findAllReservations(Integer clientId) {
         var client = clientRepository.findById(clientId)
@@ -202,7 +218,13 @@ public class ClientServiceImpl {
         clientRepository.save(client);
     }
 
-
+    /**
+     * Finds a client by their ID.
+     *
+     * @param id The ID of the client.
+     * @return Client object.
+     * @throws EntityNotFoundException if the client is not found.
+     */
     private Client findById(Integer id) {
         return clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }

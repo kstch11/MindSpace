@@ -17,7 +17,7 @@ import React from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchCurrentUser, postQuestionnaire, putTherapist} from "../../api/client-api";
 import {useSelector} from "react-redux";
-import {fetchTherapistProfile, postReview} from "../../api/therapist-api";
+import {fetchTherapistProfile, getReviews, postReview} from "../../api/therapist-api";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -56,7 +56,7 @@ const useStyles = createStyles((theme) => ({
     column: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start', // Align items to the left in a column
+        alignItems: 'flex-start',
     },
 
     form: {
@@ -76,6 +76,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
         name: '', surname: '', education: '', languages: [], photo: '', topics: [], description: ''
     });
     const [reviewText, setReviewText] = useState({author: null, text: ''});
+    const [reviews, setReviews] = useState([])
 
     useEffect(() => {
         if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
@@ -110,6 +111,15 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
         enabled: !!data && !!data.therapistId,
     })
 
+    const {
+        data: reviewss,
+        isFetched: fetchedData
+    } = useQuery({
+        queryFn: () => data && data.therapistId ? getReviews( accessToken, data.therapistId) : null,
+        enabled: !!data && !!data.therapistId,
+    })
+
+
     useEffect(() => {
         if (fetched) {
             console.log(therapist)
@@ -126,6 +136,19 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
             })
         }
     }, [therapist, fetched])
+
+    useEffect(() => {
+        if (fetchedData) {
+            console.log(reviewss)
+            const mappedReview = reviewss.map(r => ({
+                reviewAuthor: data.name,
+                text: r.text,
+            }))
+            setReviews(mappedReview)
+        }
+    }, [fetchedData])
+
+
 
     const {
         data: review,
@@ -172,6 +195,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
 
     const formattedTopics = formatArrayToString(therapistInfo.topics);
     const formattedLanguages = formatArrayToString(therapistInfo.languages)
+
 
     return(
         <Center>
@@ -273,32 +297,22 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                             <Button onClick={handleCreateReview} type="button">Submit Review</Button>
                         </form>
                     )}
-                    <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
-                        <Group mb="xs">
-                            <Text size="md" fw={500}>Jacob Warnhalter</Text>
-                            <Text size="sm">
-                                This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
-                                concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
-                                water spouts that protrude from its shell. The water spouts are very accurate.
-                            </Text>
-                        </Group>
-                        <Group mb="xs">
-                            <Text size="md"  fw={500}>Jacob Warnhalter</Text>
-                            <Text size="sm">
-                                This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
-                                concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
-                                water spouts that protrude from its shell. The water spouts are very accurate.
-                            </Text>
-                        </Group>
-                        <Group mb="xs">
-                            <Text size="md"  fw={500}>Jacob Warnhalter</Text>
-                            <Text size="sm">
-                                This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
-                                concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
-                                water spouts that protrude from its shell. The water spouts are very accurate.
-                            </Text>
-                        </Group>
-                    </Spoiler>
+                    {reviews === 0 && (
+                        <Text>Therapist still does not have any reviews</Text>
+                    )}
+                    {reviews !== 0 && (
+                        <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
+                            {reviews.map(( index) => (
+                                <Group mb="xs">
+                                    <Text size="md" fw={500}>{index.name}</Text>
+                                    <Text size="sm">
+                                        {index.text}
+                                    </Text>
+                                </Group>
+                            ))}
+
+                        </Spoiler>
+                    )}
                 </div>
             </div>
         </Center>

@@ -92,7 +92,7 @@ class ReservationServiceImplTest {
         therapist.setSurname("Doe");
         therapist.setThemes(new ArrayList<>());
         therapist.setTherapeuticCommunity("Therapeutic Community");
-        therapist.setUserType(User.UserType.CLIENT);
+        therapist.setUserType(User.UserType.THERAPIST);
 
         Schedule schedule2 = new Schedule();
         schedule2.setAvailableTimeCells(new ArrayList<>());
@@ -121,7 +121,7 @@ class ReservationServiceImplTest {
         therapist2.setSurname("Doe");
         therapist2.setThemes(new ArrayList<>());
         therapist2.setTherapeuticCommunity("Therapeutic Community");
-        therapist2.setUserType(User.UserType.CLIENT);
+        therapist2.setUserType(User.UserType.THERAPIST);
         Optional<Therapist> ofResult = Optional.of(therapist2);
         when(therapistRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
 
@@ -160,7 +160,7 @@ class ReservationServiceImplTest {
         therapist.setSurname("Doe");
         therapist.setThemes(new ArrayList<>());
         therapist.setTherapeuticCommunity("Requested timeslot is not available");
-        therapist.setUserType(User.UserType.CLIENT);
+        therapist.setUserType(User.UserType.THERAPIST);
 
         Client client = new Client();
         client.setEmail("jane.doe@example.org");
@@ -367,7 +367,7 @@ class ReservationServiceImplTest {
         therapist.setSurname("Doe");
         therapist.setThemes(new ArrayList<>());
         therapist.setTherapeuticCommunity("Requested timeslot is not available");
-        therapist.setUserType(User.UserType.CLIENT);
+        therapist.setUserType(User.UserType.THERAPIST);
 
         Client client = new Client();
         client.setEmail("jane.doe@example.org");
@@ -409,7 +409,7 @@ class ReservationServiceImplTest {
         therapist2.setSurname("Doe");
         therapist2.setThemes(new ArrayList<>());
         therapist2.setTherapeuticCommunity("Requested timeslot is not available");
-        therapist2.setUserType(User.UserType.CLIENT);
+        therapist2.setUserType(User.UserType.THERAPIST);
 
         Reservation reservation = new Reservation();
         reservation.setClient(new Client());
@@ -462,7 +462,7 @@ class ReservationServiceImplTest {
         therapist3.setSurname("Doe");
         therapist3.setThemes(new ArrayList<>());
         therapist3.setTherapeuticCommunity("Requested timeslot is not available");
-        therapist3.setUserType(User.UserType.CLIENT);
+        therapist3.setUserType(User.UserType.THERAPIST);
 
         Schedule schedule4 = new Schedule();
         schedule4.setAvailableTimeCells(new ArrayList<>());
@@ -511,7 +511,7 @@ class ReservationServiceImplTest {
         client2.setReservations(new ArrayList<>());
         client2.setSurname("Requested timeslot is not available");
         client2.setTherapist(therapist4);
-        client2.setUserType(User.UserType.THERAPIST);
+        client2.setUserType(User.UserType.CLIENT);
 
         Schedule schedule5 = new Schedule();
         schedule5.setAvailableTimeCells(new ArrayList<>());
@@ -638,7 +638,7 @@ class ReservationServiceImplTest {
         therapist7.setSurname("Doe");
         therapist7.setThemes(new ArrayList<>());
         therapist7.setTherapeuticCommunity("Therapeutic Community");
-        therapist7.setUserType(User.UserType.CLIENT);
+        therapist7.setUserType(User.UserType.THERAPIST);
 
         Schedule schedule10 = new Schedule();
         schedule10.setAvailableTimeCells(availableTimeCells);
@@ -667,7 +667,7 @@ class ReservationServiceImplTest {
         therapist8.setSurname("Doe");
         therapist8.setThemes(new ArrayList<>());
         therapist8.setTherapeuticCommunity("Therapeutic Community");
-        therapist8.setUserType(User.UserType.CLIENT);
+        therapist8.setUserType(User.UserType.THERAPIST);
         Optional<Therapist> ofResult = Optional.of(therapist8);
         when(therapistRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
 

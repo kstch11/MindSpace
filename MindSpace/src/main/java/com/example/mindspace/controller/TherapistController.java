@@ -32,12 +32,24 @@ public class TherapistController {
         this.therapistService = therapistService;
     }
 
+    /**
+     * Retrieves the details of a therapist based on their ID.
+     *
+     * @param id The ID of the therapist.
+     * @return ResponseEntity containing the details of the therapist and an HTTP status code.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<TherapistResponse> getTherapist(@PathVariable Integer id) {
         LOGGER.info("Request is here");
         return new ResponseEntity<>(therapistService.getTherapistDetails(id), HttpStatus.OK);
     }
 
+    /**
+     * Marks the registration of a therapist as complete.
+     *
+     * @param userPrincipal The principal of the currently authenticated user.
+     * @return ResponseEntity indicating the operation's success.
+     */
     @PutMapping("/profile/regDone")
     public ResponseEntity<Void> setTherapistRegistrationComplete(@CurrentUser UserPrincipal userPrincipal) {
         LOGGER.info("I am here");
@@ -45,13 +57,19 @@ public class TherapistController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Submits and processes a therapist's questionnaire response.
+     *
+     * @param userPrincipal The principal of the currently authenticated therapist.
+     * @param questionnaireRequest The request containing the questionnaire data.
+     * @return ResponseEntity with the questionnaire response and an HTTP status code.
+     */
     @PostMapping("/therapistQuestionnaire")
-    public ResponseEntity<Void> postTherapistQuestionnaire(
+    public ResponseEntity<TherapistQuestionnaireResponse> postTherapistQuestionnaire(
             @CurrentUser UserPrincipal userPrincipal,
             @RequestBody TherapistQuestionnaireRequest questionnaireRequest
             ) {
-        therapistService.saveTherapistQuestionnaire(userPrincipal, questionnaireRequest);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(therapistService.saveTherapistQuestionnaire(userPrincipal, questionnaireRequest), HttpStatus.OK);
     }
 
     /**
@@ -75,7 +93,11 @@ public class TherapistController {
     }
 
     /**
-     * Updates therapist
+     * Updates the profile information of a therapist.
+     *
+     * @param id The ID of the therapist.
+     * @param userRequest The request containing the therapist's updated information.
+     * @return ResponseEntity indicating the operation's success.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTherapist(@PathVariable Integer id, @RequestBody UserRequest userRequest) {
@@ -83,11 +105,23 @@ public class TherapistController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Retrieves all registered therapists.
+     *
+     * @return ResponseEntity containing a list of all therapists and an HTTP status code.
+     */
     @GetMapping("/allTherapists")
     public ResponseEntity<List<TherapistResponse>> getAllTherapists() {
         return new ResponseEntity<>(therapistService.getAllTherapists(), HttpStatus.OK);
     }
 
+    /**
+     * Creates a review for a therapist.
+     *
+     * @param id The ID of the therapist.
+     * @param request The request containing details for creating the review.
+     * @return ResponseEntity containing the created review response and an HTTP status code.
+     */
     @PostMapping("/{id}/reviews")
     public ResponseEntity<CreateReviewResponse> createReview(
             @PathVariable Integer id,
@@ -96,6 +130,12 @@ public class TherapistController {
         return new ResponseEntity<>(therapistService.createReview(id, request), HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves all reviews for a therapist.
+     *
+     * @param id The ID of the therapist.
+     * @return ResponseEntity containing a list of reviews for the therapist and an HTTP status code.
+     */
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<ReviewResponse>> getReviews(
             @PathVariable Integer id

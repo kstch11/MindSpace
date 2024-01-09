@@ -63,3 +63,13 @@ self.addEventListener("fetch", (event) => {
         })(),
     );
 });
+
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        fetch(event.request).catch(function() {
+            self.registration.showNotification("No Internet Connection", {
+                body: "You are currently offline. Some features may not be available.",
+            });
+        })
+    );
+});

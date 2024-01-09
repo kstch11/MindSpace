@@ -6,7 +6,7 @@ import {fetchClientProfile, fetchClientReservations, fetchCurrentUser} from "../
 import {useEffect, useState} from "react";
 import {fetchTherapistProfile} from "../api/therapist-api";
 import {useSelector} from "react-redux";
-import {Schedule} from "../therapist-profile/Schedule";
+import {Schedule} from "./Schedule";
 
 const useStyles = createStyles((theme) => ({
     container: {

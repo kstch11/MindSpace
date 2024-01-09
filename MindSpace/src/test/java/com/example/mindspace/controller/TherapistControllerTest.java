@@ -8,12 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.example.mindspace.api.CreateReviewRequest;
-import com.example.mindspace.api.CreateReviewResponse;
-import com.example.mindspace.api.LanguageResponse;
-import com.example.mindspace.api.TherapistQuestionnaireRequest;
-import com.example.mindspace.api.TherapistResponse;
-import com.example.mindspace.api.UserRequest;
+import com.example.mindspace.api.*;
 import com.example.mindspace.model.Schedule;
 import com.example.mindspace.model.SpokenLanguage;
 import com.example.mindspace.model.Theme;
@@ -232,7 +227,7 @@ class TherapistControllerTest {
         ArrayList<String> topics = new ArrayList<>();
 
         // Act
-        ResponseEntity<Void> actualPostTherapistQuestionnaireResult = therapistController.postTherapistQuestionnaire(
+        ResponseEntity<TherapistQuestionnaireResponse> actualPostTherapistQuestionnaireResult = therapistController.postTherapistQuestionnaire(
                 userPrincipal,
                 new TherapistQuestionnaireRequest("Name", "Doe", birthDate, "Gender",
                         "The characteristics of someone or something", topics, "Education", "Therapeutic Community",

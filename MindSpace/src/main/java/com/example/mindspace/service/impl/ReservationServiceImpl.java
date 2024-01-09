@@ -115,6 +115,14 @@ public class ReservationServiceImpl {
         );
     }
 
+    /**
+     * Delays an existing reservation to a new timeslot.
+     *
+     * @param reservationId The ID of the reservation to be delayed.
+     * @param timeCellId The ID of the new timeslot for the reservation.
+     * @throws EntityNotFoundException if the reservation or the new timeslot is not found.
+     * @throws IllegalArgumentException if the new timeslot is not available.
+     */
     public void delayReservation(Integer reservationId, Integer timeCellId) {
         var reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new EntityNotFoundException("reservation not found"));

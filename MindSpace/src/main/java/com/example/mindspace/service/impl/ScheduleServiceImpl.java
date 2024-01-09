@@ -56,15 +56,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         )).toList();
     }
 
-//    public ScheduleResponse getScheduleById(Integer id) {
-//        Schedule schedule = findById(id);
-//
-//        return new ScheduleResponse(schedule.getId(), schedule.getAvailableTimeCells());
-//    }
-//
-//    private Schedule findById(Integer id) {
-//        return scheduleRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Schedule with id " + id + "does not exist"));
-//    }
-
 }

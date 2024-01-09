@@ -50,94 +50,6 @@ export function ApplicationStepper() {
     const [formData, setFormData] = useState({specializations: []})
     const accessToken = useSelector(state => state.currentUser.accessToken);
 
-
-    const {
-        mutate,
-        isPending: questionnairePending,
-        isSuccess,
-        isError: questionnaireError
-    } = useMutation({
-        mutationFn: (questionnaireBody) => {
-            return postTherapistQuestionnaire(accessToken, questionnaireBody);
-        }
-    })
-
-    const handleTherapistRegistration = () => {
-        mutate({
-            name: form.values.firstname,
-            surname: form.values.surname,
-            birthDate: form.values.dateOfBirth,
-            gender: form.values.gender,
-            description: form.values.description,
-            topics: form.values.specialization,
-            education: form.values.education,
-            therapeuticCommunity: form.values.therapeuticCommunity,
-            languages: form.values.languages,
-            personalPsychotherapy: form.values.personalTherapy,
-            experience: calculateExperience(form.values.experience),
-            phoneNumber: form.values.phoneNumber
-        })
-    }
-
-
-    const nextStep = async () => {
-        const validation = await form.validate();
-
-        if (!validation.hasErrors) {
-            setActive((current) => (current < 3 ? current + 1 : current));
-
-            if (active === 2) {
-                handleTherapistRegistration()
-            }
-        }
-    };
-    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
-    useEffect(() => {
-        if (isSuccess) {
-            console.log("successful registration")
-        }
-    }, [isSuccess])
-
-    const {
-        isPending,
-        isError,
-        data,
-        isFetched,
-        error
-    } = useQuery({
-        queryKey: ['getAllSpecializations'], queryFn: () => fetchAllSpecifications(accessToken)
-    });
-
-    useEffect(() => {
-        if (isFetched) {
-            const specializationArray = data.map(s => s.name);
-            setFormData({
-                specializations: specializationArray
-            });
-        }
-    }, [data, isFetched])
-
-    const calculateExperience = (startDate) => {
-        const currentDate = new Date();
-        const startYear = startDate.getFullYear();
-        const startMonth = startDate.getMonth();
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth();
-
-        let years = currentYear - startYear;
-        if (currentMonth < startMonth || (currentMonth === startMonth && currentDate.getDate() < startDate.getDate())) {
-            years--;
-        }
-
-        return years;
-    };
-
-    const handleFinish = () => {
-        console.log("Therapist registered")
-        return <Navigate to={"/therapistDoneRegistration"} />
-    }
-
     const form = useForm({
         initialValues: {
             firstname:'',
@@ -196,6 +108,97 @@ export function ApplicationStepper() {
             return {}
         }
     })
+
+
+    const nextStep = async () => {
+        const validation = await form.validate();
+
+        if (!validation.hasErrors) {
+            setActive((current) => (current < 3 ? current + 1 : current));
+
+            if (active === 2) {
+                // handleTherapistRegistration()
+            }
+        }
+    };
+    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+    const {
+        isPending,
+        isError,
+        data,
+        isFetched,
+        error
+    } = useQuery({
+        queryKey: ['getAllSpecializations'], queryFn: () => fetchAllSpecifications(accessToken)
+    });
+
+    useEffect(() => {
+        if (isFetched) {
+            const specializationArray = data.map(s => s.name);
+            setFormData({
+                specializations: specializationArray
+            });
+        }
+    }, [data, isFetched])
+
+    const calculateExperience = (startDate) => {
+        const currentDate = new Date();
+        const startYear = startDate.getFullYear();
+        const startMonth = startDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        let years = currentYear - startYear;
+        if (currentMonth < startMonth || (currentMonth === startMonth && currentDate.getDate() < startDate.getDate())) {
+            years--;
+        }
+
+        return years;
+    };
+
+    const {
+        mutate,
+        isPending: questionnairePending,
+        isSuccess,
+        isError: questionnaireError
+    } = useMutation({
+        mutationFn: (questionnaireBody) => {
+            return postTherapistQuestionnaire(accessToken, questionnaireBody);
+        }
+    })
+
+    const handleTherapistRegistration = () => {
+        mutate({
+            name: form.values.firstname,
+            surname: form.values.surname,
+            birthDate: form.values.dateOfBirth,
+            gender: form.values.gender,
+            description: form.values.description,
+            topics: form.values.specialization,
+            education: form.values.education,
+            therapeuticCommunity: form.values.therapeuticCommunity,
+            languages: form.values.languages,
+            personalPsychotherapy: form.values.personalTherapy,
+            experience: calculateExperience(form.values.experience),
+            phoneNumber: form.values.phoneNumber
+        })
+    }
+
+    const handleFinish = () => {
+        console.log("Therapist registered")
+        handleTherapistRegistration()
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log("successful registration")
+        }
+    }, [isSuccess])
+
+    if (isSuccess) {
+        return <Navigate to={"/therapistDoneRegistration"} />
+    }
 
     return(
         <div className={classes.inner}>
@@ -313,7 +316,7 @@ export function ApplicationStepper() {
                 </Stepper>
 
                 <Group position="right" mt="xl">
-                    {(active !== 0 || active !== 3) && (
+                    {active !== 0 && (
                         <Button variant="default" onClick={prevStep}>
                             Back
                         </Button>

@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/clients")
 public class ClientsController {
-    private final Logger LOGGER = Logger.getLogger(ClientsController.class.getName());
     private final ClientServiceImpl clientService;
 
     @Autowired
@@ -37,7 +36,10 @@ public class ClientsController {
     }
 
     /**
-     * Get client details
+     * Retrieves the details of a specific client.
+     *
+     * @param id The ID of the client.
+     * @return ResponseEntity containing the client's details and an HTTP status code.
      */
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponse> getDetails(@PathVariable Integer id) {
@@ -45,7 +47,10 @@ public class ClientsController {
     }
 
     /**
-     * Gets current client
+     * Retrieves the profile information of the currently authenticated client.
+     *
+     * @param userPrincipal The principal of the currently authenticated client.
+     * @return ResponseEntity containing the client's profile information and an HTTP status code.
      */
     @GetMapping("/profile")
     public ResponseEntity<ClientResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
@@ -53,7 +58,10 @@ public class ClientsController {
     }
 
     /**
-     * Gets current client
+     * Marks the registration of a client as complete.
+     *
+     * @param userPrincipal The principal of the currently authenticated client.
+     * @return ResponseEntity indicating the operation's success.
      */
     @PutMapping("/profile/regDone")
     public ResponseEntity<Void> setRegistrationComplete(@CurrentUser UserPrincipal userPrincipal) {
@@ -62,18 +70,25 @@ public class ClientsController {
     }
 
     /**
-     * Posts a questionnaire and recommends therapists based on the answers.
+     * Processes a questionnaire submitted by a client and returns a list of recommended therapists.
+     *
+     * @param userPrincipal The principal of the currently authenticated client.
+     * @param questionnaireRequest The request containing the questionnaire data.
+     * @return ResponseEntity containing a list of recommended therapists and an HTTP status code.
      */
     @PostMapping("/questionnaire")
     public ResponseEntity<List<TherapistResponse>> postClientQuestionnaire(
             @CurrentUser UserPrincipal userPrincipal, @RequestBody QuestionnaireRequest questionnaireRequest
     ) {
-        LOGGER.info("Upcoming data: " + questionnaireRequest.name() + ", " + questionnaireRequest.surname() + ", " + questionnaireRequest.phoneNumber());
         return new ResponseEntity<>(clientService.saveQuestionnaire(userPrincipal, questionnaireRequest), HttpStatus.OK);
     }
 
     /**
-     * Set new therapist
+     * Assigns a new therapist to a client based on the provided request.
+     *
+     * @param userPrincipal The principal of the currently authenticated client.
+     * @param request The request object containing the ID of the therapist to be assigned.
+     * @return ResponseEntity indicating the operation's success.
      */
     @PutMapping("/therapist")
     public ResponseEntity<Void> setTherapist(
@@ -84,6 +99,13 @@ public class ClientsController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Retrieves the assigned therapist for the current client.
+     *
+     * @param userPrincipal The principal of the currently authenticated client.
+     * @param request The request object containing the details for retrieving the therapist.
+     * @return ResponseEntity indicating the operation's success.
+     */
     @GetMapping("/therapist")
     public ResponseEntity<Void> getTherapist(
             @CurrentUser UserPrincipal userPrincipal,
@@ -94,7 +116,10 @@ public class ClientsController {
     }
 
     /**
-     * Cancel therapist
+     * Cancels the association between a client and their therapist.
+     *
+     * @param id The ID of the client.
+     * @return ResponseEntity indicating the operation's success.
      */
     @DeleteMapping("/{id}/therapist")
     public ResponseEntity<Void> cancelTherapist(@PathVariable Integer id) {
@@ -103,16 +128,22 @@ public class ClientsController {
     }
 
     /**
-     * Find all reservations.
+     * Retrieves all reservations associated with a specific client.
+     *
+     * @param id The ID of the client.
+     * @return ResponseEntity containing a list of the client's reservations and an HTTP status code.
      */
     @GetMapping("/{id}/reservations")
     public ResponseEntity<List<ReservationResponse>> getAllReservations(@PathVariable Integer id) {
-        LOGGER.info("Client is getting his reservations");
         return new ResponseEntity<>(clientService.findAllReservations(id), HttpStatus.OK);
     }
 
     /**
-     * Updates client
+     * Updates the profile information of a client.
+     *
+     * @param id The ID of the client.
+     * @param userRequest The request containing the client's updated information.
+     * @return ResponseEntity indicating the operation's success.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateClient(@PathVariable Integer id, @RequestBody UserRequest userRequest) {

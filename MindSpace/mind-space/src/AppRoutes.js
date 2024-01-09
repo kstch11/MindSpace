@@ -17,7 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import {useSelector} from "react-redux";
 import LogOut from "./common-pages/autentication/LogOut";
 import AuthWrapper from "./common-pages/autentication/AuthWrapper";
-import {Schedule} from "./therapist-profile/Schedule";
+import {Schedule} from "./client-profile/Schedule";
 import {TherapistData} from "./common-pages/therapists-list/TherapistData";
 import ClientSuccessRegistration from "./client-profile/ClientSuccessRegistration";
 import AdminProfile from "./admin-profile/AdminProfile";

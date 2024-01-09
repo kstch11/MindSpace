@@ -22,8 +22,11 @@ public class TherapistServiceImpl {
     private final ClientRepository clientRepository;
     private final ReviewRepository reviewRepository;
     private final SpokenLanguageRepository languageRepository;
-    private final Logger LOGGER = Logger.getLogger(TherapistServiceImpl.class.getName());
 
+    /**
+     * Sets the registration status of a therapist to complete.
+     * @param userPrincipal The user principal representing the therapist.
+     */
     public void setTherapistRegistrationComplete(UserPrincipal userPrincipal) {
         Therapist therapist = findById(userPrincipal.getId());
         therapist.setRegistrationFinished(true);
@@ -59,7 +62,14 @@ public class TherapistServiceImpl {
         );
     }
 
-    public void saveTherapistQuestionnaire(UserPrincipal userPrincipal, TherapistQuestionnaireRequest questionnaireRequest) {
+    /**
+     * Saves a therapist questionnaire response.
+     *
+     * @param userPrincipal The user principal representing the therapist.
+     * @param questionnaireRequest The questionnaire request containing therapist's data.
+     * @return TherapistQuestionnaireResponse object.
+     */
+    public TherapistQuestionnaireResponse saveTherapistQuestionnaire(UserPrincipal userPrincipal, TherapistQuestionnaireRequest questionnaireRequest) {
         Therapist therapist = findById(userPrincipal.getId());
 
         therapist.setName(questionnaireRequest.name());
@@ -86,6 +96,7 @@ public class TherapistServiceImpl {
         therapist.setExperience(questionnaireRequest.experience());
         therapist.setPhoneNumber(questionnaireRequest.phoneNumber());
         therapistRepository.save(therapist);
+        return new TherapistQuestionnaireResponse();
     }
 
     /**
@@ -248,13 +259,17 @@ public class TherapistServiceImpl {
         )).toList();
     }
 
-
+    /**
+     * Finds a therapist by their ID.
+     *
+     * @param id The ID of the therapist.
+     * @return The Therapist object.
+     * @throws EntityNotFoundException if the therapist with the specified ID does not exist.
+     */
     private Therapist findById(Integer id) {
         return therapistRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Therapist with id " + id + "does not exist"));
     }
 
-    public List<Reservation> getHistory(Therapist therapist) {
-        return null;
-    }
+
 }

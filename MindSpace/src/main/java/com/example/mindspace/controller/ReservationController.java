@@ -28,23 +28,48 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    /**
+     * Creates a new reservation based on the provided request.
+     *
+     * @param request The reservation request containing all necessary information to create a reservation.
+     * @return ResponseEntity containing the response of the created reservation and an HTTP status code.
+     */
     @PostMapping
     public ResponseEntity<CreateReservationResponse> createReservation(@RequestBody ReservationRequest request) {
         LOGGER.info("Upcoming request: " + request.clientId() + ", " + request.therapistId() + ", " + request.timeCellId());
         return new ResponseEntity<>(reservationService.createReservation(request), HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves the details of a specific reservation.
+     *
+     * @param id The ID of the reservation.
+     * @return ResponseEntity containing the details of the reservation and an HTTP status code.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ReservationResponse> getReservation(@PathVariable Integer id) {
         return new ResponseEntity<>(reservationService.getReservation(id), HttpStatus.OK);
     }
 
+    /**
+     * Cancels an existing reservation.
+     *
+     * @param id The ID of the reservation to be canceled.
+     * @return ResponseEntity indicating the operation's success.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelReservation(@PathVariable Integer id) {
         reservationService.cancelReservation(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Delays an existing reservation to a new timeslot.
+     *
+     * @param reservationId The ID of the reservation to be delayed.
+     * @param timeCellId The ID of the new timeslot for the reservation.
+     * @return ResponseEntity indicating the operation's success.
+     */
     @PutMapping("/{reservationId}/delay/{timeCellId}")
     public ResponseEntity<Void> delayReservation(
             @PathVariable Integer reservationId,

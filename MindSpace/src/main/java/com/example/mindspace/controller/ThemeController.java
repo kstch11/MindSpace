@@ -21,6 +21,11 @@ public class ThemeController {
         this.themeService = themeService;
     }
 
+    /**
+     * Retrieves all themes.
+     *
+     * @return ResponseEntity containing a list of all themes and an HTTP status code.
+     */
     @GetMapping("/allThemes")
     public ResponseEntity<List<ThemeResponse>> getAllThemes() {
         return new ResponseEntity<>(themeService.findAllThemes(), HttpStatus.OK);

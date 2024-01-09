@@ -21,6 +21,11 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
+    /**
+     * Retrieves a list of all schedules.
+     *
+     * @return ResponseEntity containing a list of schedule responses and an HTTP status code.
+     */
     @GetMapping("/schedules")
     public ResponseEntity<List<ScheduleResponse>> getSchedule() {
         return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);

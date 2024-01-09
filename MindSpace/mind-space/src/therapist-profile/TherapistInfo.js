@@ -82,7 +82,7 @@ export default function TherapistInfo() {
         isFetched,
         error
     } = useQuery({
-            queryKey: ['clientProfile'], queryFn: () => fetchCurrentUser(accessToken)
+            queryKey: ['therapistProfile'], queryFn: () => fetchCurrentUser(accessToken)
         }
     )
 
@@ -91,10 +91,12 @@ export default function TherapistInfo() {
             console.log(data)
             const formattedTopics = formatArrayToString(data.topics.map(t => t.name))
             const formattedLanguages = formatArrayToString(data.languages.map(l => l.name))
+            console.log(formattedLanguages)
+            console.log(formattedTopics)
             setTherapistData({
                 name: data.name,
                 phoneNumber: data.phone,
-                selfDescription: data.selfDescription,
+                selfDescription: data.description,
             })
             console.log(therapistData)
             setTherapistInfo({
@@ -151,7 +153,7 @@ export default function TherapistInfo() {
                 <div>
                     <Text c="dimmed" fz="lg" my="xs">Specialization</Text>
                     <Text my="xs">
-                        {therapistData.topics}
+                        {therapistInfo.topics}
                     </Text>
 
                     {/*<div>*/}
@@ -163,11 +165,11 @@ export default function TherapistInfo() {
 
                     <Text c="dimmed" fz="lg" my="xs">Education</Text>
                     <Text my="xs">
-                        {therapistData.education}
+                        {therapistInfo.education}
                     </Text>
                     <Text c="dimmed" fz="lg"my="xs">Spoken Languages</Text>
                     <Text>
-                        {therapistData.languages}
+                        {therapistInfo.languages}
                     </Text>
                     <Text c="dimmed" fz="lg" my="xs">Reviews</Text>
                     <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">

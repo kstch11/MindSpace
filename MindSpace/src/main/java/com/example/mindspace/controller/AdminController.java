@@ -27,7 +27,11 @@ public class AdminController {
     }
 
     /**
-     * Approve therapist
+     * Approves a therapist based on their ID.
+     * This method allows the admin to approve the registration of a therapist.
+     *
+     * @param id The ID of the therapist to be approved.
+     * @return ResponseEntity indicating the operation's success.
      */
     @PutMapping("/approve/{id}")
     public ResponseEntity<Void> approveTherapist(@PathVariable Integer id) {

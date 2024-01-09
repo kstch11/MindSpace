@@ -19,7 +19,10 @@ public class UsersController {
     private final UserServiceImpl userService;
 
     /**
-     * Gets current client
+     * Retrieves the profile information of the currently authenticated user.
+     *
+     * @param userPrincipal The principal of the currently authenticated user.
+     * @return ResponseEntity containing the user's profile information and HTTP status code.
      */
     @GetMapping("/profile")
     public ResponseEntity<UserResponse> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {

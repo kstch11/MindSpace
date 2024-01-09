@@ -17,6 +17,12 @@ import java.util.List;
 public class TimeCellServiceImpl implements TimeCellService {
     private final TimeCellRepository timeCellRepository;
 
+    /**
+     * Generates time cells for a given schedule starting from the next day for 30 days.
+     * Time cells are created for each hour from 9 AM to 5 PM.
+     *
+     * @param schedule The schedule for which time cells are to be generated.
+     */
     @Override
     public void generateTimeCells(Schedule schedule) {
         LocalDateTime startDateTime = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -37,6 +43,9 @@ public class TimeCellServiceImpl implements TimeCellService {
         }
     }
 
+    /**
+     * Deletes all time cells that have expired, based on the current date and time.
+     */
     @Override
     public void deleteExpiredTimeCells() {
         LocalDateTime now = LocalDateTime.now();

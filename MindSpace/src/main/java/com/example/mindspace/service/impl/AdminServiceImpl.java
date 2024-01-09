@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -22,17 +20,23 @@ public class AdminServiceImpl {
 
     private final TimeCellServiceImpl timeCellService;
 
+    /**
+     * Approves a therapist based on the provided therapist ID.
+     * If the therapist with the specified ID is not found, an EntityNotFoundException is thrown.
+     *
+     * @param therapistId The ID of the therapist to be approved.
+     * @throws EntityNotFoundException if the therapist is not found in the repository.
+     */
     public void approveTherapist(Integer therapistId) {
         var therapist = therapistRepository.findById(therapistId)
                 .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
 
         therapist.setApproved(true);
-        Schedule schedule = new Schedule(therapist, List.of());
+        Schedule schedule = new Schedule();
         scheduleRepository.save(schedule);
         timeCellService.generateTimeCells(schedule);
         therapist.setSchedule(schedule);
         therapistRepository.save(therapist);
-
     }
 
 }

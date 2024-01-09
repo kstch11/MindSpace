@@ -26,6 +26,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     }
 
+    /**
+     * Retrieves a list of all schedules with their details.
+     *
+     * @return List of ScheduleResponse objects representing all schedules.
+     */
     public List<ScheduleResponse> findAll() {
         return scheduleRepository.findAll().stream().map(s -> new ScheduleResponse(
                 s.getId(),

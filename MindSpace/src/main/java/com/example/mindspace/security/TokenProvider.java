@@ -31,6 +31,12 @@ public class TokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * Creates a JWT token for the authenticated user.
+     *
+     * @param authentication The authentication object containing user details.
+     * @return A JWT token as a String.
+     */
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
@@ -45,6 +51,12 @@ public class TokenProvider {
                 .compact();
     }
 
+    /**
+     * Extracts the user ID from a given JWT token.
+     *
+     * @param token The JWT token from which the user ID is to be extracted.
+     * @return The user ID as an Integer.
+     */
     public Integer getUserIdFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -55,6 +67,12 @@ public class TokenProvider {
         return Integer.parseInt(claims.getSubject());
     }
 
+    /**
+     * Validates the given JWT token for authenticity and expiry.
+     *
+     * @param authToken The JWT token to be validated.
+     * @return true if the token is valid, false otherwise.
+     */
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(authToken);

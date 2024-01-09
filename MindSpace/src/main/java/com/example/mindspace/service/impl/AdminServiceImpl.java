@@ -3,6 +3,7 @@ package com.example.mindspace.service.impl;
 import com.example.mindspace.model.Schedule;
 import com.example.mindspace.model.Therapist;
 import com.example.mindspace.repository.AdminRepository;
+import com.example.mindspace.repository.ScheduleRepository;
 import com.example.mindspace.repository.TherapistRepository;
 import com.example.mindspace.exception.EntityNotFoundException;
 import com.example.mindspace.model.Admin;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class AdminServiceImpl {
     private final AdminRepository adminRepository;
     private final TherapistRepository therapistRepository;
+    private final ScheduleRepository scheduleRepository;
 
     private final TimeCellServiceImpl timeCellService;
 
@@ -32,6 +34,7 @@ public class AdminServiceImpl {
 
         therapist.setApproved(true);
         Schedule schedule = new Schedule();
+        scheduleRepository.save(schedule);
         timeCellService.generateTimeCells(schedule);
         therapist.setSchedule(schedule);
         therapistRepository.save(therapist);

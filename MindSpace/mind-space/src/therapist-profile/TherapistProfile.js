@@ -1,24 +1,20 @@
-import {TherapistData} from "../common-pages/therapists-list/TherapistData";
-import {ClientsTable} from "./ListOfClients";
 import {Schedule} from "./Schedule";
 import {Navbar} from "../parts/Navbar";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
+import TherapistInfo from "./TherapistInfo";
 
 const contentProps = [
     {
         label: "Personal data",
         order: 1,
-        component: <TherapistData />,
-    },
-    {
-        label: "Chats",
-        order: 1,
-        component: <ClientsTable />,
+        value: 'personalData',
+        component: <TherapistInfo />,
     },
     {
         label: "Schedule",
         order: 1,
+        value: 'schedule',
         component: <Schedule />,
     },
 ]

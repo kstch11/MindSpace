@@ -1,12 +1,6 @@
 package com.example.mindspace.service.impl;
 
-import com.example.mindspace.api.ClientResponse;
-import com.example.mindspace.api.CreateReservationResponse;
-import com.example.mindspace.api.LanguageResponse;
-import com.example.mindspace.api.ReservationRequest;
-import com.example.mindspace.api.ReservationResponse;
-import com.example.mindspace.api.TherapistResponse;
-import com.example.mindspace.api.TopicResponse;
+import com.example.mindspace.api.*;
 import com.example.mindspace.repository.ClientRepository;
 import com.example.mindspace.repository.ReservationRepository;
 import com.example.mindspace.repository.TherapistRepository;
@@ -18,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +21,7 @@ public class ReservationServiceImpl {
     private final TherapistRepository therapistRepository;
     private final ClientRepository clientRepository;
     private final TimeCellRepository timeCellRepository;
+    private final Logger LOG = Logger.getLogger(ReservationServiceImpl.class.getName());
 
     /**
      * Create a reservation
@@ -39,18 +35,23 @@ public class ReservationServiceImpl {
         var timeCellId = reservationDto.timeCellId();
         var schedule = therapist.getSchedule();
 
+
         TimeCell requestedTimeslot = schedule.getAvailableTimeCells().stream()
                 // check if schedule contains the requested time cell & if it is available to book.
                 .filter(cell -> cell.getId().equals(timeCellId) && !(cell.isReserved() || cell.isExpired()))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Requested timeslot is not available"));
 
+        LOG.info("Log is here");
         var client = clientRepository.findById(reservationDto.clientId())
                 .orElseThrow(() -> new RuntimeException("Client not found"));
+        LOG.info("Log is here");
         var reservation = new Reservation(client, requestedTimeslot, therapist);
         requestedTimeslot.setReservation(reservation);
+        LOG.info("Log is here");
         Reservation saved = reservationRepository.save(reservation);
         timeCellRepository.save(requestedTimeslot);
+        LOG.info("Log is here");
         return new CreateReservationResponse(saved.getId());
     }
 
@@ -58,15 +59,16 @@ public class ReservationServiceImpl {
      * Cancels reservation.
      * @param reservationId the id of reservation
      */
-    public void cancelReservation(Integer reservationId) {
+    public CancelReservationResponse cancelReservation(Integer reservationId) {
         var reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new EntityNotFoundException("reservation not found"));
-
+        LOG.info("reservation found");
         TimeCell timeCell = reservation.getTimeCell();
         timeCell.setReservation(null);
         timeCellRepository.save(timeCell);
 
         reservationRepository.delete(reservation);
+        return new CancelReservationResponse();
     }
 
     /**

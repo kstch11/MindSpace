@@ -118,11 +118,19 @@ public class InitDataLoader {
 
         List<Schedule> schedules = scheduleRepository.saveAll(Arrays.asList(
                 schedule1, schedule2, schedule3, schedule4, schedule5,
-                schedule6, schedule7, schedule8
+                schedule6, schedule7, schedule8, schedule9, schedule10
         ));
 
         timeCellService.generateTimeCells(schedule1);
         timeCellService.generateTimeCells(schedule2);
+        timeCellService.generateTimeCells(schedule3);
+        timeCellService.generateTimeCells(schedule4);
+        timeCellService.generateTimeCells(schedule5);
+        timeCellService.generateTimeCells(schedule6);
+        timeCellService.generateTimeCells(schedule7);
+        timeCellService.generateTimeCells(schedule8);
+        timeCellService.generateTimeCells(schedule9);
+        timeCellService.generateTimeCells(schedule10);
 
         return schedules;
     }

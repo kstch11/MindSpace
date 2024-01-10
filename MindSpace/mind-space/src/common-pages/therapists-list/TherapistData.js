@@ -9,15 +9,16 @@ import {
     Group,
     rem,
     Center,
-    Badge, Loader,
+    Badge, Card,
 } from '@mantine/core';
 import {useToggle} from "@mantine/hooks";
 import {useEffect, useState} from "react";
 import React from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchCurrentUser, postQuestionnaire, putTherapist} from "../../api/client-api";
+import {fetchCurrentUser} from "../../api/client-api";
 import {useSelector} from "react-redux";
 import {fetchTherapistProfile, getReviews, postReview} from "../../api/therapist-api";
+
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -73,10 +74,12 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
     const {classes} = useStyles();
     const [type, toggle] = useToggle(['all', 'client', 'clientRegistration', 'therapist', 'admin']);
     const [therapistInfo, setTherapistInfo] = useState({
-        name: '', surname: '', education: '', languages: [], photo: '', topics: [], description: ''
+        name: '', surname: '', education: '', languages: [], photo: '', topics: [], description: '', experience: null
     });
     const [reviewText, setReviewText] = useState({author: null, text: ''});
     const [reviews, setReviews] = useState([])
+    let topicsToString = ''
+    let languagesToString = ''
 
     useEffect(() => {
         if (['all', 'client', 'clientRegistration', 'therapist', 'admin'].includes(toggleValue)) {
@@ -115,40 +118,9 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
         data: reviewss,
         isFetched: fetchedData
     } = useQuery({
-        queryFn: () => data && data.therapistId ? getReviews( accessToken, data.therapistId) : null,
+        queryFn: () => data && data.therapistId ? getReviews(accessToken, data.therapistId) : null,
         enabled: !!data && !!data.therapistId,
     })
-
-
-    useEffect(() => {
-        if (fetched) {
-            console.log(therapist)
-            const therapistLanguages = therapist.languages.map(l => l.name)
-            const therapistTopics = therapist.topics.map(t => t.name);
-            setTherapistInfo({
-                name: therapist.name,
-                surname: therapist.surname,
-                education: therapist.education,
-                languages: therapistLanguages,
-                photo: therapist.photo,
-                topics: therapistTopics,
-                description: therapist.description
-            })
-        }
-    }, [therapist, fetched])
-
-    useEffect(() => {
-        if (fetchedData) {
-            console.log(reviewss)
-            const mappedReview = reviewss.map(r => ({
-                reviewAuthor: data.name,
-                text: r.text,
-            }))
-            setReviews(mappedReview)
-        }
-    }, [fetchedData])
-
-
 
     const {
         data: review,
@@ -161,14 +133,50 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
         },
     })
 
+
+    useEffect(() => {
+        if (fetched) {
+            const therapistLanguages = therapist.languages.map(l => l.name)
+            const therapistTopics = therapist.topics.map(t => t.name);
+            setTherapistInfo({
+                name: therapist.name,
+                surname: therapist.surname,
+                education: therapist.education,
+                languages: therapistLanguages,
+                photo: therapist.photo,
+                topics: therapistTopics,
+                description: therapist.description,
+                experience: therapist.experience
+            })
+            console.log(therapistInfo)
+        }
+    }, [therapist, fetched])
+
+
+
+    useEffect(() => {
+        if (fetchedData) {
+            console.log(reviewss)
+            const authorFullname = `${data.name} ${data.surname}`
+            const mappedReview = reviewss.map(r => ({
+                reviewAuthor: authorFullname,
+                text: r.text,
+            }))
+            console.log(mappedReview)
+            setReviews(mappedReview)
+        }
+    }, [reviewss, fetchedData])
+
+
     const handleCreateReview = () => {
         setReviewText({
             author: data.id,
         })
-        console.log(reviewText.text)
-        console.log(data.id)
-        console.log(reviewText)
         mutate({author: data.id, text: reviewText.text})
+        setReviewText({
+            author: null,
+            text: ''
+        })
     }
 
     if (isSuccess) {
@@ -194,7 +202,12 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
     }
 
     const formattedTopics = formatArrayToString(therapistInfo.topics);
-    const formattedLanguages = formatArrayToString(therapistInfo.languages)
+    const formattedLanguages = formatArrayToString(therapistInfo.languages);
+
+    if (therapistData !== undefined) {
+        topicsToString = formatArrayToString(therapistData.topics);
+        languagesToString = formatArrayToString(therapistData.languages)
+    }
 
 
     return(
@@ -203,22 +216,11 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                 <div>
                     <Group className={classes.group}>
                         <Avatar radius="xl" size="xl" className={classes.avatar} src={therapistInfo.photo}/>
-                        {type === 'therapist' && (
-                            <div className={classes.floatText}>
-                            <TextInput
-                                label="Your name:"
-                                value={"Olivia Anderson"}
-                            />
-                            <TextInput
-                                label="Your age:"
-                                value={"31"}
-                            />
-                        </div>)}
                         {type === 'client' && (
                             <div className={classes.floatText}>
                                 <Text fz="lg" weight={700} >{`${therapistInfo.name} ${therapistInfo.surname}`}</Text>
                                 <div className={classes.column}>
-                                    <Badge mb={7}>5 years experience</Badge>
+                                    <Badge mb={7}>{`${therapistInfo.experience}`} years experience</Badge>
                                     <Button>Change therapist</Button>
                                 </div>
                             </div>
@@ -236,49 +238,27 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                             <div className={classes.floatText}>
                                 <Text fz="lg" mb="xs" weight={700}>{(therapistData !== undefined) ? `${therapistData.name} ${therapistData.surname}` : ''}</Text>
                                 <div>
-                                    <Badge mr="xs">5 years experience</Badge>
+                                    <Badge mr="xs">{(therapistData !== undefined) ? `${therapistData.experience}` : '5'} years experience</Badge>
                                     <Badge mr="xs">50€/appointment</Badge>
                                 </div>
                                 <Button onClick={onClickChooseTherapist}>Choose a therapist</Button>
                             </div>
                         )}
                     </Group>
-                    {type === 'therapist' && (
-                        <div>
-                            <TextInput
-                                label="Your phone number:"
-                                value={"+420777123456"}
-                            />
-                            <TextInput
-                                label="Your email:"
-                                value={"oliv_a@gmail.com"}
-                            />
-                            <TextInput
-                                label="Languages:"
-                                value={"English, Czech"}
-                            />
-                            <Textarea
-                                label="Self-description"
-                                value={"I can provide professional psychotherapeutic help in a wide range of requests: problems at work and in personal life, difficulties in self-determination, general dissatisfaction and apathy. Help in crises that occur because of events (divorce, death of loved ones, adultery), as well as those crises that spontaneously invade life, come as if from nowhere - the search for meaning, dissatisfaction, fears, the desire to change something, get rid of something that causes discomfort or heartache. I am ready to walk this path with you."}
-                                minRows={3}
-                            />
-                            <Button>Save</Button>
-                        </div>
-                    )}
                 </div>
                 <div>
                     <Text c="dimmed" fz="lg" my="xs">Specialization</Text>
-                    <Text my="xs">{formattedTopics}</Text>
+                    <Text my="xs">{(therapistData !== undefined) ? `${topicsToString}` : `${formattedTopics}`}</Text>
                     {type !== 'therapist' && (
                         <div>
                             <Text c="dimmed" fz="lg" my="xs">Self-description</Text>
-                            <Text my="xs">{therapistInfo.description}</Text>
+                            <Text my="xs">{(therapistData !== undefined) ? `${therapistData.description}` : `${therapistInfo.description}`}</Text>
                         </div>
                     )}
                     <Text c="dimmed" fz="lg" my="xs">Education</Text>
-                    <Text my="xs">{therapistInfo.education}</Text>
+                    <Text my="xs">{(therapistData !== undefined) ? `${therapistData.education}` : `${therapistInfo.education}`}</Text>
                     <Text c="dimmed" fz="lg"my="xs">Spoken Languages</Text>
-                    <Text>{formattedLanguages}</Text>
+                    <Text>{(therapistData !== undefined) ? `${languagesToString}` : `${formattedLanguages}`}</Text>
                     <Text c="dimmed" fz="lg" my="xs">Reviews</Text>
                     {type === 'client' && (
                         <form className={classes.form}>
@@ -294,23 +274,28 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
                                     onChange={handleSubmitReview}
                                 />
                             </div>
-                            <Button onClick={handleCreateReview} type="button">Submit Review</Button>
+                            {reviewText.text !== '' ?
+                                <Button onClick={handleCreateReview} type="button">Submit Review</Button> :
+                                <Button data-disabled
+                                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
+                                        onClick={(event) => event.preventDefault()}>
+                                    Submit Review
+                                </Button>}
                         </form>
                     )}
-                    {reviews === 0 && (
+                    {reviews.length === 0 && (
                         <Text>Therapist still does not have any reviews</Text>
                     )}
-                    {reviews !== 0 && (
-                        <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
+                    {reviews.length !== 0 && (
+                        <Spoiler maxHeight={150} showLabel="Show more" hideLabel="Hide">
                             {reviews.map(( index) => (
-                                <Group mb="xs">
-                                    <Text size="md" fw={500}>{index.name}</Text>
-                                    <Text size="sm">
+                                <Card withBorder radius="md" shadow="sm" mb={10}>
+                                    <Text size="md" fw={500}>{index.reviewAuthor}</Text>
+                                    <Text size="sm" w="100%" mt={5}>
                                         {index.text}
                                     </Text>
-                                </Group>
+                                </Card>
                             ))}
-
                         </Spoiler>
                     )}
                 </div>

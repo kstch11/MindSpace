@@ -1,5 +1,6 @@
 package com.example.mindspace.controller;
 
+import com.example.mindspace.api.CancelReservationResponse;
 import com.example.mindspace.api.ReservationRequest;
 import com.example.mindspace.api.CreateReservationResponse;
 import com.example.mindspace.api.ReservationResponse;
@@ -36,7 +37,6 @@ public class ReservationController {
      */
     @PostMapping
     public ResponseEntity<CreateReservationResponse> createReservation(@RequestBody ReservationRequest request) {
-        LOGGER.info("Upcoming request: " + request.clientId() + ", " + request.therapistId() + ", " + request.timeCellId());
         return new ResponseEntity<>(reservationService.createReservation(request), HttpStatus.CREATED);
     }
 
@@ -58,9 +58,8 @@ public class ReservationController {
      * @return ResponseEntity indicating the operation's success.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelReservation(@PathVariable Integer id) {
-        reservationService.cancelReservation(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CancelReservationResponse> cancelReservation(@PathVariable Integer id) {
+        return new ResponseEntity<>(reservationService.cancelReservation(id), HttpStatus.OK);
     }
 
     /**

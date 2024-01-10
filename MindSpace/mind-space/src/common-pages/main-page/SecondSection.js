@@ -17,6 +17,8 @@ import img3 from "../../assets/3.jpg";
 import img4 from "../../assets/4.jpg";
 import img5 from "../../assets/5.jpg";
 import img6 from "../../assets/6.jpeg";
+import {useState} from "react";
+import {Navigate} from "react-router-dom";
 
 const mockdata = [
     {
@@ -110,6 +112,15 @@ const useStyles = createStyles((theme) => ({
 
 export function FeaturesCards() {
     const { classes, theme } = useStyles();
+    const [redirect, setRedirect] = useState(false);
+
+    const handleLogin = () => {
+        setRedirect(true);
+    }
+    if (redirect) {
+        return <Navigate to="login"/>
+    }
+
     const features = mockdata.map((feature) => (
         <Card key={feature.title} shadow="md" radius="md" className={classes.card} padding="xl">
             {/*<feature.image size={rem(50)} stroke={2} color={theme.fn.primaryColor()} />*/}
@@ -145,6 +156,7 @@ export function FeaturesCards() {
                     component="a"
                     href=""
                     className={classes.button}
+                    onClick={handleLogin}
                     variant="gradient"
                     gradient={{ from: 'indigo', to: 'cyan' }}>Want to discuss my situation</Button>
             </Center>

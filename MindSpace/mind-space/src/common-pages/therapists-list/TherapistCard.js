@@ -60,7 +60,7 @@ export function TherapistCard({userData, onMoreInfo}) {
                 <Text ta="center" fz="lg" fw={500} mt="md">
                     {userData.name}
                 </Text>
-                <Badge color="blue" radius="sm" className={classes.badge}>{userData.experience} experience</Badge>
+                <Badge color="blue" radius="sm" className={classes.badge}>{userData.experience} years experience</Badge>
                 <Divider my="sm" />
                 <Text fz="xs" c="dimmed">Specialization</Text>
                 <Text  fz="sm" className={classes.skillList}>

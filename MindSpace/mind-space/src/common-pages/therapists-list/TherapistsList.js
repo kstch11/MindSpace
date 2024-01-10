@@ -97,11 +97,13 @@ export function TherapistsList({toggleValue, questionnaire}) {
                 id: fetched.id,
                 avatarUrl: fetched.photo,
                 name: fetched.name,
-                experience: '5 years',
+                surname: fetched.surname,
+                experience: fetched.experience,
                 description: fetched.description,
-                specialization: fetched.topics && fetched.topics.map(topic => topic.name)
+                specialization: fetched.topics && fetched.topics.map(topic => topic.name),
+                education: fetched.education,
+                languages: fetched.languages && fetched.languages.map(l => l.name)
             }))
-            console.log(mappedData)
             setTherapists(mappedData)
         }
 
@@ -141,9 +143,7 @@ export function TherapistsList({toggleValue, questionnaire}) {
     }
 
     const onClickChooseTherapist = () => {
-        console.log(openedTherapist)
         setTherapist({ therapistId: openedTherapist.id});
-        console.log(openedTherapist.id)
     }
 
     if (updateTherapistPending) {

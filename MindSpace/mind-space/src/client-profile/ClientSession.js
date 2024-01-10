@@ -1,12 +1,13 @@
 import React from 'react';
 import {createStyles, Avatar, Center, Button, Text, Group, Card, Badge, useMantineTheme, Loader} from '@mantine/core';
 import {ReactComponent as IconVideoCamera} from '../assets/video.svg';
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {fetchClientProfile, fetchClientReservations, fetchCurrentUser} from "../api/client-api";
 import {useEffect, useState} from "react";
 import {fetchTherapistProfile} from "../api/therapist-api";
 import {useSelector} from "react-redux";
 import {Schedule} from "./Schedule";
+import {deleteReservation} from "../api/reservation-api";
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -83,6 +84,14 @@ export function ClientSession() {
     });
     const [clientReservation, setClientReservation] = useState(null);
 
+    const isPastDateTime = (date) => {
+        const now = new Date();
+        const dateTime = new Date(date);
+        dateTime.setHours(dateTime.getHours() + 1);
+
+        return dateTime < now
+    }
+
     const {
         isPending,
         isError,
@@ -132,11 +141,23 @@ export function ClientSession() {
         enabled: !!data && !!data.id,
     })
 
+    const {
+        mutate,
+        isSuccess
+    } = useMutation({
+        mutationFn: (reservationId) => {
+            return deleteReservation(accessToken, reservationId)
+        }
+    })
+
     useEffect(() => {
         if (reservationFetched) {
-            console.log(reservation);
-            setClientReservation(reservation)
-            console.log(clientReservation)
+            if (reservation.length !== 0) {
+                if (!isPastDateTime(reservation[reservation.length - 1].date)){
+                    setClientReservation(reservation)
+                    console.log(clientReservation)
+                }
+            }
         }
     }, [reservation, reservationFetched])
 
@@ -147,7 +168,14 @@ export function ClientSession() {
             </Center>
         )
     }
-    console.log(clientReservation)
+
+    const onClickCancel = () => {
+        mutate(clientReservation[clientReservation.length - 1].id)
+    }
+
+    if (isSuccess) {
+        window.location.reload()
+    }
 
     if (clientReservation !== null) {
         console.log(clientReservation)
@@ -162,7 +190,7 @@ export function ClientSession() {
                 return `${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString()}`;
             }
 
-            const readableDate = formattedDate(clientReservation[0].date)
+            const readableDate = formattedDate(clientReservation[reservation.length - 1].date)
 
             return (
                 <div className={classes.container}>
@@ -174,7 +202,7 @@ export function ClientSession() {
                                 <Badge color="blue" className={classes.badge}>{readableDate}
                                 </Badge>
                             </div>
-                            <Button className={classes.startButton} size="lg">
+                            <Button className={classes.startButton} size="lg" component="a" href="https://meet.google.com/mam-kkih-jsq">
                                 Start
                             </Button>
                         </Group>
@@ -192,7 +220,7 @@ export function ClientSession() {
                             <Text weight={500} size="lg" style={{ marginBottom: theme.spacing.md }}>
                                 {`${therapistInfo.name} ${therapistInfo.surname}`}
                             </Text>
-                            <Button fullWidth={70}>Chat</Button>
+                            <Button onClick={onClickCancel} fullWidth={70}>Cancel reservation</Button>
                         </div>
                     </div>
                 </div>

@@ -11,6 +11,8 @@ import {
 import image from '../../assets/main.jpg';
 import {FeaturesCards} from "./SecondSection"
 import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
+import {useState} from "react";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -66,14 +68,17 @@ const useStyles = createStyles((theme) => ({
 export function MainPage() {
   const { classes } = useStyles();
   const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
+  const [redirect, setRedirect] = useState(false);
+
+  const handleLogin = () => {
+      setRedirect(true);
+  }
+  if (redirect) {
+    return <Navigate to="login"/>
+  }
 
   return (
-      <MantineProvider
-          theme={{
-        headings:{fontFamily:'BlinkMacSystemFont',
-        },
-
-      }}>
+      <MantineProvider>
         <Container>
           <div className={classes.inner}>
             <div className={classes.content}>
@@ -85,7 +90,7 @@ export function MainPage() {
               </Text>
 
               <Group mt={30}>
-                <Button radius="md" size="md" className={classes.control}>
+                <Button radius="md" size="md" className={classes.control} onClick={handleLogin}>
                   Find a therapist
                 </Button>
               </Group>

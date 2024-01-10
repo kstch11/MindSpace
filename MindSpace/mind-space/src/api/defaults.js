@@ -70,3 +70,18 @@ export async function makePutRequest(url, accessToken, body) {
     }
     return await response.json()
 }
+
+export async function makeDeleteRequest(url, accessToken) {
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error(`Error while making DELETE request to ${url}`)
+    }
+
+    return response.json();
+}

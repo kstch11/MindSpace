@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         [theme.fn.smallerThan('sm')]: {
-            maxWidth: '100%',
+            width: '90%',
             flexDirection: 'column',
             marginBottom: rem(30),
         }
@@ -66,6 +66,12 @@ const useStyles = createStyles((theme) => ({
         top: 0,
         marginBottom: rem(30),
         [theme.fn.largerThan('sm')]: {
+            display: 'none',
+        },
+    },
+
+    profile: {
+        [theme.fn.smallerThan('sm')]: {
             display: 'none',
         },
     }
@@ -123,16 +129,28 @@ export function Navbar({contentProps}) {
                 <div className={classes.tabs}>
                     <Tabs variant="outline" radius="md" defaultValue="personalData">
                         <Tabs.List>
-                            {contentProps.map(tab => (
-                                <Tabs.Tab key={tab.value} value={tab.value} icon={tab.icon}>
+                            {contentProps.map((tab, index) => (
+                                <Tabs.Tab
+                                    key={tab.value}
+                                    value={tab.value}
+                                    icon={tab.icon}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        setActiveIndex(index);
+                                    }}
+                                >
                                     {tab.label}
                                 </Tabs.Tab>
                             ))}
                         </Tabs.List>
 
-                        {contentProps.map(tab => (
-                            <Tabs.Panel key={tab.value} value={tab.value} pt="xs">
-                                {tab.content}
+                        {contentProps.map((tab) => (
+                            <Tabs.Panel
+                                key={tab.value}
+                                value={tab.value}
+                                pt="xs"
+                            >
+                                {renderActiveComponent()}
                             </Tabs.Panel>
                         ))}
                     </Tabs>

@@ -141,8 +141,8 @@ export function ClientSession() {
         isError: reservError,
     } = useQuery({
         queryKey: ['clientReservations'],
-        queryFn: () => data && data.id ? fetchClientReservations(data.id, accessToken) : null,
-        enabled: !!data && !!data.id,
+        queryFn: () => data && therapist ? fetchClientReservations(data.id, accessToken) : null,
+        enabled: !!data && !!therapist,
     })
 
     const {

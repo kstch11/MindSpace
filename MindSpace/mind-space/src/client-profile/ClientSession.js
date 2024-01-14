@@ -181,7 +181,7 @@ export function ClientSession() {
         window.location.reload()
     }
 
-    if (clientReservation !== null) {
+    if (clientReservation !== undefined) {
         console.log(clientReservation)
         if (clientReservation.length !== 0) {
             function formatDateString(dateStr) {

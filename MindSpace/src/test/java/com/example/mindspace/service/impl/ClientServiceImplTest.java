@@ -1386,7 +1386,7 @@ class ClientServiceImplTest {
     therapist.setSurname("Doe");
     therapist.setThemes(new ArrayList<>());
     therapist.setTherapeuticCommunity("Therapeutic Community");
-    therapist.setUserType(User.UserType.CLIENT);
+    therapist.setUserType(User.UserType.THERAPIST);
 
     Client client = new Client();
     client.setEmail("jane.doe@example.org");
@@ -1423,7 +1423,7 @@ class ClientServiceImplTest {
     therapist2.setSurname("Doe");
     therapist2.setThemes(new ArrayList<>());
     therapist2.setTherapeuticCommunity("Therapeutic Community");
-    therapist2.setUserType(User.UserType.CLIENT);
+    therapist2.setUserType(User.UserType.THERAPIST);
 
     Schedule schedule2 = new Schedule();
     schedule2.setAvailableTimeCells(new ArrayList<>());
@@ -1452,7 +1452,7 @@ class ClientServiceImplTest {
     therapist3.setSurname("Doe");
     therapist3.setThemes(new ArrayList<>());
     therapist3.setTherapeuticCommunity("Therapeutic Community");
-    therapist3.setUserType(User.UserType.CLIENT);
+    therapist3.setUserType(User.UserType.THERAPIST);
 
     Client client2 = new Client();
     client2.setEmail("jane.doe@example.org");
@@ -1489,7 +1489,7 @@ class ClientServiceImplTest {
     therapist4.setSurname("Doe");
     therapist4.setThemes(new ArrayList<>());
     therapist4.setTherapeuticCommunity("Therapeutic Community");
-    therapist4.setUserType(User.UserType.CLIENT);
+    therapist4.setUserType(User.UserType.THERAPIST);
 
     TimeCell timeCell = new TimeCell();
     timeCell.setEndTime(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -1526,7 +1526,7 @@ class ClientServiceImplTest {
     therapist5.setSurname("Doe");
     therapist5.setThemes(new ArrayList<>());
     therapist5.setTherapeuticCommunity("Therapeutic Community");
-    therapist5.setUserType(User.UserType.CLIENT);
+    therapist5.setUserType(User.UserType.THERAPIST);
 
     Schedule schedule3 = new Schedule();
     schedule3.setAvailableTimeCells(new ArrayList<>());
@@ -1571,7 +1571,7 @@ class ClientServiceImplTest {
     therapist6.setSurname("Doe");
     therapist6.setThemes(new ArrayList<>());
     therapist6.setTherapeuticCommunity("Therapeutic Community");
-    therapist6.setUserType(User.UserType.CLIENT);
+    therapist6.setUserType(User.UserType.THERAPIST);
 
     Schedule schedule4 = new Schedule();
     schedule4.setAvailableTimeCells(new ArrayList<>());
@@ -1600,7 +1600,7 @@ class ClientServiceImplTest {
     therapist7.setSurname("Doe");
     therapist7.setThemes(new ArrayList<>());
     therapist7.setTherapeuticCommunity("Therapeutic Community");
-    therapist7.setUserType(User.UserType.CLIENT);
+    therapist7.setUserType(User.UserType.THERAPIST);
 
     Client client3 = new Client();
     client3.setEmail("jane.doe@example.org");
@@ -1624,7 +1624,7 @@ class ClientServiceImplTest {
     verify(clientRepository).findById(Mockito.<Integer>any());
     assertEquals(1, actualFindAllReservationsResult.size());
     ReservationResponse getResult = actualFindAllReservationsResult.get(0);
-    assertEquals("12:00 01/01/1970", getResult.date());
+    assertEquals("1970-01-01T00:00", getResult.start());
     ClientResponse clientResponseResult = getResult.clientResponse();
     assertEquals("6625550144", clientResponseResult.phone());
     TherapistResponse therapistResult = getResult.therapist();

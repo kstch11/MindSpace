@@ -1081,7 +1081,7 @@ class TherapistServiceImplTest {
         verify(therapistRepository).findById(Mockito.<Integer>any());
         assertEquals(1, actualFindAllReservationsResult.size());
         ReservationResponse getResult = actualFindAllReservationsResult.get(0);
-        assertEquals("12:00 01/01/1970", getResult.date());
+        assertEquals("1970-01-01T12:00:00", getResult.start());
         ClientResponse clientResponseResult = getResult.clientResponse();
         assertEquals("6625550144", clientResponseResult.phone());
         TherapistResponse therapistResult = getResult.therapist();

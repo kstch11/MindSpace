@@ -1553,7 +1553,7 @@ class ReservationServiceImplTest {
 
         // Assert
         verify(reservationRepository).findById(Mockito.<Integer>any());
-        assertEquals("12:00 01/01/1970", actualReservation.date());
+        assertEquals("1970-01-01T12:00:00", actualReservation.start());
         ClientResponse clientResponseResult = actualReservation.clientResponse();
         assertEquals("6625550144", clientResponseResult.phone());
         TherapistResponse therapistResult = actualReservation.therapist();
@@ -1844,7 +1844,7 @@ class ReservationServiceImplTest {
 
         // Assert
         verify(reservationRepository).findById(Mockito.<Integer>any());
-        assertEquals("12:00 01/01/1970", actualReservation.date());
+        assertEquals("1970-01-01T12:00:00", actualReservation.start());
         ClientResponse clientResponseResult = actualReservation.clientResponse();
         assertEquals("6625550144", clientResponseResult.phone());
         TherapistResponse therapistResult = actualReservation.therapist();

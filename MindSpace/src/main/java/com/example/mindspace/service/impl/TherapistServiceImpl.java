@@ -8,6 +8,7 @@ import com.example.mindspace.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Logger;
@@ -107,14 +108,16 @@ public class TherapistServiceImpl {
      */
     public List<ReservationResponse> findAllReservations(Integer id) {
         Therapist therapist = findById(id);
+        LocalDateTime now = LocalDateTime.now();
         return therapist.getReservations().stream()
+                .filter(reservation -> reservation.getTimeCell().getStartTime().isBefore(now))
                 .map(reservation -> {
                     Client client = reservation.getClient();
 
                     return new ReservationResponse(
                             reservation.getId(),
-                            reservation.getTimeCell().getStartTime()
-                                    .format(DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy")),
+                            reservation.getTimeCell().getStartTime().toString(),
+                            reservation.getTimeCell().getEndTime().toString(),
                             new ClientResponse(
                                     client.getId(),
                                     client.getTherapist().getId(),

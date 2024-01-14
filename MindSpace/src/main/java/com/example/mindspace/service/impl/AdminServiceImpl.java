@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class AdminServiceImpl {
     private final ScheduleRepository scheduleRepository;
 
     private final TimeCellServiceImpl timeCellService;
+    private final Logger LOG = Logger.getLogger(AdminServiceImpl.class.getName());
 
     /**
      * Approves a therapist based on the provided therapist ID.
@@ -36,7 +38,9 @@ public class AdminServiceImpl {
         scheduleRepository.save(schedule);
         timeCellService.generateTimeCells(schedule);
         therapist.setSchedule(schedule);
+        schedule.setTherapist(therapist);
         therapistRepository.save(therapist);
+        scheduleRepository.save(schedule);
     }
 
 }

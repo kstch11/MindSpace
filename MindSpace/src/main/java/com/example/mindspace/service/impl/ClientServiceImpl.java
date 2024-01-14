@@ -158,8 +158,8 @@ public class ClientServiceImpl {
 
                     return new ReservationResponse(
                             reservation.getId(),
-                            reservation.getTimeCell().getStartTime()
-                                    .format(DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy")),
+                            reservation.getTimeCell().getStartTime().toString(),
+                            reservation.getTimeCell().getEndTime().toString(),
                             new ClientResponse(
                                     client.getId(),
                                     client.getTherapist().getId(),

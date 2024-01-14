@@ -2,7 +2,7 @@ import React from 'react';
 import {createStyles, Avatar, Center, Button, Text, Group, Card, Badge, useMantineTheme, Loader} from '@mantine/core';
 import {ReactComponent as IconVideoCamera} from '../assets/video.svg';
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchClientProfile, fetchClientReservations, fetchCurrentUser} from "../api/client-api";
+import { fetchClientReservations, fetchCurrentUser} from "../api/client-api";
 import {useEffect, useState} from "react";
 import {fetchTherapistProfile} from "../api/therapist-api";
 import {useSelector} from "react-redux";
@@ -73,6 +73,10 @@ const useStyles = createStyles((theme) => ({
     startButton: {
         marginTop: theme.spacing.sm,
     },
+
+    schedule: {
+
+    }
 }));
 
 export function ClientSession() {
@@ -180,17 +184,14 @@ export function ClientSession() {
     if (clientReservation !== null) {
         console.log(clientReservation)
         if (clientReservation.length !== 0) {
-            const formattedDate = (dateString) => {
-                const [time, date] = dateString.split(' ');
-                const [hours, minutes] = time.split(':');
-                const [day, month, year] = date.split('/');
+            function formatDateString(dateStr) {
+                const date = new Date(dateStr);
 
-                const dateObj = new Date(year, month - 1, day, hours, minutes);
-
-                return `${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString()}`;
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                return date.toLocaleString('en-US', options);
             }
 
-            const readableDate = formattedDate(clientReservation[reservation.length - 1].date)
+            const readableDate = formatDateString(clientReservation[reservation.length - 1].start);
 
             return (
                 <div className={classes.container}>
@@ -199,7 +200,8 @@ export function ClientSession() {
                             <IconVideoCamera size={128} />
                             <div  className={classes.sessionDate}>
                                 <Text className={classes.sessionText}>The nearest session:</Text>
-                                <Badge color="blue" className={classes.badge}>{readableDate}
+                                <Badge color="blue" className={classes.badge}>
+                                    {readableDate}
                                 </Badge>
                             </div>
                             <Button className={classes.startButton} size="lg" component="a" href="https://meet.google.com/mam-kkih-jsq">
@@ -227,12 +229,16 @@ export function ClientSession() {
             );
         } else {
             return (
-                <Schedule></Schedule>
+                <div className={classes.schedule}>
+                    <Schedule></Schedule>
+                </div>
             );
         }
     } else {
         return (
-            <Schedule></Schedule>
+            <div className={classes.schedule}>
+                <Schedule></Schedule>
+            </div>
         );
     }
 

@@ -3,6 +3,9 @@ import image from "../../assets/therapist_p.jpeg";
 import img1 from "../../assets/ther1.jpeg"
 import img2 from "../../assets/ther2.jpeg"
 import img3 from "../../assets/ther3.jpeg"
+import {Navigate} from "react-router-dom";
+import {useState} from "react";
+import {useSelector} from "react-redux";
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -106,6 +109,15 @@ const useStyles = createStyles((theme) => ({
 
 export function TherapistMainPage() {
     const { classes } = useStyles();
+    const isLoggedIn = useSelector(state => state.currentUser.accessToken != null)
+    const [redirect, setRedirect] = useState(false);
+
+    const handleLogin = () => {
+        setRedirect(true);
+    }
+    if (redirect) {
+        return <Navigate to="login"/>
+    }
     return (
         <MantineProvider
             theme={{
@@ -124,7 +136,7 @@ export function TherapistMainPage() {
                         </Text>
 
                         <Group mt={30}>
-                            <Button radius="md" size="md" className={classes.control}>
+                            <Button radius="md" size="md" className={classes.control} onClick={handleLogin}>
                                 Start application
                             </Button>
                         </Group>
@@ -168,7 +180,7 @@ export function TherapistMainPage() {
                         <List.Item>Desktop or laptop computer with a reliable internet connection and a webcam</List.Item>
                         <List.Item>Currently residing in E.U.</List.Item>
                     </List>
-                    <Button>Start application</Button>
+                    <Button onClick={handleLogin}>Start application</Button>
                 </div>
             </Container>
         </MantineProvider>

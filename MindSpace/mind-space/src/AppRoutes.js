@@ -31,7 +31,6 @@ export default function AppRoutes() {
                 <AuthWrapper>
                     <HeaderResponsive links={!isLoggedIn ? [
                         {link: '', label: 'Home'},
-                        {link: '/therapistsList', label: 'Our therapists'},
                         {link: '/forTherapists', label: 'For therapists'},
                         {link: '/login', label: 'Log in'},
                     ] : [
@@ -87,7 +86,6 @@ export default function AppRoutes() {
 
                         <Route path="/therapistProfile" element={<TherapistNavbar/>}/>
                         <Route path="/forTherapists" element={<TherapistMainPage/>}/>
-                        <Route path="/therapistsList" element={<TherapistsList toggleValue='all' />}/>
                         <Route path="/schedule" element={<Schedule/>}/>
                         <Route path="/therapist" element={<TherapistData toggleValue='clientRegistration'/>}/>
                         <Route path="/therapistApplication" element={<ApplicationStepper/>}/>

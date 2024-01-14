@@ -34,6 +34,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<ScheduleResponse> findAll() {
         return scheduleRepository.findAll().stream().map(s -> new ScheduleResponse(
                 s.getId(),
+                s.getTherapist().getId(),
                 s.getAvailableTimeCells()
                         .stream()
                         .map(timeCell -> new TimeCellResponse(

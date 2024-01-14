@@ -1,14 +1,23 @@
 import Calendar from "@fullcalendar/react";
 import timeGridPlugin from '@fullcalendar/timegrid'
 import {useSelector} from "react-redux";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchAllReservations, fetchSchedule, fetchTherapistProfile} from "../api/therapist-api";
+import {useQuery} from "@tanstack/react-query";
+import {fetchAllReservations} from "../api/therapist-api";
 import {useEffect, useState} from "react";
-import {postReservation} from "../api/reservation-api";
-import {fetchClientProfile, fetchCurrentUser} from "../api/client-api";
+import { fetchCurrentUser} from "../api/client-api";
+import {createStyles} from "@mantine/core";
 
+const useStyles = createStyles((theme) => ({
+    container: {
+        width: 700,
+        [theme.fn.smallerThan("sm")]: {
+            width: '100%'
+        }
+    }
+}))
 
 export function TherapistSchedule() {
+    const {classes} = useStyles();
     const [scheduleData, setScheduleData] = useState([])
     const accessToken = useSelector(state => state.currentUser.accessToken);
 
@@ -18,13 +27,6 @@ export function TherapistSchedule() {
     } = useQuery({
         queryKey: ['user'],
         queryFn: () => fetchCurrentUser(accessToken)
-    })
-
-    const {
-        data: userDetails,
-        isFetched: userDetailsFetched
-    } = useQuery({
-        queryKey: ['userDetails'], queryFn: () => fetchTherapistProfile(accessToken, userData.id)
     })
 
     const {
@@ -48,25 +50,15 @@ export function TherapistSchedule() {
     })
 
     useEffect(() => {
-        if (userDetailsFetched) {
-            console.log(userDetails)
-        }
-    })
-
-
-    useEffect(() => {
         if (isFetched) {
-            console.log(data[0])
-            const timeCellsArray = data[0].timeCells.map((item, index) => ({
-                id: index,
-                title: `event ${index + 1}`,
-                start: item.startTime,
-                end: item.endTime,
-                editable: item.isReserved,
-            })).filter(item => item.editable)
-            console.log(timeCellsArray)
-            setScheduleData(timeCellsArray)
-            console.log(scheduleData)
+            console.log(data)
+            const reservationsArray = data.map((item) => ({
+                title: `${item.clientResponse.name} ${item.clientResponse.surname}`,
+                start: item.start,
+                end: item.end
+            }))
+            setScheduleData(reservationsArray)
+            console.log(reservationsArray)
         }
     }, [data, isFetched])
 
@@ -75,21 +67,8 @@ export function TherapistSchedule() {
 
     }, [scheduleData]);
 
-    // const handleEventClick = (clickInfo) => {
-    //     clickInfo.jsEvent.preventDefault();
-    //
-    //     const eventId = parseInt(clickInfo.event.id, 10)
-    //
-    //     mutate({therapistId: userData.therapistId, clientId: userData.id, timeCellId: eventId + 1})
-    // }
-    //
-    // if (isSuccess) {
-    //     setTimeout(function () {window.location.reload()}, 5000)
-    // }
-    // eventClick={handleEventClick}
-
     return(
-        <div>
+        <div className={classes.container}>
             <Calendar
                 plugins={[ timeGridPlugin ]}
                 initialView="timeGridWeek"

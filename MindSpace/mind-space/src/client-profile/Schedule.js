@@ -11,6 +11,9 @@ import {createStyles} from "@mantine/core";
 const useStyles = createStyles((theme) => ({
     container: {
         width: 700,
+        [theme.fn.smallerThan("sm")]: {
+            width: '100%'
+        }
     }
 }))
 
@@ -28,6 +31,15 @@ export function Schedule() {
     })
 
     const {
+        data: userDetails,
+        isFetched: userDetailsFetched
+    } = useQuery({
+        queryKey: ['userDetails'],
+        queryFn: () => userData && userData.id ? fetchClientProfile(userData.id, accessToken) : null,
+        enabled: !!userData && !!userData.id
+    })
+
+    const {
         isPending,
         isError,
         data,
@@ -35,17 +47,8 @@ export function Schedule() {
         error
     } = useQuery({
         queryKey: ['schedule'],
-        queryFn: () => fetchSchedule(accessToken),
-        enabled: !!userData
-    })
-
-    const {
-        data: userDetails,
-        isFetched: userDetailsFetched
-    } = useQuery({
-        queryKey: ['userDetails'],
-        queryFn: () => userData && userData.id ? fetchClientProfile(userData.id, accessToken) : null,
-        enabled: !!userData && !!userData.id
+        queryFn: () => userData && userData.therapistId ? fetchSchedule(accessToken) : null,
+        enabled: !!userData && !!userData.therapistId
     })
 
     useEffect(() => {
@@ -74,8 +77,8 @@ export function Schedule() {
 
     useEffect(() => {
         if (isFetched) {
-            console.log(userData.therapistId)
-            const timeCellsArray = data[userData.therapistId - 1].timeCells.map((item) => ({
+            const therapistSchedule = data.filter(s => s.therapistId === userData.therapistId)
+            const timeCellsArray = therapistSchedule[0].timeCells.map((item) => ({
                 id: item.id,
                 title: 'Free time slot',
                 start: item.startTime,
@@ -84,14 +87,14 @@ export function Schedule() {
             })).filter(item => !item.editable)
             console.log(timeCellsArray)
             setScheduleData(timeCellsArray)
-            console.log(scheduleData)
         }
     }, [data, isFetched])
 
-    useEffect(() => {
-        console.log(scheduleData);
 
-    }, [scheduleData]);
+    // useEffect(() => {
+    //     console.log(scheduleData);
+    //
+    // }, [scheduleData]);
 
     useEffect(() => {
         if (isSuccess) {

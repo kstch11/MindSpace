@@ -34,7 +34,7 @@ export async function fetchSchedule(accessToken) {
 export async function postReview(accessToken, therapistId, reviewBody) {
     const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + `/${therapistId}/reviews`
 
-    return makePostRequest(url, accessToken, reviewBody)
+    return makePostRequest(url, accessToken, reviewBody);
 }
 
 export async function setTherapistApplicationComplete(accessToken) {
@@ -46,11 +46,17 @@ export async function setTherapistApplicationComplete(accessToken) {
 export async function postTherapistQuestionnaire(accessToken, questionnaireBody) {
     const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + "/therapistQuestionnaire"
 
-    return makePostRequest(url, accessToken, questionnaireBody)
+    return makePostRequest(url, accessToken, questionnaireBody);
 }
 
 export async function getReviews(accessToken, therapistId) {
     const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + `/${therapistId}/reviews`
 
-    return makeGetRequest(url, accessToken)
+    return makeGetRequest(url, accessToken);
+}
+
+export async function updateTherapist(accessToken, putNewDetails, therapistId) {
+    const url = LOCAL_BACKEND_PATH + THERAPIST_DEFAULT_URL + `/${therapistId}`
+
+    return makePutRequest(url, accessToken, putNewDetails);
 }

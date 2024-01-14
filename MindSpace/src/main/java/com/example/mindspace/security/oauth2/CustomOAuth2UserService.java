@@ -28,6 +28,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
     private final String THERAPIST_ROLE = "THERAPIST";
+
+    private final Logger LOG = Logger.getLogger(CustomOAuth2UserService.class.getName());
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -67,6 +70,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             String role = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.ROLE)
                     .map(Cookie::getValue)
                     .orElse(null);
+            LOG.info(role);
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo, role);
         }
 
@@ -75,6 +79,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo, String role) {
         User user = role != null && role.equals(THERAPIST_ROLE) ? new Therapist() : new Client();
+        LOG.info(user.getUserType().toString());
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setRegistrationFinished(false);

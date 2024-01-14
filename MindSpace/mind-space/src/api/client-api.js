@@ -28,7 +28,7 @@ export async function fetchClientReservations(clientId, accessToken) {
 export async function setRegistrationComplete(accessToken) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + "/profile/regDone"
 
-    return makePutRequest(url, accessToken)
+    return makePutRequest(url, accessToken);
 }
 
 export async function postQuestionnaire(accessToken, questionnaireBody) {
@@ -40,12 +40,12 @@ export async function postQuestionnaire(accessToken, questionnaireBody) {
 export async function putTherapist(accessToken, putTherapistBody) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + "/therapist"
 
-    return makePutRequest(url, accessToken, putTherapistBody)
+    return makePutRequest(url, accessToken, putTherapistBody);
 }
 
 export async function updateClient(accessToken, putNewDetails, clientId) {
     const url = LOCAL_BACKEND_PATH + CLIENT_DEFAULT_URL + `/${clientId}`
 
-    return makePutRequest(url, accessToken, putNewDetails)
+    return makePutRequest(url, accessToken, putNewDetails);
 }
 

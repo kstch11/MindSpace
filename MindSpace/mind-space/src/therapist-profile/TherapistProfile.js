@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 import TherapistInfo from "./TherapistInfo";
 import {TherapistSchedule} from "./TherapistSchedule";
+import {TherapistSession} from "../common-pages/therapists-list/TherapistSession";
 
 const contentProps = [
     {
@@ -18,6 +19,12 @@ const contentProps = [
         value: 'schedule',
         component: <TherapistSchedule />,
     },
+    {
+        label: "Session",
+        order: 1,
+        value: 'session',
+        component: <TherapistSession />,
+    }
 ]
 
 export function TherapistNavbar() {

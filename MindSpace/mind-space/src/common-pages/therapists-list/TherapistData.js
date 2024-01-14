@@ -181,6 +181,7 @@ export function TherapistData({toggleValue, therapistData, onClickChooseTherapis
 
     if (isSuccess) {
         console.log("review was created")
+        window.location.reload();
     }
 
     const handleSubmitReview = (e: React.ChangeEvent<HTMLInputElement>) => {

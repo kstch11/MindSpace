@@ -155,7 +155,7 @@ export function ClientSession() {
     })
 
     useEffect(() => {
-        if (reservationFetched) {
+        if (reservationFetched && reservation) {
             if (reservation.length !== 0) {
                 if (!isPastDateTime(reservation[reservation.length - 1].date)){
                     setClientReservation(reservation)

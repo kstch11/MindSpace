@@ -155,7 +155,7 @@ export function ClientSession() {
     })
 
     useEffect(() => {
-        if (reservationFetched && reservation !== null) {
+        if (reservationFetched && reservation) {
             if (reservation.length !== 0) {
                 if (!isPastDateTime(reservation[reservation.length - 1].date)){
                     setClientReservation(reservation)
@@ -181,7 +181,7 @@ export function ClientSession() {
         window.location.reload()
     }
 
-    if (clientReservation !== undefined || clientReservation !== null) {
+    if (clientReservation !== undefined && clientReservation !== null) {
         if (clientReservation.length !== 0) {
             function formatDateString(dateStr) {
                 const date = new Date(dateStr);

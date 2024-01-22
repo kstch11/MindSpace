@@ -10,7 +10,7 @@ import {
     FileInput,
     Select,
     Title,
-    Text
+    Text, SimpleGrid
 } from "@mantine/core";
 import { useState, useEffect } from 'react';
 import {useForm} from "@mantine/form";
@@ -41,6 +41,8 @@ const useStyles = createStyles((theme) =>({
             margin: '0 3%',
         },
     },
+
+
 }))
 
 export function ApplicationStepper() {
@@ -305,12 +307,14 @@ export function ApplicationStepper() {
                     </Stepper.Step>
                     <Stepper.Completed>
                         <Center>
-                            <Title order={2}>You successfully sent an application!</Title>
-                            <Text c="dimmed">
-                                <p>Thank you for your application to join our team. We appreciate your interest in becoming a therapist with us. We want to let you know that your application is important to us, and our team will carefully review it.</p>
-                                <p>Once your application has been processed, you will be notified via email regarding the outcome. We kindly ask for your patience during this process, and we look forward to being in touch soon.</p>
-                                <p>If you have any urgent questions or concerns, please don't hesitate to contact us. Thank you for your interest in joining our team as a therapist.</p>
-                            </Text>
+                            <SimpleGrid cols={1}>
+                                <Title order={2}>You successfully sent an application!</Title>
+                                <Text c="dimmed">
+                                    <p>Thank you for your application to join our team. We appreciate your interest in becoming a therapist with us. We want to let you know that your application is important to us, and our team will carefully review it.</p>
+                                    <p>Once your application has been processed, you will be notified via email regarding the outcome. We kindly ask for your patience during this process, and we look forward to being in touch soon.</p>
+                                    <p>If you have any urgent questions or concerns, please don't hesitate to contact us. Thank you for your interest in joining our team as a therapist.</p>
+                                </Text>
+                            </SimpleGrid>
                         </Center>
                     </Stepper.Completed>
                 </Stepper>

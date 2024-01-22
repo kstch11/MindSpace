@@ -212,7 +212,7 @@ export function ClientData() {
                     </div>
                     <div className={classes.form}>
                         <label>Reservation:</label>
-                        <Text className={classes.text}>Monday, 29th of May, 9:00</Text>
+                        <Text className={classes.text}>There is no reservations at the moment</Text>
                     </div>
                     <div className={classes.form}>
                         <label>Kind of therapy:</label>

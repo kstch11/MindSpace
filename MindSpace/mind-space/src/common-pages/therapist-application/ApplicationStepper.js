@@ -37,7 +37,7 @@ const useStyles = createStyles((theme) =>({
         marginRight: `0 auto`,
 
         [theme.fn.smallerThan('sm')]: {
-            maxWidth: '100%',
+            maxWidth: '95%',
             margin: '0 3%',
         },
     },

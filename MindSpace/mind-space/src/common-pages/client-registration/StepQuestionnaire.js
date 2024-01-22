@@ -9,6 +9,9 @@ import { Navigate } from "react-router-dom";
 const useStyles = createStyles((theme) => ({
     questionnaire: {
         width: 900,
+        [theme.fn.smallerThan("sm")]: {
+            width: "95%"
+        }
     }
 }));
 
